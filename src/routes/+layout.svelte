@@ -37,7 +37,7 @@
 <header>
     <nav>
         <div id="home">
-            <a>
+            <a href="/" title="Home">
                 <img src="lark-logo.png" alt="lark logo" />
             </a>
             <a href="https://lark-parser.readthedocs.io/en/latest/" target="_blank">docs</a>
