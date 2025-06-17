@@ -1,5 +1,5 @@
 <script lang="ts">
-    type Tree = { type: string; data: String; children: Tree[] };
+    type Tree = { type: string; data: string; children: Tree[] };
 
     export let tree: Tree;
 
@@ -15,12 +15,12 @@
     <li>
         {#if tree['type'] === 'Tree'}
             {#if tree.children.length > 0}
-                <span on:click={toggleExpansion}>
+                <button type="button" class="tree-toggle" on:click={toggleExpansion}>
                     <span class="arrow" class:arrowDown>&#x25b6</span>
                     <span class="label">
                         {tree.data}
                     </span>
-                </span>
+                </button>
                 {#if expanded}
                     <div class="children">
                         {#each [...tree.children] as child}
@@ -54,7 +54,7 @@
         /* user-select: none; */
     }
     .no-arrow {
-        padding-left: 1rem;
+        padding-left: 1rem; /* Used for tree nodes without arrows */
     }
     .arrow {
         cursor: pointer;
@@ -81,5 +81,15 @@
         color: gray;
         font-style: italic;
         font-weight: normal;
+    }
+    .tree-toggle {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        display: inline;
     }
 </style>
