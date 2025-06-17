@@ -98,7 +98,7 @@
         }, PARSER_REFRESH_DELAY);
     }
 
-    function update_lark_result(text) {
+    function update_lark_result(text: string) {
         pyodide.globals.set('text', text);
         return pyodide.runPythonAsync('parser.parse(text)');
     }
@@ -109,7 +109,7 @@
 
     $: result_promise = pyodide && parser_promise && update_lark_result(text);
 
-    async function load_grammar(grammar_to_load) {
+    async function load_grammar(grammar_to_load: string) {
         console.log('Loading grammar', grammar_to_load);
         if (grammar_to_load === 'blank') {
             grammar = 'start:';
@@ -161,15 +161,15 @@
                         <div class="dropdown-menu" id="dropdown-menu3" role="menu">
                             <div class="dropdown-content">
                                 {#each grammars as g}
-                                    <a
-                                        href="#"
+                                    <button
+                                        type="button"
                                         class="dropdown-item"
                                         on:click={() => {
                                             load_grammar(g.name);
                                         }}
                                     >
                                         {g.title}
-                                    </a>
+                                    </button>
                                 {/each}
                             </div>
                         </div>
@@ -284,5 +284,10 @@
 
     #above_grammar {
         display: flex;
+    }
+
+    #dropdown-menu3 .dropdown-item {
+        cursor: pointer;
+        border: 0 none;
     }
 </style>
