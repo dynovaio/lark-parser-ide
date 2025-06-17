@@ -46,9 +46,9 @@
                 { include: '@numbers' },
                 { include: '@strings' },
                 [/%(import|ignore|declare|override|extend)/, 'keyword'],
-                [/[\|]/, 'delimiter'],
-                [/[{}\[\]()]/, '@brackets'],
-                [/([a-zA-Z_]*)\s*\:/, 'variable.name'],
+                [/[|]/, 'delimiter'],
+                [/[{}[\]()]/, '@brackets'],
+                [/([a-zA-Z_]*)\s*:/, 'variable.name'],
                 [/\s*->\s*([a-zA-Z_]*)/, 'variable.name'],
                 [
                     /[a-zA-Z_]\w*/,
@@ -68,7 +68,7 @@
             // Recognize hex, negatives, decimals, imaginaries, longs, and scientific notation
             numbers: [
                 [/-?0x([abcdef]|[ABCDEF]|\d)+[lL]?/, 'number.hex'],
-                [/-?(\d*\.)?\d+([eE][+\-]?\d+)?[jJ]?[lL]?/, 'number']
+                [/-?(\d*\.)?\d+([eE][+-]?\d+)?[jJ]?[lL]?/, 'number']
             ],
             // Recognize strings, including those broken across lines with \ (but not without)
             strings: [
