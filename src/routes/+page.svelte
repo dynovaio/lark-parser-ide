@@ -3,14 +3,13 @@
     import Editor from '$lib/Editor.svelte';
     import EditInput from '$lib/EditInput.svelte';
     import Options from '$lib/Options.svelte';
-    import { EARLEY_PARSER, LALR1_PARSER } from '$lib/Parsers';
-    import type { ParserOptions } from '$lib/Parsers';
+    import {
+        LALR1_PARSER,
+        DEFAULT_PARSER_OPTIONS,
+        toPythonCompatibleParserOptions
+    } from '$lib/Parsers';
     import { setupPyodide } from '../python';
 
-    const DEFAULT_OPTIONS: ParserOptions = {
-        parser: EARLEY_PARSER,
-        keepAllTokens: false
-    };
     const PARSER_REFRESH_DELAY = 500;
 
     const grammars = [
@@ -18,13 +17,13 @@
             title: 'Blank',
             name: 'blank',
             text: '',
-            options: { ...DEFAULT_OPTIONS }
+            options: { ...DEFAULT_PARSER_OPTIONS }
         },
         {
             title: '(easy) Hello World',
             name: 'hello',
             text: 'Hello, World!',
-            options: { ...DEFAULT_OPTIONS }
+            options: { ...DEFAULT_PARSER_OPTIONS }
         },
         {
             title: '(easy) JSON parser',
@@ -42,7 +41,7 @@
             title: '(easy) Fruit flies like bananas',
             name: 'fruitflies',
             text: 'fruit flies like bananas',
-            options: { ...DEFAULT_OPTIONS, ambiguity: 'explicit' }
+            options: { ...DEFAULT_PARSER_OPTIONS, ambiguity: 'explicit' }
         },
         {
             title: '(avg) Configuration grammar',
@@ -54,13 +53,13 @@
             title: '(avg) Lark grammar',
             name: 'lark',
             text: 'start: "Hello" "World"',
-            options: { parser: LALR1_PARSER, keepAllTokens: false, maybe_placeholders: false }
+            options: { parser: LALR1_PARSER, keepAllTokens: false, maybePlaceholders: false }
         }
     ];
 
     let grammar = '';
     let text = '';
-    let options = DEFAULT_OPTIONS;
+    let parserOptions = DEFAULT_PARSER_OPTIONS;
 
     let parser_promise;
     let result_promise;
@@ -90,17 +89,7 @@
 
     function update_lark_parser() {
         pyodide.globals.set('grammar', grammar);
-
-        let parserOptions = {
-            ...options,
-            parser: options.parser.id,
-            keep_all_tokens: options.keepAllTokens
-        };
-
-        Object.prototype.hasOwnProperty.call(parserOptions, 'keepAllTokens') &&
-            delete parserOptions.keepAllTokens;
-
-        pyodide.globals.set('options', parserOptions);
+        pyodide.globals.set('options', toPythonCompatibleParserOptions(parserOptions));
         parser_promise = pyodide.runPythonAsync(create_parser);
     }
 
@@ -117,7 +106,7 @@
         return pyodide.runPythonAsync('parser.parse(text)');
     }
 
-    $: pyodide && options && grammar && update_lark_parser();
+    $: pyodide && parserOptions && grammar && update_lark_parser();
 
     $: pyodide && editor_text && update_grammar_from_editor();
 
@@ -129,7 +118,7 @@
             grammar = 'start:';
             editor.set_text('');
             edit_input.set_text('');
-            options = DEFAULT_OPTIONS;
+            parserOptions = DEFAULT_PARSER_OPTIONS;
             return;
         }
 
@@ -140,7 +129,7 @@
             for (let g of grammars)
                 if (g.name === grammar_to_load) {
                     edit_input.set_text(g.text);
-                    options = { ...DEFAULT_OPTIONS, ...g.options };
+                    parserOptions = { ...DEFAULT_PARSER_OPTIONS, ...g.options };
                     break;
                 }
         }
@@ -182,7 +171,7 @@
                     </div>
                 </div>
             </div>
-            <Options bind:options />
+            <Options bind:options={parserOptions} />
         </div>
     </div>
 
