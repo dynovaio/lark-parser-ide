@@ -1,6 +1,6 @@
 <script lang="ts">
     import Tree from '$lib/Tree.svelte';
-    import Editor from '$lib/Editor.svelte';
+    import GrammarEditor from '$lib/GrammarEditor.svelte';
     import GrammarTestEditor from '$lib/GrammarTestEditor.svelte';
     import Options from '$lib/Options.svelte';
     import { toPythonCompatibleParserOptions } from '$lib/Parsers';
@@ -12,7 +12,7 @@
 
     let parserRefreshTimeout: NodeJS.Timeout;
 
-    let grammarEditor: Editor;
+    let grammarEditor: GrammarEditor;
     let testEditor: GrammarTestEditor;
 
     let grammarName = HELLO_WORLD_GRAMMAR.label;
@@ -131,7 +131,7 @@
     </div>
 
     <div class="lark-ide-editor">
-        <Editor bind:this={grammarEditor} bind:text={editorText} on:ready={editorReady} />
+        <GrammarEditor bind:this={grammarEditor} bind:text={editorText} on:ready={editorReady} />
     </div>
 
     <div id="text" class="lark-ide-tests-input">
