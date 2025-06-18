@@ -3,11 +3,13 @@
     import Editor from '$lib/Editor.svelte';
     import EditInput from '$lib/EditInput.svelte';
     import Options from '$lib/Options.svelte';
+    import { EARLEY_PARSER, LALR1_PARSER } from '$lib/Parsers';
+    import type { ParserOptions } from '$lib/Parsers';
     import { setupPyodide } from '../python';
 
-    const DEFAULT_OPTIONS = {
-        parser: 'earley',
-        keep_all_tokens: false
+    const DEFAULT_OPTIONS: ParserOptions = {
+        parser: EARLEY_PARSER,
+        keepAllTokens: false
     };
     const PARSER_REFRESH_DELAY = 500;
 
@@ -15,42 +17,44 @@
         {
             title: 'Blank',
             name: 'blank',
-            text: ''
+            text: '',
+            options: { ...DEFAULT_OPTIONS }
         },
         {
             title: '(easy) Hello World',
             name: 'hello',
-            text: 'Hello, World!'
+            text: 'Hello, World!',
+            options: { ...DEFAULT_OPTIONS }
         },
         {
             title: '(easy) JSON parser',
             name: 'json',
             text: '{"this": ["is", "JSON"]}',
-            options: { parser: 'lalr' }
+            options: { parser: LALR1_PARSER, keepAllTokens: false }
         },
         {
             title: '(easy) Calculator',
             name: 'calc',
             text: '2 + 20 / (13 - 6) + 1.5',
-            options: { parser: 'lalr' }
+            options: { parser: LALR1_PARSER, keepAllTokens: false }
         },
         {
             title: '(easy) Fruit flies like bananas',
             name: 'fruitflies',
             text: 'fruit flies like bananas',
-            options: { ambiguity: 'explicit' }
+            options: { ...DEFAULT_OPTIONS, ambiguity: 'explicit' }
         },
         {
             title: '(avg) Configuration grammar',
             name: 'conf',
             text: '[main]\nhello=world\n',
-            options: { parser: 'lalr' }
+            options: { parser: LALR1_PARSER, keepAllTokens: false }
         },
         {
             title: '(avg) Lark grammar',
             name: 'lark',
             text: 'start: "Hello" "World"',
-            options: { parser: 'lalr', maybe_placeholders: false }
+            options: { parser: LALR1_PARSER, keepAllTokens: false, maybe_placeholders: false }
         }
     ];
 
@@ -86,7 +90,17 @@
 
     function update_lark_parser() {
         pyodide.globals.set('grammar', grammar);
-        pyodide.globals.set('options', options);
+
+        let parserOptions = {
+            ...options,
+            parser: options.parser.id,
+            keep_all_tokens: options.keepAllTokens
+        };
+
+        Object.prototype.hasOwnProperty.call(parserOptions, 'keepAllTokens') &&
+            delete parserOptions.keepAllTokens;
+
+        pyodide.globals.set('options', parserOptions);
         parser_promise = pyodide.runPythonAsync(create_parser);
     }
 

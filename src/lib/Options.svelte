@@ -1,64 +1,71 @@
-<script>
-    export let options;
+<script lang="ts">
+    import { AVAILABLE_PARSERS } from '$lib/Parsers';
+    import type { Parser, ParserOptions } from '$lib/Parsers';
 
-    let parser;
-    let keep_all_tokens;
+    export let options: ParserOptions = {
+        parser: { id: 'earley', label: 'Earley' },
+        keepAllTokens: false
+    };
 
-    $: options && optionsChanged();
+    export const parsers = AVAILABLE_PARSERS;
 
-    function optionsChanged() {
+    let parser: Parser;
+    let keepAllTokens: boolean | undefined = false;
+
+    function updateOptions() {
         parser = options.parser;
-        keep_all_tokens = options.keep_all_tokens;
+        keepAllTokens = options.keepAllTokens;
     }
 
-    function parserChanged(event) {
+    function setParser(parser: Parser) {
         setTimeout(() => {
             options = { ...options, parser };
         });
     }
-    function keepChanged(event) {
+
+    function setKeepAllTokens(event?: Event) {
         setTimeout(() => {
-            options = { ...options, keep_all_tokens };
+            options = { ...options, keepAllTokens };
         });
     }
+
+    $: options && updateOptions();
 </script>
 
-<div class="list">
-    <div class="option">
-        <div class="select">
-            <select bind:value={parser} on:input={parserChanged}>
-                <option value="earley">Parser: Earley</option>
-                <option value="lalr">Parser: LALR(1)</option>
-            </select>
-        </div>
+<div class="dropdown is-hoverable">
+    <div class="dropdown-trigger">
+        <button class="button" aria-haspopup="true" aria-controls="ide-menu">
+            <span>Parser: {parser.label}</span>
+            <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true" />
+            </span>
+        </button>
     </div>
 
-    <div class="option">
-        <label class="checkbox" for="keep_all_tokens">
-            <input
-                class="checkbox"
-                type="checkbox"
-                bind:checked={keep_all_tokens}
-                on:input={keepChanged}
-                id="keep_all_tokens"
-            />
-            Keep all tokens
-        </label>
+    <div class="dropdown-menu" id="ide-menu" role="menu">
+        <div class="dropdown-content">
+            {#each parsers as parser}
+                <button
+                    type="button"
+                    class="dropdown-item"
+                    on:click={() => {
+                        setParser(parser);
+                    }}
+                >
+                    {parser.label}
+                </button>
+            {/each}
+        </div>
     </div>
 </div>
 
-<style>
-    .option {
-        display: flex;
-        align-items: flex-start;
-        margin-left: 20px;
-        user-select: none;
-    }
-
-    .list {
-        display: flex;
-        flex-flow: wrap;
-        justify-content: space-between;
-        align-items: center;
-    }
-</style>
+<label class="checkbox" for="keep-all-tokens">
+    <input
+        class="checkbox"
+        type="checkbox"
+        bind:checked={keepAllTokens}
+        on:input={setKeepAllTokens}
+        id="keep-all-tokens"
+    />
+    Keep all tokens
+</label>
