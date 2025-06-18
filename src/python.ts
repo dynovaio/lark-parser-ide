@@ -1,6 +1,5 @@
 import { loadPyodide, version as pyodideVersion } from 'pyodide';
 
-
 export const setupPyodide = async (callback: Function, log: Function) => {
     log('Loading Pyodide');
 
@@ -16,4 +15,4 @@ export const setupPyodide = async (callback: Function, log: Function) => {
     await pyodide.runPythonAsync('import lark');
 
     callback(pyodide);
-}
+};
