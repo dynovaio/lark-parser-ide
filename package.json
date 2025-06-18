@@ -36,6 +36,7 @@
   "type": "module",
   "dependencies": {
     "@fontsource/fira-mono": "^5.2.6",
-    "bulma": "^1.0.4"
+    "bulma": "^1.0.4",
+    "pyodide": "^0.27.7"
   }
 }
