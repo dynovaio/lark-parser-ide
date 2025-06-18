@@ -41,7 +41,5 @@ export const toPythonCompatibleParserOptions = (
     Object.prototype.hasOwnProperty.call(options, 'maybePlaceholders') &&
         (pythonComatibleOptions.maybe_placeholders = options.maybePlaceholders);
 
-    console.log(options, pythonComatibleOptions);
-
     return pythonComatibleOptions;
 };

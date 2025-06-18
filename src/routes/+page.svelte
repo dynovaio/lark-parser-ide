@@ -92,7 +92,7 @@
 
     $: pyodide && editorText && updateGrammarFromEditor();
 
-    $: resultPromise = pyodide && updateLarkResult(grammarTest);
+    $: resultPromise = pyodide && parserPromise && updateLarkResult(grammarTest);
 </script>
 
 <svelte:head>
