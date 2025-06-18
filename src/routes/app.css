@@ -40,11 +40,11 @@ body.page-wrapper {
     border-bottom: 1px solid var(--bulma-hr-background-color);
 }
 
-.page-header>.navbar {
+.page-header > .navbar {
     --bulma-navbar-item-img-max-height: 4rem;
 }
 
-.page-header>.navbar>.navbar-brand>.navbar-item {
+.page-header > .navbar > .navbar-brand > .navbar-item {
     --bulma-navbar-item-background-a: 0;
 }
 
