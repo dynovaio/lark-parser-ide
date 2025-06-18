@@ -2,8 +2,8 @@
     import 'bulma/css/bulma.css';
     import './app.css';
 
-    import fullScreenIcon from '$lib/assets/full-screen.svg?raw';
-    import exitFullScreenIcon from '$lib/assets/exit-full-screen.svg?raw';
+    import FullScreenIcon from '$lib/assets/full-screen.svelte';
+    import ExitFullScreenIcon from '$lib/assets/exit-full-screen.svelte';
 
     let fullscreen = false;
 
@@ -72,11 +72,11 @@
                         </a>
                         {#if fullscreen}
                             <button class="button is-normal is-light" on:click={closeFullscreen}>
-                                {@html exitFullScreenIcon}
+                                <ExitFullScreenIcon />
                             </button>
                         {:else}
                             <button class="button is-normal is-light" on:click={openFullscreen}>
-                                {@html fullScreenIcon}
+                                <FullScreenIcon />
                             </button>
                         {/if}
                     </div>
