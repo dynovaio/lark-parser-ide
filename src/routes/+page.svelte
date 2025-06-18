@@ -3,7 +3,7 @@
     import Editor from '$lib/Editor.svelte';
     import EditInput from '$lib/EditInput.svelte';
     import Options from '$lib/Options.svelte';
-    import init_python from '../python.js';
+    import { setupPyodide } from '../python';
 
     const DEFAULT_OPTIONS = {
         parser: 'earley',
@@ -73,7 +73,7 @@
         // If loaded before, they might interfere with each other
         // Probably due to a require() collision
         if (!pyodide) {
-            init_python(
+            await setupPyodide(
                 (p) => {
                     pyodide = p;
                 },
@@ -199,7 +199,7 @@
                     Parsing...
                 {:then result}
                     {#if result}
-                        <Tree tree={result} />
+                        <Tree tree={result.toJs({ depth: Infinity })} />
                     {:else}
                         No result
                     {/if}
