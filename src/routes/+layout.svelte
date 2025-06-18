@@ -1,6 +1,9 @@
 <script lang="ts">
-    import './app.css';
     import 'bulma/css/bulma.css';
+    import './app.css';
+
+    import fullScreenIcon from '$lib/assets/full-screen.svg?raw';
+    import exitFullScreenIcon from '$lib/assets/exit-full-screen.svg?raw';
 
     let fullscreen = false;
 
@@ -34,23 +37,52 @@
     }
 </script>
 
-<header>
-    <nav>
-        <div id="home">
-            <a href="/" title="Home">
+<header class="page-header">
+    <nav class="navbar has-background-white" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/" title="Home">
                 <img src="lark-logo.png" alt="lark logo" />
             </a>
-            <a href="https://lark-parser.readthedocs.io/en/latest/" target="_blank">docs</a>
-            <a href="https://github.com/lark-parser/ide" target="_blank">source</a>
-            <a href="https://github.com/lark-parser/lark" target="_blank">parser</a>
         </div>
-        <div id="title">Parser IDE</div>
-        <div id="right-panel">
-            {#if fullscreen}
-                <button class="button is-text" on:click={closeFullscreen}>exit full screen</button>
-            {:else}
-                <button class="button is-text" on:click={openFullscreen}>full screen</button>
-            {/if}
+
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a
+                            class="button is-link"
+                            href="https://lark-parser.readthedocs.io/en/latest/"
+                            target="_blank"
+                        >
+                            Parser Docs
+                        </a>
+                        <a
+                            class="button is-link"
+                            href="https://github.com/lark-parser/lark"
+                            target="_blank"
+                        >
+                            Parser Source
+                        </a>
+                        <a
+                            class="button is-link"
+                            href="https://github.com/lark-parser/ide"
+                            target="_blank"
+                        >
+                            IDE Source
+                        </a>
+                        {#if fullscreen}
+                            <button class="button is-normal is-light" on:click={closeFullscreen}>
+                                {@html exitFullScreenIcon}
+                            </button>
+                        {:else}
+                            <button class="button is-normal is-light" on:click={openFullscreen}>
+                                {@html fullScreenIcon}
+                            </button>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div />
         </div>
     </nav>
 </header>
