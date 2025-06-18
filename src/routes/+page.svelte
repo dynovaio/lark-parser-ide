@@ -10,7 +10,7 @@
 
     const PARSER_REFRESH_DELAY = 500;
 
-    let parserRefreshTimeout: NodeJS.Timeout;
+    let parserRefreshTimeout: ReturnType<typeof setTimeout>;
 
     let grammarEditor: GrammarEditor;
     let testEditor: GrammarTestEditor;

@@ -87,10 +87,17 @@ body.page-wrapper {
     height: 100px;
     width: 50vw;
     display: flex;
+    border-bottom: 1px solid var(--bulma-hr-background-color);
 }
 
 .lark-ide-tests-output {
+    padding: 1rem;
     width: 50vw;
     grid-area: output;
     overflow-x: scroll;
+}
+
+.lark-editor-wrapper {
+    flex-grow: 1;
+    overflow: hidden;
 }

@@ -49,4 +49,4 @@
     }
 </script>
 
-<div bind:this={container} style="flex-grow: 1; overflow: hidden;" />
+<div bind:this={container} class="lark-editor-wrapper" />

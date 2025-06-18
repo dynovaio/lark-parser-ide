@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
-    import type { Window, MonacoEditor } from 'monaco-types';
+    import type { Window, IStandaloneCodeEditor } from 'monaco-types';
     const dispatch = createEventDispatcher();
 
-    let editor: MonacoEditor;
+    let editor: IStandaloneCodeEditor;
     export let text = '';
 
     let container: HTMLElement;
@@ -18,7 +18,7 @@
         editor = monaco.editor.create(container, monacoOptions);
         text = editor.getModel().getValue();
 
-        editor.getModel().onDidChangeContent((event) => {
+        editor.getModel().onDidChangeContent((event?: Event) => {
             text = editor.getModel().getValue();
         });
 
@@ -37,4 +37,4 @@
     }
 </script>
 
-<div bind:this={container} style="flex-grow: 1; overflow: hidden; border: 1px solid grey" />
+<div bind:this={container} class="lark-editor-wrapper" />
