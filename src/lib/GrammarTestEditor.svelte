@@ -1,21 +1,21 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
-    import type { Window } from 'monaco-types';
+    import type { Window, MonacoEditor } from 'monaco-types';
     const dispatch = createEventDispatcher();
 
-    let editor;
+    let editor: MonacoEditor;
     export let text = '';
 
     let container: HTMLElement;
-    const monaco_options = {
+    const monacoOptions = {
         value: text,
         language: '',
         automaticLayout: true
     };
 
     const initEditor = (monaco: Window) => {
-        editor = monaco.editor.create(container, monaco_options);
+        editor = monaco.editor.create(container, monacoOptions);
         text = editor.getModel().getValue();
 
         editor.getModel().onDidChangeContent((event) => {
@@ -32,7 +32,7 @@
         require(['vs/editor/editor.main'], initEditor);
     });
 
-    export function set_text(text: string) {
+    export function setText(text: string) {
         if (editor) return editor.getModel().setValue(text);
     }
 </script>
