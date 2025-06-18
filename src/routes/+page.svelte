@@ -47,8 +47,8 @@
 
         if (grammar.id === BLANK_GRAMMAR.id) {
             grammarText = 'start:';
-            grammarEditor.set_text('');
-            testEditor.set_text('');
+            grammarEditor.setText('');
+            testEditor.setText('');
             parserOptions = BLANK_GRAMMAR.parserOptions;
             return;
         }
@@ -57,11 +57,11 @@
 
         if (r.ok) {
             grammarText = await r.text();
-            grammarEditor.set_text(grammarText);
-            for (let g of AVAILABLE_GRAMMARS)
-                if (g.id === grammar.id) {
-                    testEditor.set_text(g.test);
-                    parserOptions = g.parserOptions;
+            grammarEditor.setText(grammarText);
+            for (let availableGrammar of AVAILABLE_GRAMMARS)
+                if (availableGrammar.id === grammar.id) {
+                    testEditor.setText(availableGrammar.test);
+                    parserOptions = availableGrammar.parserOptions;
                     break;
                 }
         }

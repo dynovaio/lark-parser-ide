@@ -44,7 +44,7 @@
         require(['vs/editor/editor.main'], initEditor);
     });
 
-    export function set_text(text: string) {
+    export function setText(text: string) {
         if (editor) return editor.getModel().setValue(text);
     }
 </script>
