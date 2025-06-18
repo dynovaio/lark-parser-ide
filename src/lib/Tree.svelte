@@ -7,6 +7,7 @@
     const toggleExpansion = () => {
         expanded = !expanded;
     };
+
     $: arrowDown = expanded;
 </script>
 
@@ -23,7 +24,7 @@
                 </button>
                 {#if expanded}
                     <div class="children">
-                        {#each [...tree.children] as child}
+                        {#each tree.children as child}
                             {#if child}
                                 <svelte:self tree={child} />
                             {:else}
