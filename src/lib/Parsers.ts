@@ -30,7 +30,7 @@ export interface PythonCompatibleParserOptions {
 export const toPythonCompatibleParserOptions = (
     options: ParserOptions
 ): PythonCompatibleParserOptions => {
-    let pythonComatibleOptions: PythonCompatibleParserOptions = {
+    const pythonComatibleOptions: PythonCompatibleParserOptions = {
         parser: options.parser.id
     };
 

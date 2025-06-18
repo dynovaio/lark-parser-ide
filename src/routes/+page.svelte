@@ -6,7 +6,8 @@
     import { toPythonCompatibleParserOptions } from '$lib/Parsers';
     import { AVAILABLE_GRAMMARS, BLANK_GRAMMAR, HELLO_WORLD_GRAMMAR } from '$lib/Grammars';
     import type { Grammar } from '$lib/Grammars';
-    import { setupPyodide } from '../python';
+    import { setupPyodide } from '$lib/Python';
+    import type { PyodideModule, CodeExecutionPromise } from '$lib/Python';
 
     const PARSER_REFRESH_DELAY = 500;
 
@@ -20,25 +21,25 @@
     let grammarTest = HELLO_WORLD_GRAMMAR.test;
     let parserOptions = HELLO_WORLD_GRAMMAR.parserOptions;
 
-    let parserPromise: Promise<any>;
-    let resultPromise: Promise<any>;
+    let parserPromise: CodeExecutionPromise;
+    let resultPromise: CodeExecutionPromise;
     let editorText: string;
 
-    let pyodide: { globals: any; runPythonAsync: (s: string) => any };
+    let pyodide: PyodideModule;
     let pyodideLog: string[] = [];
 
     async function editorReady() {
         loadGrammar(HELLO_WORLD_GRAMMAR);
 
         if (!pyodide) {
-            await setupPyodide(
-                (p) => {
+            await setupPyodide({
+                onReady: (p: PyodideModule) => {
                     pyodide = p;
                 },
-                (e: string) => {
+                log: (e: string) => {
                     pyodideLog = [...pyodideLog, e];
                 }
-            );
+            });
         }
     }
 
