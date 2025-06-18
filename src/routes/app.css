@@ -53,3 +53,44 @@ body.page-wrapper {
     flex: 1 1 auto;
     display: flex;
 }
+
+.lark-ide {
+    display: grid;
+    grid-template:
+        'options options' min-content
+        'grammar text' min-content
+        'grammar output' 1fr / min-content 1fr;
+
+    flex: 1 1 auto;
+}
+
+.lark-ide-options {
+    grid-area: options;
+    padding: 1rem;
+    border-bottom: 1px solid var(--bulma-hr-background-color);
+}
+
+.lark-ide-editor {
+    grid-area: grammar;
+
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+
+    overflow: auto;
+    width: 50vw;
+    border-right: 1px solid var(--bulma-hr-background-color);
+}
+
+.lark-ide-tests-input {
+    grid-area: text;
+    height: 100px;
+    width: 50vw;
+    display: flex;
+}
+
+.lark-ide-tests-output {
+    width: 50vw;
+    grid-area: output;
+    overflow-x: scroll;
+}

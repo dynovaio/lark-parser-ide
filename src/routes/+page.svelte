@@ -140,57 +140,47 @@
     <title>Lark IDE</title>
 </svelte:head>
 
-<section id="ide">
-    <div id="grammar_pane">
-        <div id="above_grammar">
-            <div id="load-grammar">
-                <div class="option">
-                    <div class="dropdown is-hoverable">
-                        <div class="dropdown-trigger">
+<section class="lark-ide" id="ide">
+    <div class="lark-ide-options">
+        <div id="above_grammar" class="buttons">
+            <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="ide-menu">
+                        <span>Load Grammar</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true" />
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="ide-menu" role="menu">
+                    <div class="dropdown-content">
+                        {#each grammars as g}
                             <button
-                                class="button"
-                                aria-haspopup="true"
-                                aria-controls="dropdown-menu3"
+                                type="button"
+                                class="dropdown-item"
+                                on:click={() => {
+                                    load_grammar(g.name);
+                                }}
                             >
-                                <span>Load Grammar</span>
-                                <span class="icon is-small">
-                                    <i class="fas fa-angle-down" aria-hidden="true" />
-                                </span>
+                                {g.title}
                             </button>
-                        </div>
-                        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                            <div class="dropdown-content">
-                                {#each grammars as g}
-                                    <button
-                                        type="button"
-                                        class="dropdown-item"
-                                        on:click={() => {
-                                            load_grammar(g.name);
-                                        }}
-                                    >
-                                        {g.title}
-                                    </button>
-                                {/each}
-                            </div>
-                        </div>
+                        {/each}
                     </div>
                 </div>
             </div>
-            <div id="options">
-                <Options bind:options />
-            </div>
-        </div>
-
-        <div id="grammar">
-            <Editor bind:this={editor} bind:text={editor_text} on:ready={editor_ready} />
+            <Options bind:options />
         </div>
     </div>
-    <!-- <textarea id="text" bind:value={text}></textarea> -->
-    <div id="text">
+
+    <div class="lark-ide-editor">
+        <Editor bind:this={editor} bind:text={editor_text} on:ready={editor_ready} />
+    </div>
+
+    <div id="text" class="lark-ide-tests-input">
         <EditInput bind:this={edit_input} bind:text />
     </div>
 
-    <div id="output">
+    <div id="output" class="lark-ide-tests-output">
         {#if pyodide}
             {#await parser_promise}
                 Building Parser...
@@ -205,13 +195,13 @@
                     {/if}
                 {:catch e}
                     <pre>
-					{e}
-				</pre>
+					    {e}
+				    </pre>
                 {/await}
             {:catch e}
                 <pre>
-				{e}
-			</pre>
+				    {e}
+			    </pre>
             {/await}
         {:else}
             Please wait, loading...
@@ -225,69 +215,3 @@
         {/if}
     </div>
 </section>
-
-<style>
-    #ide {
-        display: grid;
-        grid-template:
-            'grammar text' min-content
-            'grammar output' 1fr
-            / min-content 1fr;
-
-        flex: 1 1 auto;
-    }
-
-    #grammar_pane {
-        grid-area: grammar;
-        display: flex;
-        flex-direction: column;
-
-        resize: horizontal;
-        overflow: auto;
-        width: 50vw;
-    }
-    #grammar {
-        display: flex;
-        flex: 1 1 auto;
-    }
-
-    #text {
-        grid-area: text;
-        height: 100px;
-        /* resize:  vertical; */
-        display: flex;
-    }
-    #output {
-        grid-area: output;
-        overflow-x: scroll;
-    }
-
-    #output,
-    #grammar_pane {
-        margin: 20px;
-    }
-
-    #options {
-        margin-bottom: 10px;
-        padding: 5px;
-        margin-left: 20px;
-    }
-
-    #load-grammar {
-        margin-bottom: 10px;
-        padding: 5px;
-    }
-    .option {
-        display: flex;
-        align-items: flex-start;
-    }
-
-    #above_grammar {
-        display: flex;
-    }
-
-    #dropdown-menu3 .dropdown-item {
-        cursor: pointer;
-        border: 0 none;
-    }
-</style>
