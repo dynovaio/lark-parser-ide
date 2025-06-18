@@ -37,9 +37,15 @@ body.page-wrapper {
 }
 
 .page-header {
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: auto;
+    border-bottom: 1px solid var(--bulma-hr-background-color);
+}
+
+.page-header>.navbar {
+    --bulma-navbar-item-img-max-height: 4rem;
+}
+
+.page-header>.navbar>.navbar-brand>.navbar-item {
+    --bulma-navbar-item-background-a: 0;
 }
 
 .page-main {
