@@ -2,8 +2,8 @@
 
 start: sentence
 
-sentence: noun verb noun        -> simple
-        | noun verb "like" noun -> comparative
+sentence: noun verb noun -> simple
+    | noun verb "like" noun -> comparative
 
 noun: adj? NOUN
 verb: VERB

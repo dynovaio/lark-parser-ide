@@ -3,12 +3,12 @@
 ?start: value
 
 ?value: object
-      | array
-      | string
-      | SIGNED_NUMBER      -> number
-      | "true"             -> true
-      | "false"            -> false
-      | "null"             -> null
+    | array
+    | string
+    | SIGNED_NUMBER -> number
+    | "true" -> true
+    | "false" -> false
+    | "null" -> null
 
 array  : "[" [value ("," value)*] "]"
 object : "{" [pair ("," pair)*] "}"
