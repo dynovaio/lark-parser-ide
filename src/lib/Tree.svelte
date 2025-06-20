@@ -26,16 +26,16 @@
           <div class="children">
             {#each tree.children as child}
               {#if child}
-                <svelte:self tree={child} />
+                <svelte:self tree={child}></svelte:self>
               {:else}
-                <span class="empty" />
+                <span class="empty"></span>
               {/if}
             {/each}
           </div>
         {/if}
       {:else}
         <span>
-          <span class="no-arrow" />
+          <span class="no-arrow"></span>
           <span class="label empty">
             {tree.data}
           </span>

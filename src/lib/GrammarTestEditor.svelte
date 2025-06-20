@@ -37,4 +37,4 @@
   }
 </script>
 
-<div bind:this={container} class="lark-editor-wrapper" />
+<div bind:this={container} class="lark-editor-wrapper"></div>

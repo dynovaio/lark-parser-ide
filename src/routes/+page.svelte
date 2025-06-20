@@ -107,7 +107,7 @@
           <button class="button" aria-haspopup="true" aria-controls="ide-menu">
             <span>Grammar: {grammarName}</span>
             <span class="icon is-small">
-              <i class="fas fa-angle-down" aria-hidden="true" />
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
             </span>
           </button>
         </div>
