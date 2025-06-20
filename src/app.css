@@ -1,0 +1,103 @@
+@import '@fontsource/fira-mono';
+
+:root {
+  --bulma-family-primary: 'Quicksand', Arial, sans-serif;
+  --bulma-family-secondary: 'Quicksand', Arial, sans-serif;
+  --bulma-family-code: 'Fira Mono', monospace;
+
+  --bulma-navbar-height: 5rem;
+
+  --color-white: #ffffff;
+  --primary-color: #b9c6d2;
+  --secondary-color: #d0dde9;
+  --tertiary-color: #edf0f8;
+  --accent-color: #ff3e00;
+  --heading-color: rgba(0, 0, 0, 0.7);
+  --text-color: #444444;
+  --background-without-opacity: rgba(255, 255, 255, 0.7);
+  --column-width: 42rem;
+  --column-margin-top: 4rem;
+
+  --base-margin: 20px;
+}
+
+html {
+  background: var(--color-white);
+}
+
+body.page-wrapper {
+  min-height: 100vh;
+  background: var(--color-white);
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
+.page-header {
+  border-bottom: 1px solid var(--bulma-hr-background-color);
+}
+
+.page-header > .navbar {
+  --bulma-navbar-item-img-max-height: 4rem;
+}
+
+.page-header > .navbar > .navbar-brand > .navbar-item {
+  --bulma-navbar-item-background-a: 0;
+}
+
+.page-main {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.lark-ide {
+  display: grid;
+  grid-template:
+    'options options' min-content
+    'grammar text' min-content
+    'grammar output' 1fr / min-content 1fr;
+
+  flex: 1 1 auto;
+}
+
+.lark-ide-options {
+  grid-area: options;
+  padding: 1rem;
+  border-bottom: 1px solid var(--bulma-hr-background-color);
+}
+
+.lark-ide-editor {
+  grid-area: grammar;
+
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  overflow: auto;
+  width: 50vw;
+  border-right: 1px solid var(--bulma-hr-background-color);
+}
+
+.lark-ide-tests-input {
+  grid-area: text;
+  height: 100px;
+  width: 50vw;
+  display: flex;
+  border-bottom: 1px solid var(--bulma-hr-background-color);
+}
+
+.lark-ide-tests-output {
+  padding: 1rem;
+  width: 50vw;
+  grid-area: output;
+  overflow-x: scroll;
+}
+
+.lark-editor-wrapper {
+  flex-grow: 1;
+  overflow: hidden;
+}
