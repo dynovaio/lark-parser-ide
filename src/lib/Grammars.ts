@@ -49,6 +49,14 @@ export const FRUIT_FLIES_GRAMMAR: Grammar = {
     difficulty: 'easy'
 };
 
+export const SEMVER_GRAMMAR: Grammar = {
+    label: 'SemVer',
+    id: 'semver',
+    test: '1.0.0-rc1+build.0001',
+    parserOptions: { parser: LALR1_PARSER, keepAllTokens: false },
+    difficulty: 'easy'
+};
+
 export const CONFIGURATION_GRAMMAR: Grammar = {
     label: 'Configuration',
     id: 'conf',
@@ -71,6 +79,7 @@ export const AVAILABLE_GRAMMARS: Grammar[] = [
     JSON_GRAMMAR,
     CALCULATOR_GRAMMAR,
     FRUIT_FLIES_GRAMMAR,
+    SEMVER_GRAMMAR,
     CONFIGURATION_GRAMMAR,
     LARK_GRAMMAR
 ];
