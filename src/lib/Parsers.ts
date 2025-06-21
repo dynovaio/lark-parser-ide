@@ -34,12 +34,17 @@ export const toPythonCompatibleParserOptions = (
     parser: options.parser.id
   };
 
-  Object.prototype.hasOwnProperty.call(options, 'keepAllTokens') &&
-    (pythonComatibleOptions.keep_all_tokens = options.keepAllTokens);
-  Object.prototype.hasOwnProperty.call(options, 'ambiguity') &&
-    (pythonComatibleOptions.ambiguity = options.ambiguity);
-  Object.prototype.hasOwnProperty.call(options, 'maybePlaceholders') &&
-    (pythonComatibleOptions.maybe_placeholders = options.maybePlaceholders);
+  if (Object.prototype.hasOwnProperty.call(options, 'keepAllTokens')) {
+    pythonComatibleOptions.keep_all_tokens = options.keepAllTokens;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(options, 'ambiguity')) {
+    pythonComatibleOptions.ambiguity = options.ambiguity;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(options, 'maybePlaceholders')) {
+    pythonComatibleOptions.maybe_placeholders = options.maybePlaceholders;
+  }
 
   return pythonComatibleOptions;
 };
