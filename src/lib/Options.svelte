@@ -2,24 +2,30 @@
   import { AVAILABLE_PARSERS } from '$lib/Parsers';
   import type { Parser, ParserOptions } from '$lib/Parsers';
 
-  export let options: ParserOptions = {
-    parser: { id: 'earley', label: 'Earley' },
-    keepAllTokens: false
-  };
+  interface Props {
+    options: ParserOptions;
+  }
+
+  let {
+    options = $bindable({
+      parser: { id: 'earley', label: 'Earley' },
+      keepAllTokens: false
+    })
+  }: Props = $props();
 
   export const parsers = AVAILABLE_PARSERS;
 
-  let parser: Parser;
-  let keepAllTokens: boolean | undefined = false;
+  let parser = $state<Parser>();
+  let keepAllTokens = $state<boolean | undefined>(false);
 
   function updateOptions() {
     parser = options.parser;
     keepAllTokens = options.keepAllTokens;
   }
 
-  function setParser(parser: Parser) {
+  function setParser(newParser: Parser) {
     setTimeout(() => {
-      options = { ...options, parser };
+      options = { ...options, parser: newParser };
     });
   }
 
@@ -29,13 +35,17 @@
     });
   }
 
-  $: options && updateOptions();
+  $effect(() => {
+    if (options) {
+      updateOptions();
+    }
+  });
 </script>
 
 <div class="dropdown is-hoverable">
   <div class="dropdown-trigger">
     <button class="button" aria-haspopup="true" aria-controls="ide-menu">
-      <span>Parser: {parser.label}</span>
+      <span>Parser: {parser?.label}</span>
       <span class="icon is-small">
         <i class="fas fa-angle-down" aria-hidden="true"></i>
       </span>
@@ -48,7 +58,7 @@
         <button
           type="button"
           class="dropdown-item"
-          on:click={() => {
+          onclick={() => {
             setParser(parser);
           }}
         >
@@ -64,7 +74,7 @@
     class="checkbox"
     type="checkbox"
     bind:checked={keepAllTokens}
-    on:input={setKeepAllTokens}
+    oninput={setKeepAllTokens}
     id="keep-all-tokens"
   />
   Keep all tokens
