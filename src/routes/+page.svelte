@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import Tree from '$lib/Tree.svelte';
   import GrammarEditor from '$lib/GrammarEditor.svelte';
   import GrammarTestEditor from '$lib/GrammarTestEditor.svelte';
@@ -7,7 +8,7 @@
   import { AVAILABLE_GRAMMARS, BLANK_GRAMMAR, HELLO_WORLD_GRAMMAR } from '$lib/Grammars';
   import type { Grammar } from '$lib/Grammars';
   import { setupPyodide } from '$lib/Python';
-  import type { PyodideModule, CodeExecutionPromise } from '$lib/Python';
+  import type { PyodideModule } from '$lib/Python';
 
   const PARSER_REFRESH_DELAY = 500;
 
@@ -16,17 +17,36 @@
   let grammarEditor: GrammarEditor;
   let testEditor: GrammarTestEditor;
 
-  let grammarName = HELLO_WORLD_GRAMMAR.label;
-  let grammarText = '';
-  let grammarTest = HELLO_WORLD_GRAMMAR.test;
-  let parserOptions = HELLO_WORLD_GRAMMAR.parserOptions;
+  let grammarName = $state(HELLO_WORLD_GRAMMAR.label);
+  let grammarText = $state('');
+  let grammarTest = $state(HELLO_WORLD_GRAMMAR.test);
+  let parserOptions = $state(HELLO_WORLD_GRAMMAR.parserOptions);
 
-  let parserPromise: CodeExecutionPromise;
-  let resultPromise: CodeExecutionPromise;
-  let editorText: string;
+  let editorText = $state('');
 
-  let pyodide: PyodideModule;
-  let pyodideLog: string[] = [];
+  let pyodide = $state<PyodideModule>();
+  let pyodideLog = $state<string[]>([]);
+
+  // Derived reactive values
+  let parserPromise = $derived.by(() => {
+    if (pyodide && parserOptions && grammarText) {
+      return updateLarkParser();
+    }
+    return undefined;
+  });
+
+  let resultPromise = $derived.by(() => {
+    if (pyodide && parserPromise && grammarTest) {
+      return updateLarkResult(grammarTest);
+    }
+    return undefined;
+  });
+
+  $effect(() => {
+    if (pyodide && editorText) {
+      updateGrammarFromEditor();
+    }
+  });
 
   async function editorReady() {
     loadGrammar(HELLO_WORLD_GRAMMAR);
@@ -71,28 +91,32 @@
   function updateGrammarFromEditor() {
     clearTimeout(parserRefreshTimeout);
     parserRefreshTimeout = setTimeout(() => {
-      grammarText = editorText;
+      if (editorText) {
+        grammarText = editorText;
+      }
     }, PARSER_REFRESH_DELAY);
   }
 
   function updateLarkParser() {
+    if (!pyodide) return undefined;
     pyodide.globals.set('grammar', grammarText);
     pyodide.globals.set('options', toPythonCompatibleParserOptions(parserOptions));
-    parserPromise = pyodide.runPythonAsync(`
+    return pyodide.runPythonAsync(`
             parser = lark.Lark(grammar, **options.to_py())
         `);
   }
 
   function updateLarkResult(text: string) {
+    if (!pyodide) return undefined;
     pyodide.globals.set('text', text);
     return pyodide.runPythonAsync('parser.parse(text)');
   }
 
-  $: pyodide && parserOptions && grammarText && updateLarkParser();
-
-  $: pyodide && editorText && updateGrammarFromEditor();
-
-  $: resultPromise = pyodide && parserPromise && updateLarkResult(grammarTest);
+  onDestroy(() => {
+    if (parserRefreshTimeout) {
+      clearTimeout(parserRefreshTimeout);
+    }
+  });
 </script>
 
 <svelte:head>
@@ -117,7 +141,7 @@
               <button
                 type="button"
                 class="dropdown-item"
-                on:click={() => {
+                onclick={() => {
                   loadGrammar(g);
                 }}
               >
@@ -148,6 +172,7 @@
           Parsing...
         {:then result}
           {#if result}
+            <div>{result.toJs({ depth: Infinity })}</div>
             <Tree tree={result.toJs({ depth: Infinity })} />
           {:else}
             No result
