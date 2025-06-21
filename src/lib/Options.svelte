@@ -44,7 +44,7 @@
 
   <div class="dropdown-menu" id="ide-menu" role="menu">
     <div class="dropdown-content">
-      {#each parsers as parser}
+      {#each parsers as parser (parser.id)}
         <button
           type="button"
           class="dropdown-item"

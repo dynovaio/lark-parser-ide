@@ -113,7 +113,7 @@
         </div>
         <div class="dropdown-menu" id="ide-menu" role="menu">
           <div class="dropdown-content">
-            {#each AVAILABLE_GRAMMARS as g}
+            {#each AVAILABLE_GRAMMARS as g (g.id)}
               <button
                 type="button"
                 class="dropdown-item"
@@ -163,7 +163,7 @@
 
       <progress class="progress is-info" value={pyodideLog.length} max="4">XX</progress>
       <ul>
-        {#each pyodideLog as e}
+        {#each pyodideLog as e (e)}
           <li>{e}</li>
         {/each}
       </ul>

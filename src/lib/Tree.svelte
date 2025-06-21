@@ -14,7 +14,7 @@
 <ul>
   <!-- transition:slide -->
   <li>
-    {#if tree['type'] === 'Tree'}
+    {#if tree.type === 'Tree'}
       {#if tree.children.length > 0}
         <button type="button" class="tree-toggle" on:click={toggleExpansion}>
           <span class="arrow" class:arrowDown>&#x25b6</span>
@@ -24,7 +24,7 @@
         </button>
         {#if expanded}
           <div class="children">
-            {#each tree.children as child}
+            {#each tree.children as child (child.type)}
               {#if child}
                 <svelte:self tree={child}></svelte:self>
               {:else}
