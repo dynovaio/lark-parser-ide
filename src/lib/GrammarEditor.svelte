@@ -30,7 +30,7 @@
     editor = monaco.editor.create(container, monaco_options);
     text = editor.getModel().getValue();
 
-    editor.getModel().onDidChangeContent((event?: Event) => {
+    editor.getModel().onDidChangeContent(() => {
       text = editor.getModel().getValue();
     });
 

@@ -23,7 +23,7 @@
     });
   }
 
-  function setKeepAllTokens(event?: Event) {
+  function setKeepAllTokens() {
     setTimeout(() => {
       options = { ...options, keepAllTokens };
     });
