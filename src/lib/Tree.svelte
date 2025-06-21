@@ -1,10 +1,10 @@
 <script lang="ts">
   import Tree from './Tree.svelte';
 
-  type Tree = { type: string; data: string; children: Tree[] };
+  type Tree = { type: string; data: string; children: Array<Tree | string> };
 
   interface Props {
-    tree: Tree;
+    tree: Tree | string;
   }
 
   const { tree }: Props = $props();
@@ -18,9 +18,8 @@
 </script>
 
 <ul>
-  <!-- transition:slide -->
   <li>
-    {#if tree.type === 'Tree'}
+    {#if typeof tree === 'object' && tree.type === 'Tree'}
       {#if tree.children.length > 0}
         <button type="button" class="tree-toggle" onclick={toggleExpansion}>
           <span class="arrow" class:arrowDown>&#x25b6</span>
@@ -30,7 +29,7 @@
         </button>
         {#if expanded}
           <div class="children">
-            {#each tree.children as child (child.type)}
+            {#each tree.children as child, index (index)}
               {#if child}
                 <Tree tree={child} />
               {:else}

@@ -27,7 +27,6 @@
   let pyodide = $state<PyodideModule>();
   let pyodideLog = $state<string[]>([]);
 
-  // Derived reactive values
   let parserPromise = $derived.by(() => {
     if (pyodide && parserOptions && grammarText) {
       return updateLarkParser();
@@ -102,14 +101,14 @@
     pyodide.globals.set('grammar', grammarText);
     pyodide.globals.set('options', toPythonCompatibleParserOptions(parserOptions));
     return pyodide.runPythonAsync(`
-            parser = lark.Lark(grammar, **options.to_py())
-        `);
+      parser = lark.Lark(grammar, **options.to_py())
+    `);
   }
 
   function updateLarkResult(text: string) {
     if (!pyodide) return undefined;
     pyodide.globals.set('text', text);
-    return pyodide.runPythonAsync('parser.parse(text)');
+    return pyodide.runPythonAsync('json.dumps(parser.parse(text), cls=LarkEncoder, indent=2)');
   }
 
   onDestroy(() => {
@@ -168,18 +167,21 @@
       {#await parserPromise}
         Building Parser...
       {:then}
-        {#await resultPromise}
-          Parsing...
-        {:then result}
-          {#if result}
-            <div>{result.toJs({ depth: Infinity })}</div>
-            <Tree tree={result.toJs({ depth: Infinity })} />
-          {:else}
-            No result
-          {/if}
-        {:catch e}
-          <pre>{e}</pre>
-        {/await}
+        {#if resultPromise}
+          {#await resultPromise}
+            Parsing...
+          {:then result}
+            {#if result}
+              <Tree tree={JSON.parse(result)} />
+            {:else}
+              No result
+            {/if}
+          {:catch e}
+            <pre>{e}</pre>
+          {/await}
+        {:else}
+          Enter text to parse
+        {/if}
       {:catch e}
         <pre>{e}</pre>
       {/await}

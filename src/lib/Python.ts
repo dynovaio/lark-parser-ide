@@ -23,6 +23,26 @@ export const setupPyodide = async (params: ISetupPyodideParams) => {
   params.log('Downloading & Installing Lark');
   await pyodide.runPythonAsync("import micropip; await micropip.install('lark');");
   await pyodide.runPythonAsync('import lark');
+  await pyodide.runPythonAsync(`
+import json
+from typing import Optional
+from lark import Tree, Token
 
+class LarkEncoder(json.JSONEncoder):
+    def default(self, o: Optional[object]) -> object:
+        if isinstance(o, Tree):
+            return {
+                "type": "Tree",
+                "data": o.data,
+                "children": o.children,
+            }
+        elif isinstance(o, Token):
+            return {
+                "type": "Token",
+                "type_name": o.type,
+                "value": o.value,
+            }
+        return super().default(o)
+  `);
   params.onReady(pyodide);
 };
