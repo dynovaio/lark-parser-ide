@@ -1,4 +1,6 @@
-const conf = {
+import type { languages as MonacoLanguages } from 'monaco-types';
+
+const conf: MonacoLanguages.LanguageConfiguration = {
   comments: {
     lineComment: '//'
   },
@@ -15,15 +17,15 @@ const conf = {
     { open: '"', close: '"' }
   ],
   surroundingPairs: [
-    ['(', ')'],
-    ['[', ']'],
-    ['{', '}'],
-    ['/', '/'],
-    ['"', '"']
+    { open: '(', close: ')' },
+    { open: '[', close: ']' },
+    { open: '{', close: '}' },
+    { open: '/', close: '/' },
+    { open: '"', close: '"' }
   ]
 };
 
-const language = {
+const language: MonacoLanguages.IMonarchLanguage = {
   defaultToken: '',
   tokenPostfix: '.lark',
   keywords: [],
