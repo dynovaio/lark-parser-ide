@@ -1,14 +1,20 @@
 <script lang="ts">
+  import Tree from './Tree.svelte';
+
   type Tree = { type: string; data: string; children: Tree[] };
 
-  export let tree: Tree;
+  interface Props {
+    tree: Tree;
+  }
 
-  let expanded = true;
+  const { tree }: Props = $props();
+
+  let expanded = $state(true);
   const toggleExpansion = () => {
     expanded = !expanded;
   };
 
-  $: arrowDown = expanded;
+  let arrowDown = $derived(expanded);
 </script>
 
 <ul>
@@ -16,7 +22,7 @@
   <li>
     {#if tree.type === 'Tree'}
       {#if tree.children.length > 0}
-        <button type="button" class="tree-toggle" on:click={toggleExpansion}>
+        <button type="button" class="tree-toggle" onclick={toggleExpansion}>
           <span class="arrow" class:arrowDown>&#x25b6</span>
           <span class="label">
             {tree.data}
@@ -26,7 +32,7 @@
           <div class="children">
             {#each tree.children as child (child.type)}
               {#if child}
-                <svelte:self tree={child}></svelte:self>
+                <Tree tree={child} />
               {:else}
                 <span class="empty"></span>
               {/if}
