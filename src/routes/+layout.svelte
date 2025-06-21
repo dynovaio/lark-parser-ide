@@ -2,25 +2,21 @@
   import 'bulma/css/bulma.css';
   import '../app.css';
 
-  import FullScreenIcon from '$lib/assets/full-screen.svelte';
-  import ExitFullScreenIcon from '$lib/assets/exit-full-screen.svelte';
+  import FullscreenIcon from '$lib/assets/full-screen.svelte';
+  import ExitFullscreenIcon from '$lib/assets/exit-full-screen.svelte';
 
-  let fullscreen = false;
+  let fullscreen = $state(false);
+  let { children } = $props();
 
   function openFullscreen() {
     let elem = document.getElementsByTagName('body')[0];
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    }
+    elem.requestFullscreen();
 
     fullscreen = true;
   }
 
   function closeFullscreen() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
-
+    document.exitFullscreen();
     fullscreen = false;
   }
 </script>
@@ -51,12 +47,12 @@
               IDE Source
             </a>
             {#if fullscreen}
-              <button class="button is-normal is-light" on:click={closeFullscreen}>
-                <ExitFullScreenIcon />
+              <button class="button is-normal is-light" onclick={closeFullscreen}>
+                <ExitFullscreenIcon />
               </button>
             {:else}
-              <button class="button is-normal is-light" on:click={openFullscreen}>
-                <FullScreenIcon />
+              <button class="button is-normal is-light" onclick={openFullscreen}>
+                <FullscreenIcon />
               </button>
             {/if}
           </div>
@@ -67,7 +63,7 @@
 </header>
 
 <main class="page-main">
-  <slot />
+  {@render children()}
 </main>
 
 <style>
