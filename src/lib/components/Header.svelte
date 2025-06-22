@@ -21,8 +21,8 @@
 <header class="w-full">
   <nav class="flex flex-shrink items-center justify-between bg-gray-100 p-4">
     <div class="flex cursor-pointer items-center">
-      <a href="/" title="Lark IDE">
-        <LarkParserLogo size={48} color="#1e2939" aria-label="Lark IDE" />
+      <a class="text-gray-800" href="/" title="Lark IDE">
+        <LarkParserLogo size={48} aria-label="Lark IDE" />
       </a>
     </div>
     <div class="flex flex-shrink items-center space-x-4">
