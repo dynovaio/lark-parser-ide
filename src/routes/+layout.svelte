@@ -2,12 +2,29 @@
   import '../app.css';
 
   import Header from '$lib/components/Header.svelte';
+  import Loader from '$lib/components/Loader.svelte';
+  import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
+  import { setupPyodide } from '$lib/Pyodide';
+  import { onMount } from 'svelte';
 
   let { children } = $props();
+
+  onMount(() => {
+    (async () => {
+      await setupPyodide(loadingMessage, loadingProgress);
+      setTimeout(() => {
+        isLoading.set(false);
+      }, 1000);
+    })();
+  });
 </script>
 
-<Header></Header>
+{#if $isLoading}
+  <Loader message={$loadingMessage} progress={$loadingProgress} />
+{:else}
+  <Header />
 
-<main class="page-main">
-  {@render children()}
-</main>
+  <main class="page-main">
+    {@render children()}
+  </main>
+{/if}
