@@ -2,8 +2,10 @@
   import 'bulma/css/bulma.css';
   import '../app.css';
 
-  import FullscreenIcon from '$lib/assets/full-screen.svelte';
-  import ExitFullscreenIcon from '$lib/assets/exit-full-screen.svelte';
+  import Header from '$lib/components/Header.svelte';
+
+  import FullscreenIcon from '$lib/icons/FullScreen.svelte';
+  import ExitFullscreenIcon from '$lib/icons/ExitFullScreen.svelte';
 
   let fullscreen = $state(false);
   let { children } = $props();
@@ -21,6 +23,7 @@
   }
 </script>
 
+<Header />
 <header class="page-header">
   <nav class="navbar has-background-white" aria-label="main navigation">
     <div class="navbar-brand">
