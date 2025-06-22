@@ -7,8 +7,8 @@
   import { toPythonCompatibleParserOptions } from '$lib/Parsers';
   import { AVAILABLE_GRAMMARS, BLANK_GRAMMAR, HELLO_WORLD_GRAMMAR } from '$lib/Grammars';
   import type { Grammar } from '$lib/Grammars';
-  import { setupPyodide } from '$lib/Python';
-  import type { PyodideModule } from '$lib/Python';
+  import { setupPyodideLegacy } from '$lib/Pyodide';
+  import type { PyodideModule } from '$lib/Pyodide';
 
   const PARSER_REFRESH_DELAY = 500;
 
@@ -51,7 +51,7 @@
     loadGrammar(HELLO_WORLD_GRAMMAR);
 
     if (!pyodide) {
-      await setupPyodide({
+      await setupPyodideLegacy({
         onReady: (p: PyodideModule) => {
           pyodide = p;
         },
