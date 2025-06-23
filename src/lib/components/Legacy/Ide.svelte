@@ -1,12 +1,16 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import Tree from '$lib/Tree.svelte';
-  import GrammarEditor from '$lib/GrammarEditor.svelte';
-  import GrammarTestEditor from '$lib/GrammarTestEditor.svelte';
-  import Options from '$lib/Options.svelte';
-  import { toPythonCompatibleParserOptions } from '$lib/Parsers';
-  import { AVAILABLE_GRAMMARS, BLANK_GRAMMAR, HELLO_WORLD_GRAMMAR } from '$lib/Grammars';
-  import type { Grammar } from '$lib/Grammars';
+  import Tree from '$lib/components/Legacy/Tree.svelte';
+  import GrammarEditor from '$lib/components/Legacy/GrammarEditor.svelte';
+  import GrammarTestEditor from '$lib/components/Legacy/GrammarTestEditor.svelte';
+  import Options from '$lib/components/Legacy/Options.svelte';
+  import { toPythonCompatibleParserOptions } from '$lib/utils/Legacy/IdeLegacyParsers';
+  import {
+    AVAILABLE_GRAMMARS,
+    BLANK_GRAMMAR,
+    HELLO_WORLD_GRAMMAR
+  } from '$lib/utils/Legacy/IdeLegacyGrammars';
+  import type { Grammar } from '$lib/utils/Legacy/IdeLegacyGrammars';
   import { get } from 'svelte/store';
   import { pyodideInstance } from '$lib/stores/Pyodide';
 

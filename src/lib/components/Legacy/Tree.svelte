@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Tree from './Tree.svelte';
+  import Tree from '$lib/components/Legacy/Tree.svelte';
 
   type Tree = { type: string; data: string; children: Array<Tree | string> };
 

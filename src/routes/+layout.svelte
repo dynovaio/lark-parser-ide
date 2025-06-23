@@ -7,7 +7,7 @@
   import { pyodideInstance } from '$lib/stores/Pyodide';
   import Header from '$lib/components/Header.svelte';
   import Loader from '$lib/components/Loader.svelte';
-  import { setupPyodide } from '$lib/Pyodide';
+  import { setupPyodide } from '$lib/utils/Pyodide';
 
   let { children } = $props();
 

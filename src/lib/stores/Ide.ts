@@ -1,3 +1,3 @@
 import { writable } from 'svelte/store';
 
-export const useLegacyIde = writable(true);
+export const useLegacyIde = writable(false);

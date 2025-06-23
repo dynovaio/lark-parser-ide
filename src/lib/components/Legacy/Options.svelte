@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { AVAILABLE_PARSERS } from '$lib/Parsers';
-  import type { Parser, ParserOptions } from '$lib/Parsers';
+  import { AVAILABLE_PARSERS } from '$lib/utils/Legacy/IdeLegacyParsers';
+  import type { Parser, ParserOptions } from '$lib/utils/Legacy/IdeLegacyParsers';
 
   interface Props {
     options: ParserOptions;

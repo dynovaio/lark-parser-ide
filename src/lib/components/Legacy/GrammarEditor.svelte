@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { createEventDispatcher } from 'svelte';
-  import { LarkConfiguration, LarkLanguage } from '$lib/Lark';
+  import { LarkConfiguration, LarkLanguage } from '$lib/utils/Legacy/IdeLegacyLark';
   import type { Uri, editor as MonacoEditor, languages as MonacoLanguages } from 'monaco-types';
   const dispatch = createEventDispatcher();
 
