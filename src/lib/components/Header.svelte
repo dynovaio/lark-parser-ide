@@ -8,7 +8,7 @@
 
   let fullscreen = $state(false);
 
-  function toggleFullscreen() {
+  const toggleFullscreen = () => {
     if (fullscreen) {
       document.exitFullscreen();
     } else {
@@ -16,7 +16,7 @@
     }
 
     fullscreen = !fullscreen;
-  }
+  };
 </script>
 
 <header class="w-full">
