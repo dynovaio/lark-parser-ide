@@ -45,23 +45,23 @@ body.page-wrapper {
   display: flex;
 }
 
-.lark-ide {
+.lark-legacy-ide {
   display: grid;
   grid-template:
-    'options options options' min-content
-    'grammar test output' min-content;
+    'options options' min-content
+    'grammar text' min-content
+    'grammar output' 1fr / min-content 1fr;
 
   flex: 1 1 auto;
 }
 
-.lark-ide-options {
+.lark-legacy-ide-options {
   grid-area: options;
-
   padding: 1rem;
-  border-bottom: 1px solid var(--bulma-hr-background-color);
+  border-bottom: 1px solid black;
 }
 
-.lark-ide-editor {
+.lark-legacy-ide-editor {
   grid-area: grammar;
 
   display: flex;
@@ -69,19 +69,23 @@ body.page-wrapper {
   flex-direction: column;
 
   overflow: auto;
-  border-right: 1px solid var(--bulma-hr-background-color);
+  width: 50vw;
+  border-right: 1px solid black;
 }
 
-.lark-ide-tests-input {
-  grid-area: test;
-
-  border-right: 1px solid var(--bulma-hr-background-color);
+.lark-legacy-ide-tests-input {
+  grid-area: text;
+  height: 100px;
+  width: 50vw;
+  display: flex;
+  border-bottom: 1px solid black;
 }
 
-.lark-ide-tests-output {
+.lark-legacy-ide-tests-output {
   padding: 1rem;
+  width: 50vw;
   grid-area: output;
-  overflow: auto;
+  overflow-x: scroll;
 }
 
 .lark-editor-wrapper {

@@ -111,8 +111,8 @@
   });
 </script>
 
-<section class="lark-ide" id="ide">
-  <div class="lark-ide-options">
+<section class="lark-legacy-ide" id="ide">
+  <div class="lark-legacy-ide-options">
     <div id="above_grammar" class="buttons">
       <div class="dropdown is-hoverable">
         <div class="dropdown-trigger">
@@ -143,15 +143,15 @@
     </div>
   </div>
 
-  <div class="lark-ide-editor">
+  <div class="lark-legacy-ide-editor">
     <GrammarEditor bind:this={grammarEditor} bind:text={editorText} on:ready={editorReady} />
   </div>
 
-  <div id="text" class="lark-ide-tests-input">
+  <div id="text" class="lark-legacy-ide-tests-input">
     <GrammarTestEditor bind:this={testEditor} bind:text={grammarTest} />
   </div>
 
-  <div id="output" class="lark-ide-tests-output">
+  <div id="output" class="lark-legacy-ide-tests-output">
     {#if $pyodideInstance}
       {#await parserPromise}
         Building Parser...
