@@ -7,8 +7,8 @@
   import { toPythonCompatibleParserOptions } from '$lib/Parsers';
   import { AVAILABLE_GRAMMARS, BLANK_GRAMMAR, HELLO_WORLD_GRAMMAR } from '$lib/Grammars';
   import type { Grammar } from '$lib/Grammars';
-  import { setupPyodideLegacy } from '$lib/Pyodide';
-  import type { PyodideModule } from '$lib/Pyodide';
+  import { get } from 'svelte/store';
+  import { pyodideInstance } from '$lib/stores/Pyodide';
 
   const PARSER_REFRESH_DELAY = 500;
 
@@ -24,7 +24,13 @@
 
   let editorText = $state('');
 
-  let pyodide = $state<PyodideModule>();
+  let pyodide = $derived.by(() => {
+    if ($pyodideInstance) {
+      return get(pyodideInstance);
+    }
+    return undefined;
+  });
+
   let pyodideLog = $state<string[]>([]);
 
   let parserPromise = $derived.by(() => {
@@ -49,17 +55,6 @@
 
   async function editorReady() {
     loadGrammar(HELLO_WORLD_GRAMMAR);
-
-    if (!pyodide) {
-      await setupPyodideLegacy({
-        onReady: (p: PyodideModule) => {
-          pyodide = p;
-        },
-        log: (e: string) => {
-          pyodideLog = [...pyodideLog, e];
-        }
-      });
-    }
   }
 
   async function loadGrammar(grammar: Grammar) {
@@ -163,7 +158,7 @@
   </div>
 
   <div id="output" class="lark-ide-tests-output">
-    {#if pyodide}
+    {#if $pyodideInstance}
       {#await parserPromise}
         Building Parser...
       {:then}
