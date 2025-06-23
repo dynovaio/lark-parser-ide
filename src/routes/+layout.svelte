@@ -1,12 +1,13 @@
 <script lang="ts">
   import '../app.css';
 
+  import { onMount } from 'svelte';
+
+  import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
+  import { pyodideInstance } from '$lib/stores/Pyodide';
   import Header from '$lib/components/Header.svelte';
   import Loader from '$lib/components/Loader.svelte';
-  import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
   import { setupPyodide } from '$lib/Pyodide';
-  import { pyodideInstance } from '$lib/stores/Pyodide';
-  import { onMount } from 'svelte';
 
   let { children } = $props();
 
@@ -25,7 +26,6 @@
   <Loader message={$loadingMessage} progress={$loadingProgress} />
 {:else}
   <Header />
-
   <main class="page-main">
     {@render children()}
   </main>
