@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { get } from 'svelte/store';
   import { onDestroy } from 'svelte';
   import Tree from '$lib/components/Legacy/Tree.svelte';
   import GrammarEditor from '$lib/components/Legacy/GrammarEditor.svelte';
@@ -11,10 +12,12 @@
     HELLO_WORLD_GRAMMAR
   } from '$lib/utils/Legacy/IdeLegacyGrammars';
   import type { Grammar } from '$lib/utils/Legacy/IdeLegacyGrammars';
-  import { get } from 'svelte/store';
   import { pyodideInstance } from '$lib/stores/Pyodide';
+  import { clickOutside } from '$lib/utils/ClickOutside';
 
   const PARSER_REFRESH_DELAY = 500;
+
+  let showGrammarSelector = $state(false);
 
   let parserRefreshTimeout: ReturnType<typeof setTimeout>;
 
@@ -117,31 +120,47 @@
 
 <section class="lark-legacy-ide" id="ide">
   <div class="lark-legacy-ide-options">
-    <div id="above_grammar" class="buttons">
-      <div class="dropdown is-hoverable">
-        <div class="dropdown-trigger">
-          <button class="button" aria-haspopup="true" aria-controls="ide-menu">
-            <span>Grammar: {grammarName}</span>
-            <span class="icon is-small">
-              <i class="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-          </button>
-        </div>
-        <div class="dropdown-menu" id="ide-menu" role="menu">
-          <div class="dropdown-content">
+    <div class="flex justify-start justify-items-start space-x-4">
+      <div
+        class="relative block"
+        use:clickOutside
+        onclickoutside={() => {
+          showGrammarSelector = false;
+        }}
+      >
+        <button
+          class="line-clamp-1 w-75 cursor-pointer rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-800 hover:text-gray-100"
+          aria-haspopup="true"
+          aria-controls="ide-menu"
+          onclick={() => {
+            showGrammarSelector = !showGrammarSelector;
+          }}
+        >
+          <span>Grammar: {grammarName}</span>
+          <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button>
+        {#if showGrammarSelector}
+          <div
+            class="absolute left-0 z-10 mt-2 flex w-75 origin-top-right flex-col flex-wrap rounded-lg bg-gray-800 py-2 text-gray-100 shadow-lg ring-1 ring-black/5"
+            id="ide-menu"
+            role="menu"
+          >
             {#each AVAILABLE_GRAMMARS as g (g.id)}
               <button
                 type="button"
-                class="dropdown-item"
+                class="cursor-pointer px-4 py-2 hover:bg-gray-700"
                 onclick={() => {
                   loadGrammar(g);
+                  showGrammarSelector = false;
                 }}
               >
                 {g.label} ({g.difficulty})
               </button>
             {/each}
           </div>
-        </div>
+        {/if}
       </div>
       <Options bind:options={parserOptions} />
     </div>
