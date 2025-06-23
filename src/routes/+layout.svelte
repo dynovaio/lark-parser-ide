@@ -5,13 +5,15 @@
   import Loader from '$lib/components/Loader.svelte';
   import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
   import { setupPyodide } from '$lib/Pyodide';
+  import { pyodideInstance } from '$lib/stores/Pyodide';
   import { onMount } from 'svelte';
 
   let { children } = $props();
 
   onMount(() => {
     (async () => {
-      await setupPyodide(loadingMessage, loadingProgress);
+      const pyodide = await setupPyodide(loadingMessage, loadingProgress);
+      pyodideInstance.set(pyodide);
       setTimeout(() => {
         isLoading.set(false);
       }, 1000);
