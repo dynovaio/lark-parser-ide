@@ -39,14 +39,6 @@ body.page-wrapper {
   flex-flow: column;
 }
 
-.page-header > .navbar {
-  --bulma-navbar-item-img-max-height: 4rem;
-}
-
-.page-header > .navbar > .navbar-brand > .navbar-item {
-  --bulma-navbar-item-background-a: 0;
-}
-
 .page-main {
   width: 100%;
   flex: 1 1 auto;
