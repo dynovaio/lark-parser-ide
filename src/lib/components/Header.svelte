@@ -1,5 +1,6 @@
 <script lang="ts">
   import LarkParserLogo from '$lib/icons/LarkParserLogo.svelte';
+  import IdeSwitch from '$lib/components/IdeSwitch.svelte';
   import ArrowsIn from 'phosphor-svelte/lib/ArrowsIn';
   import ArrowsOut from 'phosphor-svelte/lib/ArrowsOut';
   import GithubLogo from 'phosphor-svelte/lib/GithubLogo';
@@ -26,8 +27,9 @@
       </a>
     </div>
     <div class="flex flex-shrink items-center space-x-4">
+      <IdeSwitch />
       <a
-        class="rounded-lg bg-gray-100 px-4 py-2 text-gray-800 transition duration-250 hover:bg-gray-800 hover:text-gray-100"
+        class="rounded-lg bg-gray-200 px-4 py-2 text-gray-800 transition duration-250 hover:bg-gray-800 hover:text-gray-100"
         target="_blank"
         href="https://lark-parser.readthedocs.io/en/latest/"
       >
@@ -35,7 +37,7 @@
         Docs
       </a>
       <a
-        class="rounded-lg bg-gray-100 px-4 py-2 text-gray-800 transition duration-250 hover:bg-gray-800 hover:text-gray-100"
+        class="rounded-lg bg-gray-200 px-4 py-2 text-gray-800 transition duration-250 hover:bg-gray-800 hover:text-gray-100"
         target="_blank"
         href="https://github.com/lark-parser/lark"
       >
@@ -43,7 +45,7 @@
         Source
       </a>
       <button
-        class="cursor-pointer rounded-lg bg-gray-100 px-4 py-2 text-gray-800 transition duration-250 hover:bg-gray-800 hover:text-gray-100"
+        class="cursor-pointer rounded-lg bg-gray-200 px-4 py-2 text-gray-800 transition duration-250 hover:bg-gray-800 hover:text-gray-100"
         onclick={toggleFullscreen}
         name="fullscreen-toggle"
       >
