@@ -1,7 +1,7 @@
 <script lang="ts">
   import { clickOutside } from '$lib/utils/ClickOutside';
-  import { AVAILABLE_PARSERS } from '$lib/utils/Legacy/IdeLegacyParsers';
-  import type { Parser, ParserOptions } from '$lib/utils/Legacy/IdeLegacyParsers';
+  import { AVAILABLE_PARSERS } from '$lib/utils/Legacy/Parsers';
+  import type { Parser, ParserOptions } from '$lib/utils/Legacy/Parsers';
 
   interface Props {
     options: ParserOptions;

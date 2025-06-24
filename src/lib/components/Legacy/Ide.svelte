@@ -5,13 +5,13 @@
   import GrammarEditor from '$lib/components/Legacy/GrammarEditor.svelte';
   import GrammarTestEditor from '$lib/components/Legacy/GrammarTestEditor.svelte';
   import Options from '$lib/components/Legacy/Options.svelte';
-  import { toPythonCompatibleParserOptions } from '$lib/utils/Legacy/IdeLegacyParsers';
+  import { toPythonCompatibleParserOptions } from '$lib/utils/Legacy/Parsers';
   import {
     AVAILABLE_GRAMMARS,
     BLANK_GRAMMAR,
     HELLO_WORLD_GRAMMAR
-  } from '$lib/utils/Legacy/IdeLegacyGrammars';
-  import type { Grammar } from '$lib/utils/Legacy/IdeLegacyGrammars';
+  } from '$lib/utils/Legacy/Grammars';
+  import type { Grammar } from '$lib/utils/Legacy/Grammars';
   import { pyodideInstance } from '$lib/stores/Pyodide';
   import { clickOutside } from '$lib/utils/ClickOutside';
 

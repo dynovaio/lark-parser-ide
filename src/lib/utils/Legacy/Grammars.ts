@@ -1,5 +1,5 @@
-import type { ParserOptions } from '$lib/utils/Legacy/IdeLegacyParsers';
-import { LALR1_PARSER, DEFAULT_PARSER_OPTIONS } from '$lib/utils/Legacy/IdeLegacyParsers';
+import type { ParserOptions } from '$lib/utils/Legacy/Parsers';
+import { LALR1_PARSER, DEFAULT_PARSER_OPTIONS } from '$lib/utils/Legacy/Parsers';
 
 export interface Grammar {
   id: string;
