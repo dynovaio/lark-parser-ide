@@ -1,25 +1,11 @@
 @import '@fontsource/fira-mono';
 @import 'tailwindcss';
 
-:root {
-  --bulma-family-primary: 'Quicksand', Arial, sans-serif;
-  --bulma-family-secondary: 'Quicksand', Arial, sans-serif;
-  --bulma-family-code: 'Fira Mono', monospace;
+@plugin 'tailwind-scrollbar';
 
-  --bulma-navbar-height: 5rem;
-
-  --color-white: #ffffff;
-  --primary-color: #b9c6d2;
-  --secondary-color: #d0dde9;
-  --tertiary-color: #edf0f8;
-  --accent-color: #ff3e00;
-  --heading-color: rgba(0, 0, 0, 0.7);
-  --text-color: #444444;
-  --background-without-opacity: rgba(255, 255, 255, 0.7);
-  --column-width: 42rem;
-  --column-margin-top: 4rem;
-
-  --base-margin: 20px;
+@theme {
+  --font-sans: 'Quicksand', Arial, sans-serif;
+  --font-mono: 'Fira Mono', monospace;
 }
 
 html {
@@ -29,7 +15,7 @@ html {
 body.page-wrapper {
   height: 100vh;
   width: 100%;
-  background: var(--color-white);
+  background: #ffffff;
 }
 
 .page {
