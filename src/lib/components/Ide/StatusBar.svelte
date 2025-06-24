@@ -8,7 +8,7 @@
 
   interface Props {
     projectName?: string;
-    testId?: string;
+    testId?: number;
     testStatus?: TestStatus;
   }
 
@@ -24,8 +24,8 @@
     {/if}
     <div>{projectName || 'No project selected'}</div>
   </div>
-  {#if testId}
-    <div class="flex shrink-0 flex-row items-center space-x-2">
+  <div class="flex shrink-0 flex-row items-center space-x-2">
+    {#if testId}
       <span>
         Test {testId}
       </span>
@@ -46,8 +46,9 @@
       {:else if testStatus === TestStatus.UNKNOWN}
         <Warning class="text-yellow-300" />
       {/if}
-    </div>
-  {:else}
-    <div>No test selected</div>
-  {/if}
+    {:else}
+      <Warning class="text-yellow-300" />
+      <span>No test selected</span>
+    {/if}
+  </div>
 </div>
