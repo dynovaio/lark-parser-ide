@@ -22,6 +22,13 @@
     forceVisible: true
   });
 
+  isLargeScreen.subscribe((value) => {
+    // If screen is large, close the menu and prevent it from open again on resize to small resolution
+    if (value) {
+      open.set(false);
+    }
+  });
+
   const toggleFullscreen = () => {
     if (fullscreen) {
       document.exitFullscreen();
@@ -90,7 +97,7 @@
   </nav>
 </header>
 
-{#if $open && !$isLargeScreen}
+{#if $open}
   <div use:melt={$portalled}>
     <div
       use:melt={$overlay}
