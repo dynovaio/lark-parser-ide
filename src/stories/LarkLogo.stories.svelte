@@ -1,6 +1,6 @@
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
-  import LarkParserLogo from '$lib/icons/LarkParserLogo.svelte';
+  import LarkParserLogo from '$lib/components/Icon/LarkParserLogo.svelte';
 
   const { Story } = defineMeta({
     title: 'Lark IDE/Logo',

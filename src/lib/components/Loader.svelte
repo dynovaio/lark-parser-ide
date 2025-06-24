@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LarkParserLogoSquare from '$lib/icons/LarkParserLogoSquare.svelte';
+  import LarkParserLogoSquare from '$lib/components/Icon/LarkParserLogoSquare.svelte';
   interface Props {
     message: string;
     progress: number;

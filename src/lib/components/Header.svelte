@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LarkParserLogo from '$lib/icons/LarkParserLogo.svelte';
+  import LarkParserLogo from '$lib/components/Icon/LarkParserLogo.svelte';
   import IdeSwitch from '$lib/components/IdeSwitch.svelte';
   import ArrowsIn from 'phosphor-svelte/lib/ArrowsIn';
   import ArrowsOut from 'phosphor-svelte/lib/ArrowsOut';

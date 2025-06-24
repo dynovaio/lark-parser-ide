@@ -1,5 +1,5 @@
 import type { Component } from 'svelte';
-import type { IconComponentProps } from './shared.d.ts';
+import type { IconComponentProps } from './shared.js';
 
 /**
  *
