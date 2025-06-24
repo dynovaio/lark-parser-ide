@@ -114,7 +114,7 @@
       class="fixed top-0 left-0 z-50 h-screen w-full max-w-[320px] bg-gray-800 shadow-lg focus:outline-none"
     >
       <div class="flex bg-gray-100 p-4">
-        <div class="flex flex-shrink items-center space-x-4">
+        <div class="flex shrink items-center space-x-4">
           <button
             use:melt={$close}
             class="cursor-pointer py-2 text-gray-800 outline-0 transition duration-250"
@@ -130,7 +130,7 @@
       <div class="flex flex-col items-start space-y-4 p-4">
         <IdeSwitch />
         <a
-          class="flex w-full flex-shrink items-center space-x-4 rounded-lg px-4 py-2 text-gray-100 transition duration-250 hover:bg-gray-200 hover:text-gray-800"
+          class="flex w-full shrink items-center space-x-4 rounded-lg px-4 py-2 text-gray-100 transition duration-250 hover:bg-gray-200 hover:text-gray-800"
           target="_blank"
           href="https://lark-parser.readthedocs.io/en/latest/"
         >
@@ -138,7 +138,7 @@
           <span>Docs</span>
         </a>
         <a
-          class="flex w-full flex-shrink items-center space-x-4 rounded-lg px-4 py-2 text-gray-100 transition duration-250 hover:bg-gray-200 hover:text-gray-800"
+          class="flex w-full shrink items-center space-x-4 rounded-lg px-4 py-2 text-gray-100 transition duration-250 hover:bg-gray-200 hover:text-gray-800"
           target="_blank"
           href="https://github.com/lark-parser/lark"
         >
