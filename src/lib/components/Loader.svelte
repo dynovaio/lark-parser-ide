@@ -27,7 +27,7 @@
   @reference "../../app.css";
 
   .loader {
-    @apply flex h-screen w-screen flex-col items-center justify-center space-y-4;
+    @apply flex h-full w-full flex-col items-center justify-center space-y-4;
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
