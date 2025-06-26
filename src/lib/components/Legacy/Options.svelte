@@ -53,7 +53,7 @@
   }}
 >
   <button
-    class="line-clamp-1 w-40 rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-800 hover:text-gray-100"
+    class="line-clamp-1 w-40 rounded-lg bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-900 hover:text-gray-100"
     aria-haspopup="true"
     aria-controls="ide-menu"
     onclick={() => {
@@ -67,14 +67,14 @@
   </button>
   {#if showParserSelector}
     <div
-      class="absolute left-0 z-10 mt-2 flex w-40 origin-top-right flex-col flex-wrap rounded-lg bg-gray-800 py-2 text-gray-100 shadow-lg ring-1 ring-black/5"
+      class="absolute left-0 z-10 mt-2 flex w-40 origin-top-right flex-col flex-wrap rounded-lg bg-gray-900 py-2 text-gray-100 shadow-lg ring-1 ring-black/5"
       id="ide-menu"
       role="menu"
     >
       {#each parsers as parser (parser.id)}
         <button
           type="button"
-          class="cursor-pointer px-4 py-2 hover:bg-gray-700"
+          class="cursor-pointer px-4 py-2 hover:bg-gray-800"
           onclick={() => {
             setParser(parser);
             showParserSelector = false;
@@ -89,11 +89,11 @@
 
 <div class="relative inline-block">
   <label
-    class="flex items-center rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-800 hover:text-gray-100"
+    class="flex items-center rounded-lg bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-900 hover:text-gray-100"
     for="keep-all-tokens"
   >
     <input
-      class="mr-2 h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-gray-800"
+      class="mr-2 h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-gray-900"
       type="checkbox"
       bind:checked={keepAllTokens}
       oninput={setKeepAllTokens}

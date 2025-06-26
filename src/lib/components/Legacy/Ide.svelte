@@ -118,7 +118,7 @@
   });
 </script>
 
-<section class="lark-legacy-ide" id="ide">
+<section class="lark-legacy-ide bg-white" id="ide">
   <div class="lark-legacy-ide-options">
     <div class="flex justify-start justify-items-start space-x-4">
       <div
@@ -129,7 +129,7 @@
         }}
       >
         <button
-          class="line-clamp-1 w-75 cursor-pointer rounded-lg bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-800 hover:text-gray-100"
+          class="line-clamp-1 w-75 cursor-pointer rounded-lg bg-gray-200 px-4 py-2 text-gray-900 hover:bg-gray-900 hover:text-gray-100"
           aria-haspopup="true"
           aria-controls="ide-menu"
           onclick={() => {
@@ -143,14 +143,14 @@
         </button>
         {#if showGrammarSelector}
           <div
-            class="absolute left-0 z-10 mt-2 flex w-75 origin-top-right flex-col flex-wrap rounded-lg bg-gray-800 py-2 text-gray-100 shadow-lg ring-1 ring-black/5"
+            class="absolute left-0 z-10 mt-2 flex w-75 origin-top-right flex-col flex-wrap rounded-lg bg-gray-900 py-2 text-gray-100 shadow-lg ring-1 ring-black/5"
             id="ide-menu"
             role="menu"
           >
             {#each AVAILABLE_GRAMMARS as g (g.id)}
               <button
                 type="button"
-                class="cursor-pointer px-4 py-2 hover:bg-gray-700"
+                class="cursor-pointer px-4 py-2 hover:bg-gray-800"
                 onclick={() => {
                   loadGrammar(g);
                   showGrammarSelector = false;
