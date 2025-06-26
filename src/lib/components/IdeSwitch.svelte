@@ -9,34 +9,36 @@
   });
 </script>
 
-<form class="flex flex-row items-center rounded-lg bg-gray-200 px-4 py-2 text-gray-800">
-  <label class="mr-4" for="ide-switch" id="ide-switch-label">Use Legacy IDE</label>
-  <button
-    use:melt={$root}
-    id="ide-switch"
-    class="relative h-6 cursor-default rounded-full bg-gray-300 transition-colors data-[state=checked]:bg-gray-800"
-    aria-labelledby="ide-switch-label"
-  >
-    <span class="thumb block rounded-full bg-white transition"></span>
-  </button>
-  <input use:melt={$input} id="ide-switch-input" name="use-legacy-ide" value={$useLegacyIde} />
-</form>
+<label class="switch__label" for="ide-switch" id="ide-switch-label">Use Legacy IDE</label>
+<button use:melt={$root} id="ide-switch" class="switch" aria-labelledby="ide-switch-label">
+  <span class="thumb"></span>
+</button>
+<input use:melt={$input} id="ide-switch-input" name="use-legacy-ide" value={$useLegacyIde} />
 
-<style>
-  button {
-    --w: 2.75rem;
-    --padding: 0.125rem;
-    width: var(--w);
+<style lang="postcss">
+  @reference "../../app.css";
+
+  .switch__label {
+    @apply mr-2 block;
+  }
+
+  .switch {
+    @apply relative h-6 w-[2.75rem] cursor-pointer rounded-full transition duration-250;
+    @apply bg-gray-300;
+    @apply dark:bg-gray-700;
+
+    &[data-state='checked'] {
+      @apply bg-green-500;
+    }
   }
 
   .thumb {
-    --size: 1.25rem;
-    width: var(--size);
-    height: var(--size);
-    transform: translateX(var(--padding));
+    transform: translateX(0.125rem);
+    @apply block size-[1.25rem] rounded-full transition duration-250;
+    @apply bg-white;
   }
 
-  :global([data-state='checked']) .thumb {
-    transform: translateX(calc(var(--w) - var(--size) - var(--padding)));
+  .switch[data-state='checked'] .thumb {
+    transform: translateX(calc(2.75rem - 1.25rem - 0.125rem));
   }
 </style>
