@@ -3,6 +3,8 @@
 
 @plugin 'tailwind-scrollbar';
 
+@custom-variant dark (&:where(:global(.dark), :global(.dark) *));
+
 @theme {
   --font-sans: 'Quicksand', Arial, sans-serif;
   --font-mono: 'Fira Mono', monospace;
