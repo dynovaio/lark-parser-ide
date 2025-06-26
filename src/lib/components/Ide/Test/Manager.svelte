@@ -1,6 +1,9 @@
 <script lang="ts">
+  import List from '$lib/components/Ide/Test/List.svelte';
+  import TreeViewer from '$lib/components/Ide/Test/TreeViewer.svelte';
 </script>
 
-<section>
-  <p>This is the brand new IDE Manager.</p>
+<section class="h-full w-full flex-row">
+  <List />
+  <TreeViewer />
 </section>
