@@ -50,7 +50,7 @@
   };
 </script>
 
-<header class="header">
+<header class="page-header">
   <nav class="navbar">
     <div class="navbar__section">
       <a href="/" title="Lark IDE">
@@ -138,8 +138,8 @@
 <style lang="postcss">
   @reference "../../app.css";
 
-  .header {
-    @apply relative z-65 w-full;
+  .page-header {
+    @apply relative z-65 w-full shrink-0;
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
