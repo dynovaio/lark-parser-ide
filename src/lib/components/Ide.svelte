@@ -1,34 +1,24 @@
 <script lang="ts">
   import { createTabs, melt } from '@melt-ui/svelte';
-  import { cubicInOut } from 'svelte/easing';
-  import { crossfade } from 'svelte/transition';
 
-  import { isLargeScreen, isSmallScreen } from '$lib/stores/Breakpoints';
-  import { loadGrammar, type Grammar } from '$lib/utils/Grammar';
-  import { PROJECT_HELLO_WORLD, SAMPLE_PROJECTS, type Project } from '$lib/utils/Project';
-  import { createIdeState } from '$lib/stores/Ide';
-
+  import Editor from '$lib/components/Ide/Editor.svelte';
   import ProjectManager from '$lib/components/Ide/Project/Manager.svelte';
   import StatusBar from '$lib/components/Ide/StatusBar.svelte';
-  import GrammarEditor from '$lib/components/Ide/Editor.svelte';
-  import TestList from '$lib/components/Ide/Test/List.svelte';
-  import TreeViewer from '$lib/components/Ide/Test/TreeViewer.svelte';
+  import TestManager from '$lib/components/Ide/Test/Manager.svelte';
+  import { setIdeContext } from '$lib/components/Ide/Context';
 
-  let projects = $state([...SAMPLE_PROJECTS]);
+  import { isLargeScreen } from '$lib/stores/Breakpoints';
+  import { createIdeState } from '$lib/stores/Ide';
+
+  import { loadGrammar, type Grammar } from '$lib/utils/Grammar';
+  import { PROJECT_HELLO_WORLD } from '$lib/utils/Project';
+
   const ideState = createIdeState({ ...PROJECT_HELLO_WORLD });
-
-  let project: Project = $derived.by(() => {
-    return $ideState.project;
-  });
-
-  let grammar: Grammar = $derived.by(() => {
-    return $ideState.project.grammar;
-  });
 
   const unsuscribe = ideState.subscribe(async (value) => {
     try {
       let grammar: Grammar = await loadGrammar(value.project.grammar);
-      ideState.updateGrammar(grammar);
+      ideState.setGrammar(grammar);
     } catch (error) {
       console.error(`Error loading grammar for project ${value.project.id}:`, error);
     }
@@ -48,87 +38,104 @@
     { id: 'tests', title: 'Tests' }
   ];
 
-  const [send, receive] = crossfade({
-    duration: 250,
-    easing: cubicInOut
-  });
-
-  const handleSelectProject = async (selectedProjectId: string) => {
-    if (selectedProjectId === project.id) return;
-
-    const selectedProject = projects.find((p) => p.id === selectedProjectId);
-    if (selectedProject) {
-      let grammar: Grammar = await loadGrammar(selectedProject.grammar);
-      ideState.setProject({
-        ...selectedProject,
-        grammar: {
-          ...grammar
-        }
-      });
-    } else {
-      console.error(`Project with ID ${selectedProjectId} not found.`);
-    }
+  const handleSelectProject = async () => {
     tabValue.set('editor');
   };
+
+  setIdeContext(ideState);
 </script>
 
-<section class="flex h-full max-h-[calc(100vh-4.5rem)] w-screen flex-col overflow-hidden">
-  <div class="w-screen flex-none shrink">
-    <ProjectManager {projects} {project} onSelectProject={handleSelectProject} />
+<section class="lark-ide">
+  <div class="lark-ide__header">
+    <ProjectManager
+      project={$ideState.project}
+      projects={$ideState.availableProjects}
+      onSelectProject={handleSelectProject}
+    />
   </div>
   {#if $isLargeScreen}
-    <div class="flex h-full max-h-[calc(100vh-6.5rem)] w-screen grow flex-row overflow-hidden">
-      <div class="h-full w-full grow bg-gray-50">
-        <GrammarEditor {grammar} />
+    <div class="lark-ide__main">
+      <div class="lark-ide__section">
+        <Editor grammar={$ideState.project.grammar} />
       </div>
-      <div class="w-1/5 shrink-0 bg-gray-50">
-        <TestList />
-      </div>
-      <div class="w-1/5 shrink-0 bg-gray-50">
-        <TreeViewer />
+      <div class="lark-ide__section">
+        <TestManager />
       </div>
     </div>
   {:else}
-    <div use:melt={$tabRoot} class="flex w-full shrink-0 grow flex-col">
-      <div
-        use:melt={$tabList}
-        class="flex shrink-0 flex-row items-center justify-center overflow-x-auto bg-gray-900 text-gray-100"
-      >
+    <div use:melt={$tabRoot} class="lark-ide__main">
+      <div use:melt={$tabList} class="lark-ide__tab-list">
         {#each tabs as tab (tab.id)}
           <button
             use:melt={$tabTrigger(tab.id)}
-            class="relative flex-grow px-4 py-2 outline-none"
-            class:bg-gray-900={$tabValue === tab.id}
+            class="lark-ide__tab"
+            class:lark-ide__tab--active={$tabValue === tab.id}
           >
             {tab.title}
-            {#if $tabValue === tab.id}
-              <div
-                in:send={{ key: 'trigger' }}
-                out:receive={{ key: 'trigger' }}
-                class="absolute bottom-0 left-1/2 h-1 w-full -translate-x-1/2 border-0 bg-gray-100"
-              ></div>
-            {/if}
           </button>
         {/each}
       </div>
-      <div use:melt={$tabContent('editor')} class="grow bg-gray-100">
-        <GrammarEditor {grammar} />
+      <div use:melt={$tabContent('editor')} class="lark-ide__tab-content">
+        <div class="lark-ide__section">
+          <Editor grammar={$ideState.project.grammar} />
+        </div>
       </div>
-      <div use:melt={$tabContent('tests')} class="grow bg-gray-100">
-        {#if $isSmallScreen}
-          <TestList />
-          <TreeViewer />
-        {:else}
-          <TestList />
-        {/if}
+      <div use:melt={$tabContent('tests')} class="lark-ide__tab-content">
+        <div class="lark-ide__section">
+          <TestManager />
+        </div>
       </div>
     </div>
   {/if}
-  <div class="w-screen flex-none shrink">
-    <StatusBar
-      projectName={project.name}
-      testId={$ideState.testCase?.id}
-      testStatus={$ideState.testResult?.status}
-    />
+  <div class="lark-ide__footer">
+    <StatusBar />
   </div>
 </section>
+
+<style lang="postcss">
+  @reference "../../app.css";
+
+  .lark-ide {
+    @apply flex h-full max-h-[calc(100vh-4.5rem)] w-full grow flex-col overflow-hidden;
+  }
+
+  .lark-ide__header {
+    @apply w-full shrink-0;
+  }
+
+  .lark-ide__main {
+    @apply flex h-full max-h-[calc(100vh-4.5rem-2rem-4.5rem)] w-full shrink-0 grow flex-col overflow-hidden;
+    @apply lg:flex-row;
+  }
+
+  .lark-ide__section {
+    @apply relative h-full w-full shrink-0 grow;
+    @apply lg:w-1/2;
+  }
+
+  .lark-ide__footer {
+    @apply w-full shrink-0;
+  }
+
+  .lark-ide__tab-list {
+    @apply flex shrink-0 flex-row items-center justify-center overflow-x-auto;
+    @apply bg-gray-100 text-gray-900;
+    @apply dark:bg-gray-900 dark:text-gray-100;
+  }
+
+  .lark-ide__tab {
+    @apply relative flex-grow appearance-none px-4 py-2 inset-shadow-sm transition duration-250 outline-none;
+    @apply bg-gray-300 text-gray-500 inset-shadow-gray-900/50;
+    @apply dark:bg-gray-300 dark:text-gray-500 dark:inset-shadow-gray-900/50;
+  }
+
+  .lark-ide__tab--active {
+    @apply inset-shadow-none;
+    @apply bg-gray-100 text-gray-900;
+    @apply dark:bg-gray-900 dark:text-gray-100;
+  }
+
+  .lark-ide__tab-content {
+    @apply relative h-full max-h-[calc(100vh-4.5rem-2rem-4.5rem-2.5rem)] w-full shrink-0 grow;
+  }
+</style>
