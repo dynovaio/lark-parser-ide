@@ -11,19 +11,19 @@
 }
 
 html {
-  @apply min-w-[20rem];
+  @apply h-screen w-screen min-w-[20rem];
   @apply bg-gray-100 text-gray-900;
   @apply dark:bg-gray-900 dark:text-gray-100;
 }
 
 body.page-wrapper {
-  @apply min-w-[20rem];
+  @apply h-full w-full min-w-[20rem];
   @apply bg-gray-100 text-gray-900;
   @apply dark:bg-gray-900 dark:text-gray-100;
 }
 
 .page {
-  @apply flex h-screen w-screen min-w-[20rem] flex-col overflow-hidden;
+  @apply flex h-full w-full min-w-[20rem] flex-col overflow-hidden;
   @apply bg-gray-100 text-gray-900;
   @apply dark:bg-gray-900 dark:text-gray-100;
 }

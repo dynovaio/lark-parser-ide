@@ -35,7 +35,7 @@
   @reference '../app.css';
 
   .page-main {
-    @apply flex h-full max-h-[calc(100vh-4.5rem)] w-full shrink-0 overflow-hidden;
+    @apply flex h-full max-h-[calc(100vh-4.5rem)] w-full shrink-0 grow overflow-hidden;
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
