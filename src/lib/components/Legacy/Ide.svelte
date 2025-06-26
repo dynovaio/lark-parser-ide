@@ -120,7 +120,7 @@
 
 <section class="lark-legacy-ide bg-white" id="ide">
   <div class="lark-legacy-ide-options">
-    <div class="flex justify-start justify-items-start space-x-4">
+    <div class="flex justify-start justify-items-start gap-x-4">
       <div
         class="relative block"
         use:clickOutside
