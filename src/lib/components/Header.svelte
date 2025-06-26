@@ -149,11 +149,11 @@
   }
 
   .navbar__section {
-    @apply flex shrink-0 items-center space-x-2;
+    @apply flex shrink-0 items-center gap-x-2;
   }
 
   .navbar__item {
-    @apply flex shrink-0 cursor-pointer appearance-none flex-row space-x-2 rounded-lg px-2 py-2 transition duration-250 outline-none;
+    @apply flex shrink-0 cursor-pointer appearance-none flex-row gap-x-2 rounded-lg px-2 py-2 transition duration-250 outline-none;
     @apply bg-gray-200 text-gray-900;
     @apply hover:bg-gray-800 hover:text-gray-100;
 
@@ -163,10 +163,6 @@
 
   .navbar__item :global(svg) {
     @apply block shrink-0;
-
-    &:not(:last-child) {
-      @apply mr-2;
-    }
   }
 
   .menu__overlay {
@@ -185,7 +181,7 @@
   }
 
   .menu__item {
-    @apply flex shrink-0 cursor-pointer appearance-none flex-row space-x-2 rounded-lg px-2 py-2 transition duration-250 outline-none;
+    @apply flex shrink-0 cursor-pointer appearance-none flex-row gap-x-2 rounded-lg px-2 py-2 transition duration-250 outline-none;
     @apply bg-gray-100 text-gray-900;
     @apply hover:bg-gray-800 hover:text-gray-100;
 
@@ -195,9 +191,5 @@
 
   .menu__item :global(svg) {
     @apply block shrink-0;
-
-    &:not(:last-child) {
-      @apply mr-2;
-    }
   }
 </style>
