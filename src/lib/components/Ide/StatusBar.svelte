@@ -65,8 +65,8 @@
 
   .statusbar {
     @apply relative flex h-8 w-full flex-row justify-between px-4 py-2 text-sm;
-    @apply bg-gray-900 text-gray-100;
-    @apply dark:bg-gray-100 dark:text-gray-900;
+    @apply bg-gray-100 text-gray-900;
+    @apply dark:bg-gray-900 dark:text-gray-100;
   }
 
   .statusbar__section {
@@ -75,19 +75,19 @@
 
   .status-warning,
   :global(svg).status-warning {
-    @apply text-yellow-300;
-    @apply dark:text-yellow-700;
+    @apply text-yellow-700;
+    @apply dark:text-yellow-500;
   }
 
   .status-success,
   :global(svg).status-success {
-    @apply text-green-300;
-    @apply dark:text-green-700;
+    @apply text-green-700;
+    @apply dark:text-green-500;
   }
 
   .status-error,
   :global(svg).status-error {
-    @apply text-red-300;
-    @apply dark:text-red-700;
+    @apply text-red-700;
+    @apply dark:text-red-500;
   }
 </style>
