@@ -5,15 +5,14 @@
   import Spinner from 'phosphor-svelte/lib/Spinner';
   import Warning from 'phosphor-svelte/lib/WarningCircle';
 
+  import { getIdeContext } from '$lib/components/Ide/Context';
   import { TestStatus } from '$lib/utils/TestCase';
 
-  interface Props {
-    projectName?: string;
-    testId?: number;
-    testStatus?: TestStatus;
-  }
+  const ideStatus = getIdeContext();
 
-  let { projectName, testId, testStatus = TestStatus.UNKNOWN }: Props = $props();
+  let projectName = $derived.by(() => $ideStatus.project?.name || '');
+  let testId = $derived.by(() => $ideStatus.testCase?.id || null);
+  let testStatus = $derived.by(() => $ideStatus.testResult?.status || TestStatus.UNKNOWN);
 </script>
 
 <div class="statusbar">
