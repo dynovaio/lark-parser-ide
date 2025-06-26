@@ -3,10 +3,10 @@
 
   import { onMount } from 'svelte';
 
-  import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
-  import { pyodideInstance } from '$lib/stores/Pyodide';
   import Header from '$lib/components/Header.svelte';
   import Loader from '$lib/components/Loader.svelte';
+  import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
+  import { pyodideInstance } from '$lib/stores/Pyodide';
   import { setupPyodide } from '$lib/utils/Pyodide';
 
   let { children } = $props();
@@ -30,3 +30,13 @@
     {@render children()}
   </main>
 {/if}
+
+<style lang="postcss">
+  @reference '../app.css';
+
+  .page-main {
+    @apply flex h-full max-h-[calc(100vh-4.5rem)] w-full overflow-hidden;
+    @apply bg-gray-100 text-gray-900;
+    @apply dark:bg-gray-900 dark:text-gray-100;
+  }
+</style>
