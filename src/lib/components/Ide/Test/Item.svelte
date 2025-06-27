@@ -12,6 +12,7 @@
   import { TestStatus, executeTestCase, type TestCase, type TestResult } from '$lib/utils/TestCase';
   import { getIdeContext } from '$lib/components/Ide/Context';
   import { pyodideInstance } from '$lib/stores/Pyodide';
+  import TreeViewer from './TreeViewer.svelte';
 
   interface Props {
     testCase: TestCase;
@@ -47,8 +48,6 @@
   };
 
   const execute = async () => {
-    isShowingDetails = false;
-
     ideContext.setTestCase({
       ...testCase,
       result: {
@@ -81,7 +80,6 @@
   $effect(() => {
     if ($ideContext.testCase?.id !== testCase.id) {
       isEditionActive = false;
-      isShowingDetails = false;
 
       if (testCase.description != testDescription) {
         save();
@@ -154,7 +152,7 @@
       {/if}
       {#if testCase.result?.content}
         <div class="test__details--content">
-          <pre>{testCase.result.content}</pre>
+          <TreeViewer tree={testCase.result.content} />
         </div>
       {/if}
     {/if}
@@ -261,11 +259,12 @@
     @apply h-auto w-full whitespace-pre-wrap;
   }
   .test__details--content {
-    @apply w-full overflow-auto rounded-lg p-2 font-mono text-[0.875rem];
+    @apply w-full overflow-auto rounded-lg font-mono text-[0.875rem];
     @apply bg-gray-100 text-gray-900;
+    @apply dark:bg-gray-900 dark:text-gray-100;
   }
   .test__details--content :global(pre) {
-    @apply h-auto w-full p-2 whitespace-pre-wrap;
+    @apply h-auto w-full whitespace-pre-wrap;
   }
   .test__toggle-detail {
     @apply flex shrink-0 cursor-pointer appearance-none items-center justify-center gap-2 rounded-lg px-2 py-2;
