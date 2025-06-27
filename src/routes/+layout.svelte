@@ -7,11 +7,14 @@
   import Loader from '$lib/components/Loader.svelte';
   import { isLoading, loadingMessage, loadingProgress } from '$lib/stores/Loader';
   import { pyodideInstance } from '$lib/stores/Pyodide';
+  import { Theme, setTheme } from '$lib/stores/Theme';
   import { setupPyodide } from '$lib/utils/Pyodide';
 
   let { children } = $props();
 
   onMount(() => {
+    setTheme(localStorage.theme === Theme.Dark ? Theme.Dark : Theme.Light);
+
     (async () => {
       const pyodide = await setupPyodide(loadingMessage, loadingProgress);
       pyodideInstance.set(pyodide);
