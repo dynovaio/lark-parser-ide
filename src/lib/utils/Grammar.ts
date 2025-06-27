@@ -42,14 +42,14 @@ export const loadGrammarFromUri = async (uri: string): Promise<Grammar> => {
   }
 };
 
-export const loadGrammar = async (grammar: Grammar, force: boolean = true): Promise<Grammar> => {
+export const loadGrammar = async (grammar: Grammar, force: boolean = false): Promise<Grammar> => {
   if (!grammar.uri) {
     console.warn('No grammar URI provided.');
     return grammar;
   }
 
-  const isAlreadyLoaded = grammar.content || grammar.error;
-
+  const isAlreadyLoaded = !!grammar.content || !!grammar.error;
+  console.log('isAlreadyLoaded:', isAlreadyLoaded);
   if (isAlreadyLoaded && !force) {
     console.log(`Grammar already loaded from ${grammar.uri}`);
     return grammar;
