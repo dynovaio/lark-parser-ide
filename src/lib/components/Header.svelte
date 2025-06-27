@@ -77,7 +77,7 @@
         </a>
       {/if}
       <button class="navbar__item" onclick={toggleTheme} name="theme-toggle">
-        {#if isDarkMode}
+        {#if $isDarkMode}
           <Dark size={24} aria-label="Dark Mode" />
         {:else}
           <Light size={24} aria-label="Light Mode" />
