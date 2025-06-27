@@ -30,38 +30,106 @@ export const createIdeState = (project?: Project) => {
     subscribe,
     setProject: (project: Project) => {
       update((state) => {
+        const availableProjects = state.availableProjects;
+        const projectIndex = availableProjects.findIndex((p) => p.id === project.id);
+        if (projectIndex !== -1) {
+          availableProjects[projectIndex] = project;
+        } else {
+          availableProjects.push(project);
+        }
+
         return {
           ...state,
           project,
           testCase: project.testCases[0],
-          testResult: project.testCases[0]?.result
+          testResult: project.testCases[0]?.result,
+          availableProjects
         };
       });
     },
     setTestCase: (testCase: TestCase) => {
       update((state) => {
-        return { ...state, testCase };
+        const testCases = state.project.testCases;
+        const testCaseIndex = testCases.findIndex((tc) => tc.id === testCase.id);
+        if (testCaseIndex !== -1) {
+          testCases[testCaseIndex] = testCase;
+        } else {
+          testCases.push(testCase);
+        }
+
+        let project = state.project;
+        project = {
+          ...project,
+          testCases: [...project.testCases]
+        };
+
+        const availableProjects = state.availableProjects;
+        const projectIndex = availableProjects.findIndex((p) => p.id === project.id);
+        if (projectIndex !== -1) {
+          availableProjects[projectIndex] = project;
+        }
+
+        return { ...state, project, testCase, testResult: testCase.result, availableProjects };
       });
     },
     setTestResult: (testResult: TestResult) => {
       update((state) => {
+        let testCase = state.testCase;
+        testCase = {
+          ...testCase,
+          result: testResult
+        } as TestCase;
+
+        const testCases = state.project.testCases;
+        const testCaseIndex = testCases.findIndex((tc) => tc.id === testCase.id);
+        if (testCaseIndex !== -1) {
+          testCases[testCaseIndex] = testCase;
+        } else {
+          testCases.push(testCase);
+        }
+
+        let project = state.project;
+        project = {
+          ...project,
+          testCases: [...testCases]
+        };
+
+        const availableProjects = state.availableProjects;
+        const projectIndex = availableProjects.findIndex((p) => p.id === project.id);
+        if (projectIndex !== -1) {
+          availableProjects[projectIndex] = project;
+        }
+
         return {
           ...state,
-          testResult
+          project,
+          testCase,
+          testResult,
+          availableProjects
         };
       });
     },
     setGrammar: (grammar: Grammar) => {
       update((state) => {
+        let project = state.project;
+        project = {
+          ...project,
+          grammar: {
+            ...project.grammar,
+            ...grammar
+          }
+        };
+
+        const availableProjects = state.availableProjects;
+        const projectIndex = availableProjects.findIndex((p) => p.id === project.id);
+        if (projectIndex !== -1) {
+          availableProjects[projectIndex] = project;
+        }
+
         return {
           ...state,
-          project: {
-            ...state.project,
-            grammar: {
-              ...state.project.grammar,
-              ...grammar
-            }
-          }
+          project,
+          availableProjects
         };
       });
     }
