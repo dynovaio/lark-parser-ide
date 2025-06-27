@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { LarkConfiguration, LarkLanguage } from '$lib/utils/Legacy/Lark';
   import type { Uri, editor as MonacoEditor, languages as MonacoLanguages } from 'monaco-types';
 
-  import type { Grammar } from '$lib/utils/Grammar';
+  import { LarkConfiguration, LarkLanguage } from '$lib/utils/Legacy/Lark';
+  import { getIdeContext } from '$lib/components/Ide/Context';
 
   interface ExtendedRequire extends NodeJS.Require {
     (modules: string[], callback: (monaco: MonacoModule) => void): void;
@@ -30,20 +30,19 @@
     };
   }
 
-  interface Props {
-    grammar: Grammar;
-  }
-
-  let { grammar = $bindable({ uri: '', content: '' }) }: Props = $props();
-  let text = $derived.by(() => grammar.content);
+  const ideContext = getIdeContext();
 
   let editor: MonacoEditor.IStandaloneCodeEditor;
   let container: HTMLElement;
 
   let monacoOptions = $derived({
-    value: text,
+    value: $ideContext.project.grammar?.content,
     language: 'lark',
-    automaticLayout: true
+    automaticLayout: true,
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    fontSize: 14,
+    lineDecorationsWidth: 0
   });
 
   const initEditor = (monaco: MonacoModule) => {
@@ -59,17 +58,25 @@
     monaco.languages.setLanguageConfiguration('lark', LarkConfiguration);
 
     editor = monaco.editor.create(container, monacoOptions);
-    grammar = {
-      ...grammar,
-      content: editor?.getModel()?.getValue() || ''
-    };
 
     editor?.getModel()?.onDidChangeContent(() => {
-      grammar = {
-        ...grammar,
-        content: editor?.getModel()?.getValue() || ''
-      };
+      ideContext.setGrammar({ ...$ideContext.project.grammar, content: getEditorText() });
     });
+
+    ideContext.subscribe((state) => {
+      const text = getEditorText();
+      if (state.project.grammar?.content !== text) {
+        setEditorText(state.project.grammar?.content || '');
+      }
+    });
+  };
+
+  const setEditorText = (text: string) => {
+    if (editor) return editor?.getModel()?.setValue(text);
+  };
+
+  const getEditorText = () => {
+    return editor?.getModel()?.getValue() || '';
   };
 
   onMount(() => {
@@ -78,10 +85,6 @@
     });
     (require as ExtendedRequire)(['vs/editor/editor.main'], initEditor);
   });
-
-  export function setText(text: string) {
-    if (editor) return editor?.getModel()?.setValue(text);
-  }
 </script>
 
 <div bind:this={container} class="flex h-full grow"></div>
