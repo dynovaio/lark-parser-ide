@@ -14,6 +14,7 @@ await micropip.install('lark')
 const LARK_IMPORT_SCRIPT = `
 import lark
 import json
+import traceback
 `;
 
 const LARK_ENCODER_SCRIPT = `
