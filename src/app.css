@@ -1,6 +1,6 @@
 @import '@fontsource/fira-mono';
 @import 'tailwindcss';
-
+@plugin '@tailwindcss/forms';
 @plugin 'tailwind-scrollbar';
 
 @custom-variant dark (&:where(:global(.dark), :global(.dark) *));
