@@ -5,7 +5,6 @@
 
   const ideContext = getIdeContext();
   const availableTestCases = $derived.by(() => {
-    console.log('Available test cases:', $ideContext.project?.testCases);
     return $ideContext.project?.testCases || [];
   });
 
