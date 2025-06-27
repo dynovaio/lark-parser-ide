@@ -8,7 +8,7 @@ export enum TestStatus {
 export type TestResult = {
   status: TestStatus;
   message?: string;
-  stack?: string;
+  traceback?: string;
   content?: string;
 };
 
@@ -22,7 +22,7 @@ export type TestCase = {
 export const TEST_CASE_RESULT_TEMPLATE: TestResult = {
   status: TestStatus.UNKNOWN,
   message: '',
-  stack: '',
+  traceback: '',
   content: ''
 };
 
