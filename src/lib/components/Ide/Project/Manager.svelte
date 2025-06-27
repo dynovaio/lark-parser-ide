@@ -19,12 +19,14 @@
   import Trash from 'phosphor-svelte/lib/Trash';
   import CaretDown from 'phosphor-svelte/lib/CaretDown';
 
+  import { getIdeContext } from '$lib/components/Ide/Context';
+
   import { isLargeScreen } from '$lib/stores/Breakpoints';
-  import { PROJECT_TEMPLATE, type Project } from '$lib/utils/Project';
+
+  import { loadGrammar } from '$lib/utils/Grammar';
+  import { PROJECT_HELLO_WORLD, PROJECT_TEMPLATE, type Project } from '$lib/utils/Project';
 
   interface Props {
-    projects: Project[];
-    project: Project;
     onSelectProject?: (projectId: string) => void;
     onCreateProject?: (project: Project) => void;
     onDownloadProject?: (project: Project) => void;
@@ -33,14 +35,19 @@
   }
 
   let {
-    projects: availableProjects,
-    project: currentProject,
     onSelectProject
     // onCreateProject,
     // onDownloadProject,
     // onConfigureProject,
     // onDeleteProject
   }: Props = $props();
+
+  const ideContext = getIdeContext();
+
+  let { currentProject, availableProjects } = $derived.by(() => ({
+    currentProject: $ideContext.project,
+    availableProjects: $ideContext.availableProjects
+  }));
 
   const {
     elements: { trigger: selectTrigger, menu: selectMenu, option: selectOption },
@@ -52,15 +59,26 @@
       fitViewport: true,
       sameWidth: true
     },
-    defaultSelected: { value: currentProject.id, label: currentProject.name }
+    defaultSelected: { value: (() => currentProject.id)(), label: (() => currentProject.name)() }
   });
 
-  const selectProjectHandler = (projectId: string) => {
+  const selectProjectHandler = async (projectId: string) => {
+    let selectedProject = availableProjects.find((p) => p.id === projectId) || PROJECT_HELLO_WORLD;
+    let selectedGrammar = await loadGrammar(selectedProject.grammar, false);
+
+    selectedProject = {
+      ...selectedProject,
+      grammar: selectedGrammar
+    };
+
+    ideContext.setProject(selectedProject);
+
     if (onSelectProject) {
       onSelectProject(projectId);
     } else {
       console.warn('No `onSelectProject` function provided');
     }
+
     isSelectOpen.set(false);
   };
 </script>
