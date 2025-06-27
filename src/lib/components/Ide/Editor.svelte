@@ -5,6 +5,7 @@
   import { keymap } from '@codemirror/view';
   import { indentWithTab } from '@codemirror/commands';
   import { tomorrow, boysAndGirls } from 'thememirror';
+  /* import { createScrollArea, melt } from '@melt-ui/svelte'; */
 
   import { getIdeContext } from '$lib/components/Ide/Context';
   import { isDarkMode } from '$lib/stores/Theme';
@@ -20,6 +21,24 @@
   const editorTheme = $derived.by(() => {
     return $isDarkMode ? boysAndGirls : tomorrow;
   });
+
+  /*
+  const {
+    elements: {
+      root: scrollAreaRoot,
+      content: scrollAreaContent,
+      viewport: scrollAreaViewport,
+      corner: scrollAreaCorner,
+      scrollbarY: scrollAreaScrollbarY,
+      thumbY: scrollAreaThumbY,
+      thumbX: scrollAreaThumbX,
+      scrollbarX: scrollAreaScrollbarX
+    }
+  } = createScrollArea({
+    type: 'hover',
+    dir: 'ltr'
+  });
+  */
 
   isDarkMode.subscribe((darkMode) => {
     if (editorView) {
@@ -129,20 +148,69 @@
   });
 </script>
 
-<div bind:this={container} class="lark-ide__editor"></div>
+<div bind:this={container} class="editor__content"></div>
+
+<!--
+  <div use:melt={$scrollAreaRoot} class="editor__root">
+    <div use:melt={$scrollAreaViewport} class="editor__viewport">
+      <div use:melt={$scrollAreaContent} bind:this={container} class="editor__content"></div>
+    </div>
+    <div use:melt={$scrollAreaScrollbarY} class="editor__scrollbar_y">
+      <div use:melt={$scrollAreaThumbY} class="editor__scrollbar_thumb_y"></div>
+    </div>
+    <div use:melt={$scrollAreaScrollbarX} class="editor__scrollbar_x">
+      <div use:melt={$scrollAreaThumbX} class="editor__scrollbar_thumb_x"></div>
+    </div>
+    <div use:melt={$scrollAreaCorner} class="editor__scrollbar_corner"></div>
+  </div>
+-->
 
 <style lang="postcss">
   @reference "../../../app.css";
 
-  .lark-ide__editor {
-    @apply relative flex h-full w-full flex-col overflow-hidden;
+  /*
+  .editor__root {
+    @apply relative block h-full w-full overflow-hidden;
+    @apply bg-gray-100 text-gray-900;
+    @apply dark:bg-gray-900 dark:text-gray-100;
   }
 
-  .lark-ide__editor :global(.cm-editor) {
+  .editor__viewport {
+    @apply relative block h-full w-full overflow-auto;
+  }
+
+  .editor__scrollbar_y {
+    @apply flex w-2 touch-none p-px pb-2 transition-colors select-none;
+    @apply bg-gray-100;
+    @apply dark:bg-gray-900;
+  }
+
+  .editor__scrollbar_thumb_y {
+    @apply relative flex-1 rounded-lg;
+    @apply bg-orange-500;
+  }
+
+  .editor__scrollbar_x {
+    @apply flex h-2 touch-none p-px pr-2 select-none;
+    @apply bg-gray-100;
+    @apply dark:bg-gray-900;
+  }
+
+  .editor__scrollbar_thumb_x {
+    @apply relative rounded-lg;
+    @apply bg-orange-500;
+  }
+  */
+
+  .editor__content {
+    @apply relative h-full w-full;
+  }
+
+  .editor__content :global(.cm-editor) {
     @apply h-full;
   }
 
-  .lark-ide__editor :global(.cm-scroller) {
+  .editor__content :global(.cm-scroller) {
     @apply h-full;
   }
 </style>
