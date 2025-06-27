@@ -12,12 +12,13 @@
   import Menu from 'phosphor-svelte/lib/List';
   import ToggleLeft from 'phosphor-svelte/lib/ToggleLeft';
 
-  import { isLargeScreen } from '$lib/stores/Breakpoints';
   import LarkParserLogo from '$lib/components/Icon/LarkParserLogo.svelte';
   import IdeSwitch from '$lib/components/IdeSwitch.svelte';
 
+  import { isLargeScreen } from '$lib/stores/Breakpoints';
+  import { Theme, isDarkMode, setTheme } from '$lib/stores/Theme';
+
   let fullscreen = $state(false);
-  let isDarkMode = $state(true);
 
   const {
     elements: { trigger, overlay, content, close, portalled },
@@ -44,9 +45,8 @@
   };
 
   const toggleTheme = () => {
-    document.documentElement.classList.toggle('dark');
-    isDarkMode = document.documentElement.classList.contains('dark');
-    localStorage.theme = isDarkMode ? 'dark' : 'light';
+    console.log('Toggling theme to', $isDarkMode ? Theme.Light : Theme.Dark);
+    setTheme($isDarkMode ? Theme.Light : Theme.Dark);
   };
 </script>
 
