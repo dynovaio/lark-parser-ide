@@ -45,7 +45,6 @@
   };
 
   const toggleTheme = () => {
-    console.log('Toggling theme to', $isDarkMode ? Theme.Light : Theme.Dark);
     setTheme($isDarkMode ? Theme.Light : Theme.Dark);
   };
 </script>
