@@ -17,14 +17,13 @@
 
   const unsuscribe = ideState.subscribe(async (value) => {
     try {
-      let grammar: Grammar = await loadGrammar(value.project.grammar);
+      let grammar: Grammar = await loadGrammar(value.project.grammar, false);
       ideState.setGrammar(grammar);
     } catch (error) {
       console.error(`Error loading grammar for project ${value.project.id}:`, error);
     }
-
-    unsuscribe();
   });
+  unsuscribe();
 
   const {
     elements: { root: tabRoot, list: tabList, content: tabContent, trigger: tabTrigger },
@@ -47,16 +46,12 @@
 
 <section class="lark-ide">
   <div class="lark-ide__header">
-    <ProjectManager
-      project={$ideState.project}
-      projects={$ideState.availableProjects}
-      onSelectProject={handleSelectProject}
-    />
+    <ProjectManager onSelectProject={handleSelectProject} />
   </div>
   {#if $isLargeScreen}
     <div class="lark-ide__main">
       <div class="lark-ide__section">
-        <Editor grammar={$ideState.project.grammar} />
+        <Editor />
       </div>
       <div class="lark-ide__section">
         <TestManager />
@@ -77,7 +72,7 @@
       </div>
       <div use:melt={$tabContent('editor')} class="lark-ide__tab-content">
         <div class="lark-ide__section">
-          <Editor grammar={$ideState.project.grammar} />
+          <Editor />
         </div>
       </div>
       <div use:melt={$tabContent('tests')} class="lark-ide__tab-content">
