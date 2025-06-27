@@ -136,9 +136,11 @@
     @apply flex shrink-0 cursor-pointer appearance-none flex-row items-center gap-x-2 rounded-lg px-2 py-2 transition duration-250 outline-none;
     @apply bg-gray-200 text-gray-900;
     @apply hover:bg-gray-800 hover:text-gray-100;
+    @apply focus:bg-gray-800 focus:text-gray-100;
 
     @apply dark:bg-gray-800 dark:text-gray-100;
     @apply dark:hover:bg-gray-200 dark:hover:text-gray-900;
+    @apply dark:focus:bg-gray-200 dark:focus:text-gray-900;
   }
 
   .project-manager__item :global(svg) {
