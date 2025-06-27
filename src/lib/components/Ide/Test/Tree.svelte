@@ -81,11 +81,15 @@
   }
 
   .node {
-    @apply flex shrink-0 grow items-center gap-2 rounded-md px-2 py-1;
-    @apply hover:bg-gray-200 dark:hover:bg-gray-800;
+    @apply flex shrink-0 grow items-center gap-2 rounded-md px-2 py-1 font-normal;
+    @apply hover:bg-gray-200;
+    @apply focus:bg-gray-200;
+
+    @apply dark:hover:bg-gray-800;
+    @apply dark:focus:bg-gray-800;
   }
   .node--terminal :global(code) {
-    @apply pl-4;
+    @apply pl-4 font-black;
     @apply text-blue-700;
     @apply dark:text-blue-400;
   }
