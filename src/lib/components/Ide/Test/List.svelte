@@ -31,7 +31,7 @@
     <div use:melt={$scrollAreaContent} class="test-list__content">
       {#each availableTestCases as testCase (testCase.id)}
         <div class="test-list__item">
-          <Test {testCase} />
+          <Test {testCase} isActive={testCase.id === $ideContext.testCase?.id} />
         </div>
       {/each}
     </div>
