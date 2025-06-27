@@ -1,90 +1,148 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import type { Uri, editor as MonacoEditor, languages as MonacoLanguages } from 'monaco-types';
+  import { onMount, onDestroy } from 'svelte';
+  import { EditorView, basicSetup } from 'codemirror';
+  import { EditorState, Compartment } from '@codemirror/state';
+  import { keymap } from '@codemirror/view';
+  import { indentWithTab } from '@codemirror/commands';
+  import { tomorrow, boysAndGirls } from 'thememirror';
 
-  import { LarkConfiguration, LarkLanguage } from '$lib/utils/Legacy/Lark';
   import { getIdeContext } from '$lib/components/Ide/Context';
-
-  interface ExtendedRequire extends NodeJS.Require {
-    (modules: string[], callback: (monaco: MonacoModule) => void): void;
-    config: (options: object) => void;
-  }
-
-  interface MonacoModule {
-    editor: {
-      create: (
-        container: HTMLElement,
-        options: MonacoEditor.IStandaloneEditorConstructionOptions
-      ) => MonacoEditor.IStandaloneCodeEditor;
-    };
-    languages: {
-      register: (options: MonacoLanguages.ILanguageExtensionPoint) => void;
-      setMonarchTokensProvider: (
-        languageId: string,
-        tokensProvider: MonacoLanguages.IMonarchLanguage
-      ) => void;
-      setLanguageConfiguration: (
-        languageId: string,
-        configuration: MonacoLanguages.LanguageConfiguration
-      ) => void;
-    };
-  }
+  import { isDarkMode } from '$lib/stores/Theme';
+  import { larkLanguageSupport } from '$lib/utils/CodeMirror/LarkLanguage';
 
   const ideContext = getIdeContext();
 
-  let editor: MonacoEditor.IStandaloneCodeEditor;
+  let editorView: EditorView;
   let container: HTMLElement;
 
-  let monacoOptions = $derived({
-    value: $ideContext.project.grammar?.content,
-    language: 'lark',
-    automaticLayout: true,
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
-    fontSize: 14,
-    lineDecorationsWidth: 0
+  const editorThemeCompartment = new Compartment();
+
+  const editorTheme = $derived.by(() => {
+    return $isDarkMode ? boysAndGirls : tomorrow;
   });
 
-  const initEditor = (monaco: MonacoModule) => {
-    monaco.languages.register({
-      id: 'lark',
-      extensions: ['.lark'],
-      aliases: ['Lark', 'lark'],
-      firstLine: '^#!/.*\\bpython[0-9.-]*\\b',
-      configuration: './lark.js' as unknown as Uri
+  isDarkMode.subscribe((darkMode) => {
+    if (editorView) {
+      editorView.dispatch({
+        effects: editorThemeCompartment.reconfigure(darkMode ? boysAndGirls : tomorrow)
+      });
+    }
+  });
+
+  // Track if we're currently updating from external source to prevent loops
+  let isUpdatingFromExternal = false;
+
+  const initEditor = () => {
+    const initialDoc = $ideContext.project.grammar?.content || '';
+
+    const startState = EditorState.create({
+      doc: initialDoc,
+      extensions: [
+        editorThemeCompartment.of(editorTheme),
+        basicSetup,
+        larkLanguageSupport(),
+        keymap.of([indentWithTab]),
+        EditorView.theme({
+          '&': {
+            fontSize: '14px'
+          },
+          '.cm-content': {
+            fontFamily: 'Fira Mono, monospace'
+          },
+          '.cm-focused': {
+            outline: 'none'
+          },
+          '.cm-editor': {
+            height: '100%'
+          },
+          '.cm-scroller': {
+            fontFamily: 'Fira Mono, monospace'
+          }
+        }),
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged && !isUpdatingFromExternal) {
+            const newContent = update.state.doc.toString();
+            ideContext.setGrammar({
+              ...$ideContext.project.grammar,
+              content: newContent
+            });
+          }
+        })
+        // EditorView.lineWrapping
+      ]
     });
 
-    monaco.languages.setMonarchTokensProvider('lark', LarkLanguage);
-    monaco.languages.setLanguageConfiguration('lark', LarkConfiguration);
-
-    editor = monaco.editor.create(container, monacoOptions);
-
-    editor?.getModel()?.onDidChangeContent(() => {
-      ideContext.setGrammar({ ...$ideContext.project.grammar, content: getEditorText() });
+    editorView = new EditorView({
+      state: startState,
+      parent: container
     });
 
-    ideContext.subscribe((state) => {
-      const text = getEditorText();
-      if (state.project.grammar?.content !== text) {
-        setEditorText(state.project.grammar?.content || '');
+    // Subscribe to context changes
+    const unsubscribe = ideContext.subscribe((state) => {
+      const currentContent = getEditorText();
+      const newContent = state.project.grammar?.content || '';
+
+      if (newContent !== currentContent) {
+        setEditorText(newContent);
       }
     });
+
+    return unsubscribe;
   };
 
   const setEditorText = (text: string) => {
-    if (editor) return editor?.getModel()?.setValue(text);
+    if (editorView && text !== getEditorText()) {
+      isUpdatingFromExternal = true;
+
+      editorView.dispatch({
+        changes: {
+          from: 0,
+          to: editorView.state.doc.length,
+          insert: text
+        }
+      });
+
+      // Reset flag after update
+      setTimeout(() => {
+        isUpdatingFromExternal = false;
+      }, 0);
+    }
   };
 
   const getEditorText = () => {
-    return editor?.getModel()?.getValue() || '';
+    return editorView?.state.doc.toString() || '';
   };
 
+  let unsubscribe: (() => void) | undefined;
+
   onMount(() => {
-    (require as ExtendedRequire).config({
-      paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs' }
-    });
-    (require as ExtendedRequire)(['vs/editor/editor.main'], initEditor);
+    unsubscribe = initEditor();
+  });
+
+  onDestroy(() => {
+    if (editorView) {
+      editorView.destroy();
+    }
+    if (unsubscribe) {
+      unsubscribe();
+    }
   });
 </script>
 
-<div bind:this={container} class="flex h-full grow"></div>
+<div bind:this={container} class="lark-ide__editor"></div>
+
+<style lang="postcss">
+  @reference "../../../app.css";
+
+  .lark-ide__editor {
+    @apply relative flex h-full w-full flex-col overflow-hidden;
+  }
+
+  .lark-ide__editor :global(.cm-editor) {
+    @apply h-full;
+  }
+
+  .lark-ide__editor :global(.cm-scroller) {
+    @apply h-full;
+  }
+</style>
