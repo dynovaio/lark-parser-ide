@@ -13,7 +13,6 @@
   import { getIdeContext } from '$lib/components/Ide/Context';
   import { pyodideInstance } from '$lib/stores/Pyodide';
   import TreeViewer from './TreeViewer.svelte';
-  import test from 'node:test';
 
   interface Props {
     testCase: TestCase;
