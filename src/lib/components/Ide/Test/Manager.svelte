@@ -6,7 +6,16 @@
   import Empty from 'phosphor-svelte/lib/Tray';
 
   import { getIdeContext } from '$lib/components/Ide/Context';
-  import { TEST_CASE_TEMPLATE } from '$lib/utils/TestCase';
+
+  import { pyodideInstance } from '$lib/stores/Pyodide';
+
+  import {
+    TestStatus,
+    TEST_CASE_TEMPLATE,
+    executeTestCase,
+    type TestCase,
+    type TestResult
+  } from '$lib/utils/TestCase';
 
   const ideContext = getIdeContext();
   const isEmpty = $derived.by(() => {
@@ -18,6 +27,44 @@
     const newTestCase = { ...TEST_CASE_TEMPLATE, id: newTestCaseId };
 
     ideContext.setTestCase(newTestCase);
+  };
+
+  const runTestCase = async (testCase: TestCase) => {
+    ideContext.setTestCase({
+      ...testCase,
+      result: {
+        ...(testCase.result || {}),
+        status: TestStatus.PARSING
+      }
+    });
+
+    let testResult: TestResult;
+
+    if (!$pyodideInstance) {
+      testResult = {
+        status: TestStatus.FAILURE,
+        message: 'Pyodide instance is not available'
+      } as TestResult;
+    } else {
+      testResult = await executeTestCase(
+        $pyodideInstance,
+        $ideContext.project.parserOptions,
+        $ideContext.project.grammar,
+        testCase
+      );
+    }
+
+    ideContext.setTestCase({
+      ...testCase,
+      result: testResult
+    });
+  };
+
+  const runAllTestCases = async () => {
+    const testCases = $ideContext.project?.testCases || [];
+    for (const testCase of testCases) {
+      await runTestCase(testCase);
+    }
   };
 </script>
 
@@ -40,7 +87,7 @@
         <Add size={24} />
         <span>Add new test </span>
       </button>
-      <button class="test-manager__control">
+      <button class="test-manager__control" onclick={() => runAllTestCases()}>
         <Play size={24} />
         <span>Run All Tests </span>
       </button>
