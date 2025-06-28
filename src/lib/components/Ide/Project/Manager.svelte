@@ -35,11 +35,11 @@
   }
 
   let {
-    onSelectProject
-    // onCreateProject,
-    // onDownloadProject,
-    // onConfigureProject,
-    // onDeleteProject
+    onSelectProject,
+    onCreateProject,
+    onDownloadProject,
+    onConfigureProject,
+    onDeleteProject
   }: Props = $props();
 
   const ideContext = getIdeContext();
@@ -62,7 +62,21 @@
     defaultSelected: { value: (() => currentProject.id)(), label: (() => currentProject.name)() }
   });
 
-  const selectProjectHandler = async (projectId: string) => {
+  const {
+    elements: {
+      trigger: dropDownTrigger,
+      menu: dropDownMenu,
+      item: dropDownItem,
+      separator: dropDownSeparator,
+      arrow: dropDownArrow
+    },
+    states: { open: dropDownOpen }
+  } = createDropdownMenu({
+    forceVisible: true,
+    loop: true
+  });
+
+  const selectProject = async (projectId: string) => {
     let selectedProject = availableProjects.find((p) => p.id === projectId) || PROJECT_HELLO_WORLD;
     let selectedGrammar = await loadGrammar(selectedProject.grammar, false);
 
@@ -80,6 +94,38 @@
     }
 
     isSelectOpen.set(false);
+  };
+
+  const createProjectHandler = (project: Project) => {
+    if (onCreateProject) {
+      onCreateProject(project);
+    } else {
+      console.warn('No `onCreateProject` function provided');
+    }
+  };
+
+  const downloadProjectHandler = (project: Project) => {
+    if (onDownloadProject) {
+      onDownloadProject(project);
+    } else {
+      console.warn('No `onDownloadProject` function provided');
+    }
+  };
+
+  const configureProjectHandler = (project: Project) => {
+    if (onConfigureProject) {
+      onConfigureProject(project);
+    } else {
+      console.warn('No `onConfigureProject` function provided');
+    }
+  };
+
+  const deleteProjectHandler = (projectId: string) => {
+    if (onDeleteProject) {
+      onDeleteProject(projectId);
+    } else {
+      console.warn('No `onDeleteProject` function provided');
+    }
   };
 </script>
 
@@ -99,7 +145,7 @@
           {#each availableProjects as project (project.id)}
             <button
               use:melt={$selectOption({ value: project.id, label: project.name })}
-              onclick={() => selectProjectHandler(project.id)}
+              onclick={() => selectProject(project.id)}
               class="project-manager__selector__option"
             >
               {#if project.id === currentProject.id}
@@ -113,11 +159,52 @@
     </div>
   </div>
   <div class="project-manager__section">
-    <div class="project-manager__item">
+    <div use:melt={$dropDownTrigger} class="project-manager__item">
       <Menu size={24} />
     </div>
   </div>
 </div>
+
+{#if $dropDownOpen}
+  <div
+    use:melt={$dropDownMenu}
+    transition:fly={{ duration: 150, y: -10 }}
+    class="project-manager__dropdown"
+  >
+    <button
+      use:melt={$dropDownItem}
+      onclick={() => downloadProjectHandler(currentProject)}
+      class="project-manager__dropdown__option"
+    >
+      <Download size={16} class="shrink-0" />
+      <span class="grow text-left">Download grammar</span>
+    </button>
+    <button
+      use:melt={$dropDownItem}
+      onclick={() => configureProjectHandler(currentProject)}
+      class="project-manager__dropdown__option project-manager__dropdown__option--edit"
+    >
+      <Settings size={16} class="shrink-0" />
+      <span class="grow text-left">Configure parser</span>
+    </button>
+    <button
+      use:melt={$dropDownItem}
+      onclick={() => createProjectHandler({ ...PROJECT_TEMPLATE })}
+      class="project-manager__dropdown__option project-manager__dropdown__option--add"
+    >
+      <Add size={16} class="shrink-0" />
+      <span class="grow text-left">New Project</span>
+    </button>
+    <button
+      use:melt={$dropDownItem}
+      onclick={() => deleteProjectHandler(currentProject.id)}
+      class="project-manager__dropdown__option project-manager__dropdown__option--delete"
+    >
+      <Trash size={16} class="shrink-0" />
+      <span class="grow text-left">Delete Project</span>
+    </button>
+  </div>
+{/if}
 
 <style lang="postcss">
   @reference "../../../../app.css";
@@ -157,14 +244,59 @@
 
   .project-manager__selector__options {
     @apply z-10 flex max-h-[20rem] flex-col gap-y-2 overflow-y-auto rounded-lg p-2 shadow;
+
     @apply bg-gray-200 text-gray-900;
+
+    @apply dark:shadow-gray-900;
     @apply dark:bg-gray-800 dark:text-gray-100;
   }
 
   .project-manager__selector__option {
     @apply flex shrink-0 cursor-pointer appearance-none flex-row items-center gap-x-2 rounded-lg px-2 py-2 text-left transition duration-250 outline-none;
-    @apply hover:bg-gray-800 hover:text-gray-200;
 
+    @apply bg-gray-100 text-gray-900;
+    @apply hover:bg-gray-800 hover:text-gray-200;
+    @apply focus:bg-gray-800 focus:text-gray-200;
+
+    @apply dark:bg-gray-900 dark:text-gray-100;
     @apply dark:hover:bg-gray-200 dark:hover:text-gray-900;
+    @apply dark:focus:bg-gray-200 dark:focus:text-gray-900;
+  }
+
+  .project-manager__dropdown {
+    @apply z-10 flex max-h-[20rem] flex-col gap-y-2 overflow-y-auto rounded-lg p-2 shadow;
+    @apply lg:max-h-none;
+
+    @apply dark:shadow-gray-900;
+    @apply bg-gray-200 text-gray-900;
+    @apply dark:bg-gray-800 dark:text-gray-100;
+  }
+
+  .project-manager__dropdown__option {
+    @apply flex shrink-0 cursor-pointer appearance-none flex-row items-center gap-x-2 rounded-lg px-2 py-2 text-left transition duration-250 outline-none;
+
+    @apply bg-gray-100 text-gray-900;
+    @apply hover:bg-gray-800 hover:text-gray-200;
+    @apply focus:bg-gray-800 focus:text-gray-200;
+
+    @apply bg-gray-900 text-gray-100;
+    @apply dark:hover:bg-gray-200 dark:hover:text-gray-900;
+    @apply dark:focus:bg-gray-200 dark:focus:text-gray-900;
+  }
+
+  .project-manager__dropdown__option--add {
+    @apply hover:bg-blue-500 hover:text-gray-100;
+    @apply focus:bg-blue-500 focus:text-gray-100;
+  }
+
+  .project-manager__dropdown__option--edit {
+    @apply hover:bg-yellow-500 hover:text-gray-900;
+    @apply focus:bg-yellow-500 focus:text-gray-900;
+  }
+
+  .project-manager__dropdown__option--delete {
+    @apply text-red-500;
+    @apply hover:bg-red-500 hover:text-gray-100;
+    @apply focus:bg-red-500 focus:text-gray-100;
   }
 </style>
