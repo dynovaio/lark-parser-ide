@@ -213,19 +213,19 @@
   @reference "../../../../app.css";
 
   .test__wrapper {
-    @apply flex w-full shrink-0 appearance-none flex-col overflow-auto rounded-lg text-left;
+    @apply flex w-full shrink-0 appearance-none flex-col gap-4 overflow-auto rounded-lg p-4 text-left;
   }
 
   .test__header {
-    @apply flex flex-col gap-4 p-4;
+    @apply flex flex-col gap-4;
   }
 
   .test__body {
-    @apply p-4;
+    @apply flex flex-col gap-4;
   }
 
   .test__footer {
-    @apply flex items-center justify-between gap-x-4 p-4;
+    @apply flex items-center justify-between gap-x-4;
   }
 
   .test__active-indicator {

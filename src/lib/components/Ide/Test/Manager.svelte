@@ -108,8 +108,8 @@
   @reference "../../../../app.css";
 
   .test-manager {
-    @apply relative flex h-full w-full shrink-0 grow flex-col;
-    @apply bg-gray-200 text-gray-900;
+    @apply relative flex h-full w-full shrink-0 grow flex-col gap-4;
+    @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
 
@@ -143,11 +143,11 @@
   }
 
   .test-manager__list-wrapper {
-    @apply relative flex max-h-[calc(100%-4.5rem)] w-full shrink-0 grow flex-col overflow-hidden;
+    @apply relative flex max-h-[calc(100%-3.5rem)] w-full shrink-0 grow flex-col overflow-hidden;
   }
 
   .test-manager__controls {
-    @apply relative flex w-full shrink-0 flex-row items-center justify-between gap-4 p-4;
+    @apply relative flex w-full shrink-0 flex-row items-center justify-between gap-4;
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }

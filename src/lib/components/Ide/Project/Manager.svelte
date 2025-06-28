@@ -532,7 +532,7 @@
   @reference "../../../../app.css";
 
   .project-manager {
-    @apply relative flex shrink-0 flex-row gap-x-2 p-4;
+    @apply relative flex shrink-0 flex-row gap-4 px-4;
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
@@ -652,15 +652,15 @@
   }
 
   .form-field__input {
-    @apply rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 transition duration-250;
+    @apply rounded-lg border px-4 py-2 transition duration-250;
+    @apply border-gray-300 bg-white text-gray-900;
     @apply focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none;
-    @apply dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-500 dark:focus:ring-blue-500;
   }
 
   .form-field__input--checkbox {
-    @apply h-4 w-4 rounded border border-gray-300 bg-white p-0 text-blue-600 transition duration-250;
+    @apply h-4 w-4 rounded border border-gray-300 p-0 transition duration-250;
+    @apply bg-white text-blue-600;
     @apply focus:ring-2 focus:ring-blue-500 focus:outline-none;
-    @apply dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-500 dark:focus:ring-blue-500;
     @apply checked:bg-blue-500 checked:text-white;
   }
 

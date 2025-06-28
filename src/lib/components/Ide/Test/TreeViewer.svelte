@@ -57,6 +57,8 @@
   @reference "../../../../app.css";
 
   .tree-viewer {
-    @apply w-full rounded-lg p-4;
+    @apply w-full rounded-lg border p-4;
+    @apply border-gray-300;
+    @apply dark:border-gray-700;
   }
 </style>

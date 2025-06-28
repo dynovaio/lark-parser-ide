@@ -91,7 +91,7 @@
   @reference "../../app.css";
 
   .lark-ide {
-    @apply flex h-full max-h-[calc(100vh-4.5rem)] w-full grow flex-col overflow-hidden;
+    @apply flex h-full max-h-[calc(100vh-4.5rem)] w-full grow flex-col gap-4 overflow-hidden;
   }
 
   .lark-ide__header {
@@ -104,8 +104,12 @@
   }
 
   .lark-ide__section {
-    @apply relative h-full w-full shrink-0 grow;
-    @apply lg:w-1/2;
+    @apply relative h-full w-full shrink-0 grow p-4;
+    @apply lg:w-1/2 lg:py-0 lg:pr-2;
+
+    &:last-child {
+      @apply lg:pr-4 lg:pl-2;
+    }
   }
 
   .lark-ide__footer {
@@ -131,6 +135,6 @@
   }
 
   .lark-ide__tab-content {
-    @apply relative h-full max-h-[calc(100vh-4.5rem-2rem-4.5rem-2.5rem)] w-full shrink-0 grow;
+    @apply relative h-full max-h-[calc(100vh-4.5rem-2rem-3.5rem-2.5rem)] w-full shrink-0 grow;
   }
 </style>

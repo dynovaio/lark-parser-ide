@@ -57,6 +57,7 @@
       <span>No test selected</span>
     {/if}
   </div>
+  <div class="statusbar__border"></div>
 </div>
 
 <style lang="postcss">
@@ -64,8 +65,14 @@
 
   .statusbar {
     @apply relative flex h-8 w-full flex-row justify-between px-4 py-2 text-sm;
-    @apply bg-gray-100 text-gray-900;
-    @apply dark:bg-gray-900 dark:text-gray-100;
+    @apply bg-gray-200 text-gray-900;
+    @apply dark:bg-gray-800 dark:text-gray-100;
+  }
+
+  .statusbar__border {
+    @apply absolute top-0 bottom-0 left-0 z-10 h-px w-full;
+    @apply bg-gray-300;
+    @apply dark:bg-gray-700;
   }
 
   .statusbar__section {

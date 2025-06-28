@@ -54,7 +54,7 @@ const larkIdeDarkEditorTheme = EditorView.theme(
     },
 
     '.cm-content': {
-      padding: '16px',
+      padding: '16px 0',
       caretColor: colors.cursor,
       lineHeight: '1.6'
     },

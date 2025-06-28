@@ -58,7 +58,7 @@
   }
 
   .test-list__content {
-    @apply !flex w-full flex-col space-y-4 p-4;
+    @apply !flex w-full flex-col space-y-4;
   }
 
   .test-list__scrollbar_y {
