@@ -3,7 +3,6 @@ import type { Extension } from '@codemirror/state';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
 
-// Color palette extracted from the project - dark theme variant
 const colors = {
   // Background colors
   background: '#111827', // gray-900
@@ -34,7 +33,7 @@ const colors = {
 
   // Borders and lines
   border: '#374151', // gray-700
-  activeLine: '#1f2937', // gray-800
+  activeLine: 'rgba(59, 130, 246, 0.05)', // Very subtle blue tint for dark mode
   lineNumber: '#6b7280', // gray-500
   activeLineNumber: '#d1d5db', // gray-300
 
@@ -44,7 +43,6 @@ const colors = {
   success: '#34d399' // green-400
 };
 
-// Dark theme for CodeMirror
 const larkIdeDarkEditorTheme = EditorView.theme(
   {
     '&': {
@@ -82,7 +80,14 @@ const larkIdeDarkEditorTheme = EditorView.theme(
     },
 
     '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-      backgroundColor: colors.selectionMatch
+      backgroundColor: colors.selectionMatch,
+      borderRadius: '2px'
+    },
+
+    '.cm-line .cm-selectionBackground': {
+      backgroundColor: colors.selectionMatch,
+      position: 'relative',
+      zIndex: 10
     },
 
     '.cm-panels': {
@@ -109,7 +114,14 @@ const larkIdeDarkEditorTheme = EditorView.theme(
     },
 
     '.cm-activeLine': {
-      backgroundColor: colors.activeLine
+      backgroundColor: colors.activeLine,
+      position: 'relative'
+    },
+
+    '.cm-activeLine .cm-selectionBackground': {
+      backgroundColor: colors.selectionMatch,
+      position: 'relative',
+      zIndex: 15
     },
 
     '.cm-selectionMatch': {
@@ -182,7 +194,6 @@ const larkIdeDarkEditorTheme = EditorView.theme(
   { dark: true }
 );
 
-// Syntax highlighting for dark theme
 const larkIdeDarkHighlightStyle = HighlightStyle.define([
   { tag: t.keyword, color: colors.keyword, fontWeight: 'bold' },
   { tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName], color: colors.foreground },
@@ -219,7 +230,6 @@ const larkIdeDarkHighlightStyle = HighlightStyle.define([
   { tag: [t.number], color: colors.number }
 ]);
 
-// Export the complete dark theme
 export const larkIdeDarkTheme: Extension = [
   larkIdeDarkEditorTheme,
   syntaxHighlighting(larkIdeDarkHighlightStyle)

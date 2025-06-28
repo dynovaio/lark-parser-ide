@@ -3,7 +3,6 @@ import type { Extension } from '@codemirror/state';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
 
-// Color palette extracted from the project
 const colors = {
   // Background colors
   background: '#f3f4f6', // gray-100
@@ -34,7 +33,7 @@ const colors = {
 
   // Borders and lines
   border: '#d1d5db', // gray-300
-  activeLine: '#f9fafb', // gray-50
+  activeLine: 'rgba(59, 130, 246, 0.03)', // Very subtle blue tint instead of gray
   lineNumber: '#9ca3af', // gray-400
   activeLineNumber: '#374151', // gray-700
 
@@ -44,7 +43,6 @@ const colors = {
   success: '#059669' // green-600
 };
 
-// Light theme for CodeMirror
 const larkIdeLightEditorTheme = EditorView.theme(
   {
     '&': {
@@ -82,7 +80,14 @@ const larkIdeLightEditorTheme = EditorView.theme(
     },
 
     '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-      backgroundColor: colors.selectionMatch
+      backgroundColor: colors.selectionMatch,
+      borderRadius: '2px'
+    },
+
+    '.cm-line .cm-selectionBackground': {
+      backgroundColor: colors.selectionMatch,
+      position: 'relative',
+      zIndex: 10
     },
 
     '.cm-panels': {
@@ -109,7 +114,14 @@ const larkIdeLightEditorTheme = EditorView.theme(
     },
 
     '.cm-activeLine': {
-      backgroundColor: colors.activeLine
+      backgroundColor: colors.activeLine,
+      position: 'relative'
+    },
+
+    '.cm-activeLine .cm-selectionBackground': {
+      backgroundColor: colors.selectionMatch,
+      position: 'relative',
+      zIndex: 15
     },
 
     '.cm-selectionMatch': {
@@ -123,11 +135,7 @@ const larkIdeLightEditorTheme = EditorView.theme(
 
     '.cm-gutters': {
       color: colors.lineNumber,
-      // backgroundColor: colors.surface,
-
-      // color: colors.foreground,
       backgroundColor: colors.background,
-
       border: 'none',
       borderRight: `1px solid ${colors.border}`
     },
@@ -186,7 +194,6 @@ const larkIdeLightEditorTheme = EditorView.theme(
   { dark: false }
 );
 
-// Syntax highlighting for light theme
 const larkIdeLightHighlightStyle = HighlightStyle.define([
   { tag: t.keyword, color: colors.keyword, fontWeight: 'bold' },
   { tag: [t.name, t.deleted, t.character, t.propertyName, t.macroName], color: colors.foreground },
@@ -223,7 +230,6 @@ const larkIdeLightHighlightStyle = HighlightStyle.define([
   { tag: [t.number], color: colors.number }
 ]);
 
-// Export the complete light theme
 export const larkIdeLightTheme: Extension = [
   larkIdeLightEditorTheme,
   syntaxHighlighting(larkIdeLightHighlightStyle)
