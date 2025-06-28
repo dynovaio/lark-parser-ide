@@ -57,7 +57,7 @@ export const loadGrammar = async (grammar: Grammar, force: boolean = false): Pro
   return await loadGrammarFromUri(grammar.uri);
 };
 
-export const downloadGrammar = async (name: string, grammar: Grammar): Promise<Grammar> => {
+export const downloadGrammar = async (fileName: string, grammar: Grammar): Promise<Grammar> => {
   if (!grammar.content) {
     console.warn('No content to download for the grammar.');
     return grammar;
@@ -67,7 +67,7 @@ export const downloadGrammar = async (name: string, grammar: Grammar): Promise<G
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${name}.lark`;
+  a.download = `${fileName}.lark`;
   a.style.display = 'none';
 
   document.body.appendChild(a);
