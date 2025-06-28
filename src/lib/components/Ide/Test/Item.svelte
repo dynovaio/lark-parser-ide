@@ -51,6 +51,7 @@
     ideContext.setTestCase({
       ...testCase,
       result: {
+        ...(testCase.result || {}),
         status: TestStatus.PARSING
       }
     });
@@ -75,6 +76,17 @@
       ...testCase,
       result: testResult
     });
+  };
+
+  const remove = () => {
+    let project = $ideContext.project;
+
+    project = {
+      ...project,
+      testCases: project.testCases.filter((tc: TestCase) => tc.id !== testCase.id)
+    };
+
+    ideContext.setProject(project);
   };
 
   $effect(() => {
@@ -180,7 +192,14 @@
       <Play size={24} />
       <span>Run</span>
     </button>
-    <button class="test__action test__action--delete">
+    <button
+      onclick={(event: Event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        remove();
+      }}
+      class="test__action test__action--delete"
+    >
       <Delete size={24} />
       <span>Delete</span>
     </button>
@@ -193,12 +212,15 @@
   .test__wrapper {
     @apply flex w-full shrink-0 appearance-none flex-col overflow-auto rounded-lg text-left;
   }
+
   .test__header {
     @apply flex flex-col gap-4 p-4;
   }
+
   .test__body {
     @apply p-4;
   }
+
   .test__footer {
     @apply flex items-center justify-between gap-x-4 p-4;
   }
@@ -247,25 +269,31 @@
   .test__details {
     @apply flex flex-col gap-4;
   }
+
   .test__details--traceback-wrapper {
     @apply overflow-hidden rounded-lg;
   }
+
   .test__details--traceback {
     @apply max-h-40 w-full overflow-auto rounded-lg p-4 font-mono text-[0.875rem];
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
+
   .test__details--traceback :global(pre) {
     @apply h-auto w-full whitespace-pre-wrap;
   }
+
   .test__details--content {
     @apply w-full overflow-auto rounded-lg font-mono text-[0.875rem];
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
+
   .test__details--content :global(pre) {
     @apply h-auto w-full whitespace-pre-wrap;
   }
+
   .test__toggle-detail {
     @apply flex shrink-0 cursor-pointer appearance-none items-center justify-center gap-2 rounded-lg px-2 py-2;
     @apply bg-gray-100 text-gray-900;
@@ -287,10 +315,12 @@
     @apply dark:hover:bg-gray-100 dark:hover:text-gray-900;
     @apply dark:focus:bg-gray-100 dark:focus:text-gray-900;
   }
+
   .test__action--save {
     @apply hover:bg-blue-500 hover:text-gray-100;
     @apply focus:bg-blue-500 focus:text-gray-100;
   }
+
   .test__action--edit {
     @apply hover:bg-yellow-500 hover:text-gray-900;
     @apply focus:bg-yellow-500 focus:text-gray-900;

@@ -39,7 +39,6 @@ export const createIdeState = (project?: Project) => {
         }
 
         return {
-          ...state,
           project,
           testCase: project.testCases[0],
           testResult: project.testCases[0]?.result,

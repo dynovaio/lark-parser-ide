@@ -49,9 +49,8 @@ export const loadGrammar = async (grammar: Grammar, force: boolean = false): Pro
   }
 
   const isAlreadyLoaded = !!grammar.content || !!grammar.error;
-  console.log('isAlreadyLoaded:', isAlreadyLoaded);
   if (isAlreadyLoaded && !force) {
-    console.log(`Grammar already loaded from ${grammar.uri}`);
+    console.warn(`Grammar already loaded from ${grammar.uri}`);
     return grammar;
   }
 
@@ -70,10 +69,12 @@ export const downloadGrammar = async (name: string, grammar: Grammar): Promise<G
   a.href = url;
   a.download = `${name}.lark`;
   a.style.display = 'none';
+
   document.body.appendChild(a);
   a.click();
+
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  console.log(`Downloaded grammar as ${a.download}`);
+
   return grammar;
 };
