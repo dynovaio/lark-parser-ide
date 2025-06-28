@@ -3,7 +3,7 @@
   import LarkParserIcon from '$lib/components/Icon/LarkParserIcon.svelte';
 
   const { Story } = defineMeta({
-    title: 'Lark IDE/Icon',
+    title: 'Lark IDE/Icon/LarkParserFavicon',
     component: LarkParserIcon,
     tags: ['autodocs'],
     argTypes: {

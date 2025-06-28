@@ -12,6 +12,20 @@ const config: StorybookConfig = {
   framework: {
     name: '@storybook/sveltekit',
     options: {}
+  },
+  viteFinal: async (config) => {
+    if (config.optimizeDeps) {
+      config.optimizeDeps.exclude = [
+        ...(config.optimizeDeps.exclude || []),
+        'pyodide',
+        '@melt-ui/svelte'
+      ];
+    } else {
+      config.optimizeDeps = {
+        exclude: ['pyodide', '@melt-ui/svelte']
+      };
+    }
+    return config;
   }
 };
 export default config;
