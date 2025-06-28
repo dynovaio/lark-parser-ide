@@ -131,6 +131,23 @@ export const createIdeState = (project?: Project) => {
           availableProjects
         };
       });
+    },
+    setAvailableProjects: (projects: Project[]) => {
+      update((state) => {
+        if (!projects || projects.length === 0) {
+          projects = [...SAMPLE_PROJECTS];
+        }
+
+        const project = projects[0];
+
+        return {
+          ...state,
+          project,
+          testCase: project.testCases[0],
+          testResult: project.testCases[0]?.result,
+          availableProjects: projects
+        };
+      });
     }
   };
 };
