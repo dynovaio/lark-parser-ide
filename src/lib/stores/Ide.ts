@@ -12,8 +12,6 @@ export type IdeState = {
   availableProjects: Project[];
 };
 
-export const useLegacyIde = writable(false);
-
 export const createIdeState = (project?: Project) => {
   if (!project) {
     project = PROJECT_TEMPLATE;

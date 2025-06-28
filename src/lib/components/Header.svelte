@@ -10,10 +10,8 @@
   import GithubLogo from 'phosphor-svelte/lib/GithubLogo';
   import Light from 'phosphor-svelte/lib/Sun';
   import Menu from 'phosphor-svelte/lib/List';
-  import ToggleLeft from 'phosphor-svelte/lib/ToggleLeft';
 
   import LarkParserLogo from '$lib/components/Icon/LarkParserLogo.svelte';
-  import IdeSwitch from '$lib/components/IdeSwitch.svelte';
 
   import { isLargeScreen } from '$lib/stores/Breakpoints';
   import { Theme, isDarkMode, setTheme } from '$lib/stores/Theme';
@@ -59,9 +57,6 @@
 
     <div class="navbar__section">
       {#if $isLargeScreen}
-        <div class="navbar__item">
-          <IdeSwitch />
-        </div>
         <a
           class="navbar__item"
           target="_blank"
@@ -117,10 +112,6 @@
       class="menu"
     >
       <div class="menu__container">
-        <div class="menu__item">
-          <ToggleLeft size={24} aria-label="Switch IDE" />
-          <IdeSwitch />
-        </div>
         <a class="menu__item" target="_blank" href="https://lark-parser.readthedocs.io/en/latest/">
           <BookBookmark size={24} aria-label="Documentation" />
           <span>Docs</span>
