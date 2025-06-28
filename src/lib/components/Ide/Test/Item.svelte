@@ -335,6 +335,7 @@
   }
 
   .test__action--delete {
+    @apply text-red-500;
     @apply hover:bg-red-500 hover:text-gray-100;
     @apply focus:bg-red-500 focus:text-gray-100;
   }
