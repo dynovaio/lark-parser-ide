@@ -4,7 +4,6 @@
 
   import Add from 'phosphor-svelte/lib/Plus';
   import Check from 'phosphor-svelte/lib/Check';
-  import Close from 'phosphor-svelte/lib/X';
   import Save from 'phosphor-svelte/lib/FloppyDisk';
   import Download from 'phosphor-svelte/lib/DownloadSimple';
   import Menu from 'phosphor-svelte/lib/DotsThreeVertical';
@@ -14,10 +13,16 @@
 
   import { getIdeContext } from '$lib/components/Ide/Context';
 
-  import { isLargeScreen } from '$lib/stores/Breakpoints';
-
   import { loadGrammar, downloadGrammar } from '$lib/utils/Grammar';
   import { PROJECT_HELLO_WORLD, PROJECT_TEMPLATE, type Project } from '$lib/utils/Project';
+  import {
+    EARLEY_PARSER,
+    AVAILABLE_PARSING_ALGORITHMS,
+    ParserAmbiguity,
+    type ParserAmbiguity as ParserAmbiguityType,
+    type ParsingAlgorithm,
+    type ParserOptions
+  } from '$lib/utils/Parser';
 
   interface Props {
     onSelectProject?: (projectId: string) => void;
@@ -25,6 +30,21 @@
     onDownloadProject?: (project: Project) => void;
     onEditProject?: (project: Project) => void;
     onDeleteProject?: (projectId: string) => void;
+  }
+
+  interface FormData {
+    id: string;
+    name: string;
+    grammarUri?: string | null;
+    parserAlgorithm?: ParsingAlgorithm;
+    parserKeepAllTokens?: boolean | null;
+    parserAmbiguity?: ParserAmbiguityType | null;
+    parserMaybePlaceholders?: boolean | null;
+  }
+
+  enum FormAction {
+    CREATE = 'create',
+    EDIT = 'edit'
   }
 
   let {
@@ -41,6 +61,17 @@
     currentProject: $ideContext.project,
     availableProjects: $ideContext.availableProjects
   }));
+
+  let formAction = $state(FormAction.CREATE);
+  let formData: FormData = $state({
+    id: crypto.randomUUID() as string,
+    name: '',
+    grammarUri: null,
+    parserAlgorithm: EARLEY_PARSER,
+    parserKeepAllTokens: false,
+    parserAmbiguity: null,
+    parserMaybePlaceholders: true
+  });
 
   const {
     elements: { trigger: selectTrigger, menu: selectMenu, option: selectOption },
@@ -111,11 +142,28 @@
     isSelectOpen.set(false);
   };
 
-  const createProjectHandler = (project: Project) => {
-    if (onCreateProject) {
-      onCreateProject(project);
+  const prepareForm = (action: FormAction) => {
+    formAction = action;
+    if (action === FormAction.EDIT) {
+      formData = {
+        id: currentProject.id,
+        name: currentProject.name,
+        grammarUri: currentProject.grammar.uri,
+        parserAlgorithm: currentProject.parserOptions.algorithm,
+        parserKeepAllTokens: currentProject.parserOptions.keepAllTokens || false,
+        parserAmbiguity: currentProject.parserOptions.ambiguity || null,
+        parserMaybePlaceholders: currentProject.parserOptions.maybePlaceholders || true
+      };
     } else {
-      console.warn('No `onCreateProject` function provided');
+      formData = {
+        id: crypto.randomUUID() as string,
+        name: '',
+        grammarUri: null,
+        parserAlgorithm: EARLEY_PARSER,
+        parserKeepAllTokens: false,
+        parserAmbiguity: null,
+        parserMaybePlaceholders: true
+      };
     }
   };
 
@@ -135,9 +183,69 @@
     }
   };
 
-  const editProjectHandler = async (project: Project) => {
+  const createProjectHandler = (data: FormData) => {
+    const parserOptions: ParserOptions = {
+      algorithm: data.parserAlgorithm || EARLEY_PARSER,
+      keepAllTokens: data.parserKeepAllTokens || false,
+      maybePlaceholders: data.parserMaybePlaceholders || true
+    };
+
+    if (data.parserAmbiguity) {
+      parserOptions.ambiguity = data.parserAmbiguity;
+    }
+
+    const newProject: Project = {
+      ...PROJECT_TEMPLATE,
+      id: data.id,
+      name: data.name,
+      grammar: {
+        uri: data.grammarUri || '',
+        content: ''
+      },
+      parserOptions
+    };
+
+    ideContext.setProject(newProject);
+
+    selectProject(currentProject.id);
+
+    formOpen.set(false);
+
+    if (onCreateProject) {
+      onCreateProject(currentProject);
+    } else {
+      console.warn('No `onCreateProject` function provided');
+    }
+  };
+
+  const editProjectHandler = async (data: FormData) => {
+    const parserOptions: ParserOptions = {
+      ...currentProject.parserOptions,
+      algorithm: data.parserAlgorithm || EARLEY_PARSER,
+      keepAllTokens: data.parserKeepAllTokens || false,
+      maybePlaceholders: data.parserMaybePlaceholders || true
+    };
+
+    if (data.parserAmbiguity) {
+      parserOptions.ambiguity = data.parserAmbiguity;
+    } else {
+      delete parserOptions.ambiguity;
+    }
+
+    const updatedProject: Project = {
+      ...currentProject,
+      name: data.name,
+      parserOptions
+    };
+
+    ideContext.setProject(updatedProject);
+
+    selectProject(currentProject.id);
+
+    formOpen.set(false);
+
     if (onEditProject) {
-      onEditProject(project);
+      onEditProject(currentProject);
     } else {
       console.warn('No `onEditProject` function provided');
     }
@@ -211,18 +319,20 @@
     <button
       use:melt={$dropDownItem}
       use:melt={$formTrigger}
-      class="project-manager__dropdown__option project-manager__dropdown__option--edit"
-    >
-      <Settings size={16} class="shrink-0" />
-      <span class="grow text-left">Edit project</span>
-    </button>
-    <button
-      use:melt={$dropDownItem}
-      use:melt={$formTrigger}
+      onclick={() => prepareForm(FormAction.CREATE)}
       class="project-manager__dropdown__option project-manager__dropdown__option--add"
     >
       <Add size={16} class="shrink-0" />
       <span class="grow text-left">New Project</span>
+    </button>
+    <button
+      use:melt={$dropDownItem}
+      use:melt={$formTrigger}
+      onclick={() => prepareForm(FormAction.EDIT)}
+      class="project-manager__dropdown__option project-manager__dropdown__option--edit"
+    >
+      <Settings size={16} class="shrink-0" />
+      <span class="grow text-left">Edit project</span>
     </button>
     <button
       use:melt={$dropDownItem}
@@ -270,6 +380,141 @@
           <span>Eliminar</span>
         </button>
         <button use:melt={$deleteClose} class="dialog__content--action">
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}
+
+{#if $formOpen}
+  <div class="dialog" use:melt={$formPortalled}>
+    <div use:melt={$formOverlay} class="dialog__overlay" transition:fade={{ duration: 150 }}></div>
+    <div
+      use:melt={$formContent}
+      transition:fly={{
+        y: '100vh',
+        duration: 300,
+        opacity: 1
+      }}
+      class="dialog__content"
+    >
+      <div class="dialog__content--title">
+        <h4 use:melt={$formTitle}>
+          {formAction === FormAction.CREATE ? 'Nuevo proyecto' : 'Editar proyecto'}
+        </h4>
+      </div>
+      <form id="project-form" class="dialog__content--body form">
+        <div class="form-field">
+          <label for="project-name" class="form-field__label">Nombre del proyecto</label>
+          <input
+            type="text"
+            id="project-name"
+            name="project-name"
+            bind:value={formData.name}
+            placeholder="Nombre del proyecto"
+            class="form-field__input"
+            required
+          />
+        </div>
+        {#if formAction === FormAction.CREATE}
+          <div class="form-field">
+            <label for="project-grammar-uri" class="form-field__label">Grammar URI</label>
+            <input
+              type="text"
+              id="project-grammar-uri"
+              name="project-grammar-uri"
+              bind:value={formData.grammarUri}
+              placeholder="Nombre del proyecto"
+              class="form-field__input"
+            />
+            <div class="form-field__hint">
+              If you already have a grammar file, you can use its URI here.
+            </div>
+          </div>
+        {/if}
+        <div class="form-field">
+          <label for="project-parser-algorithm" class="form-field__label">Parser Algorithm</label>
+          <select
+            id="project-parser-algorithm"
+            name="project-parser-algorithm"
+            bind:value={formData.parserAlgorithm}
+            class="form-field__input"
+          >
+            {#each AVAILABLE_PARSING_ALGORITHMS as algorithm (algorithm)}
+              <option value={algorithm}>{algorithm.name}</option>
+            {/each}
+          </select>
+        </div>
+        <div class="form-field">
+          <label
+            for="project-parser-keep-all-tokens"
+            class="form-field__label form-field__label--checkbox"
+          >
+            <input
+              type="checkbox"
+              id="project-parser-keep-all-tokens"
+              name="project-parser-keep-all-tokens"
+              bind:checked={formData.parserKeepAllTokens}
+              class="form-field__input form-field__input--checkbox"
+            />
+            Keep All Tokens
+          </label>
+          <div class="form-field__hint">
+            If enabled, the parser will keep all tokens in the parse tree.
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="project-parser-ambiguity" class="form-field__label">Parser Ambiguity</label>
+          <select
+            id="project-parser-ambiguity"
+            name="project-parser-ambiguity"
+            bind:value={formData.parserAmbiguity}
+            class="form-field__input"
+          >
+            <option value={null}>Select parser ambiguity</option>
+            {#each Object.values(ParserAmbiguity) as ambiguity (ambiguity)}
+              <option value={ambiguity}>{ambiguity}</option>
+            {/each}
+          </select>
+          <div class="form-field__hint">
+            The parser will handle ambiguities based on the selected option. Only applicable for
+            Earley parser algorithm.
+          </div>
+        </div>
+        <div class="form-field">
+          <label
+            for="project-parser-maybe-placeholders"
+            class="form-field__label form-field__label--checkbox"
+          >
+            <input
+              type="checkbox"
+              id="project-parser-maybe-placeholders"
+              name="project-parser-maybe-placeholders"
+              bind:checked={formData.parserMaybePlaceholders}
+              class="form-field__input form-field__input--checkbox"
+            />
+            Maybe Placeholders
+          </label>
+          <div class="form-field__hint">
+            If enabled, the parser will use placeholders for missing tokens.
+          </div>
+        </div>
+      </form>
+      <div class="dialog__content--footer">
+        <button
+          type="submit"
+          form="project-form"
+          class="dialog__content--action dialog__content--action--save"
+          onclick={() =>
+            formAction === FormAction.CREATE
+              ? createProjectHandler(formData)
+              : editProjectHandler(formData)}
+        >
+          <Save size={16} />
+          <span>Guardar</span>
+        </button>
+        <button use:melt={$formClose} class="dialog__content--action">
           <span>Cancelar</span>
         </button>
       </div>
@@ -385,7 +630,36 @@
   }
 
   .dialog__content--body {
-    @apply flex flex-col items-center;
+    @apply flex w-full flex-col items-center gap-4;
+  }
+
+  .form-field {
+    @apply flex w-full flex-col gap-1;
+  }
+
+  .form-field__label {
+    @apply text-sm font-medium text-gray-700;
+  }
+
+  .form-field__label--checkbox {
+    @apply flex items-center gap-2;
+  }
+
+  .form-field__input {
+    @apply rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 transition duration-250;
+    @apply focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none;
+    @apply dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-500 dark:focus:ring-blue-500;
+  }
+
+  .form-field__input--checkbox {
+    @apply h-4 w-4 rounded border border-gray-300 bg-white p-0 text-blue-600 transition duration-250;
+    @apply focus:ring-2 focus:ring-blue-500 focus:outline-none;
+    @apply dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-500 dark:focus:ring-blue-500;
+    @apply checked:bg-blue-500 checked:text-white;
+  }
+
+  .form-field__hint {
+    @apply text-xs font-medium text-gray-700;
   }
 
   .dialog__content--footer {
