@@ -68,7 +68,6 @@
   "dependencies": {
     "@codemirror/autocomplete": "^6.18.6",
     "@codemirror/commands": "^6.8.1",
-    "@codemirror/fold": "^0.19.4",
     "@codemirror/lang-lezer": "^6.0.2",
     "@codemirror/language": "^6.11.1",
     "@codemirror/lint": "^6.8.5",
