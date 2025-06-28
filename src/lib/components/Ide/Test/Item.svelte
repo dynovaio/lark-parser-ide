@@ -277,7 +277,7 @@
   }
 
   .test__details--traceback {
-    @apply max-h-40 w-full overflow-auto rounded-lg p-4 font-mono text-[0.875rem];
+    @apply max-h-128 w-full overflow-auto rounded-lg p-4 font-mono text-[0.875rem];
     @apply bg-gray-100 text-gray-900;
     @apply dark:bg-gray-900 dark:text-gray-100;
   }
