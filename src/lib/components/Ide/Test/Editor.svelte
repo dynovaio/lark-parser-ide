@@ -48,23 +48,6 @@
         editorThemeCompartment.of(editorTheme),
         basicSetup,
         keymap.of([indentWithTab]),
-        EditorView.theme({
-          '&': {
-            fontSize: '14px'
-          },
-          '.cm-content': {
-            fontFamily: 'Fira Mono, monospace'
-          },
-          '.cm-focused': {
-            outline: 'none'
-          },
-          '.cm-editor': {
-            height: '100%'
-          },
-          '.cm-scroller': {
-            fontFamily: 'Fira Mono, monospace'
-          }
-        }),
         EditorView.updateListener.of((update) => {
           if (update.docChanged && !isUpdatingFromExternal) {
             const newContent = update.state.doc.toString();
