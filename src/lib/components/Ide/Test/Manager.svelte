@@ -74,7 +74,7 @@
       <Empty size={64} />
       <div>No tests available</div>
       <button
-        class="test-manager--empty__control test-manager__control--add"
+        class="test-manager--empty__control test-manager--empty__control--add"
         onclick={() => addTestCase()}
       >
         <Add size={24} />
@@ -132,6 +132,14 @@
     @apply dark:border-gray-200;
     @apply hover:border-solid dark:hover:bg-gray-200 dark:hover:text-gray-900;
     @apply focus:border-solid dark:focus:bg-gray-200 dark:focus:text-gray-900;
+  }
+
+  .test-manager--empty__control--add {
+    @apply hover:border-blue-500 hover:bg-blue-500 hover:text-gray-100;
+    @apply focus:border-blue-500 focus:bg-blue-500 focus:text-gray-100;
+
+    @apply dark:hover:border-blue-500;
+    @apply dark:focus:border-blue-500;
   }
 
   .test-manager__list-wrapper {
