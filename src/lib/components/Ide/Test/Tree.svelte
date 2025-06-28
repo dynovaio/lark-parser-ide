@@ -37,7 +37,11 @@
     {@const hasChildren = typeof item === 'string' ? false : !!item.children?.length}
     {@const children = typeof item === 'string' ? [] : item.children || []}
 
-    <div class:tree__node--indented={level > 0} class="tree__node">
+    <div
+      class:tree__node--indented={level > 0}
+      class:tree__node--terminal={!hasChildren}
+      class="tree__node"
+    >
       <button
         use:melt={$treeViewItem({
           id: itemId,
@@ -78,6 +82,10 @@
 
   .tree__node--indented {
     @apply pl-6;
+  }
+
+  .tree__node--terminal {
+    @apply mb-2;
   }
 
   .node {
