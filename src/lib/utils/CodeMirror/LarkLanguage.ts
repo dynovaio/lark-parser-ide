@@ -2,7 +2,7 @@ import { LanguageSupport } from '@codemirror/language';
 import { StreamLanguage } from '@codemirror/language';
 
 // Define the Lark grammar highlighting
-const larkLanguage = StreamLanguage.define({
+const larkStreamLanguage = StreamLanguage.define({
   name: 'lark',
   token(stream) {
     // Handle whitespace
@@ -92,6 +92,6 @@ const larkLanguage = StreamLanguage.define({
   }
 });
 
-export function larkLanguageSupport(): LanguageSupport {
-  return new LanguageSupport(larkLanguage);
-}
+export const larkLanguage = (): LanguageSupport => {
+  return new LanguageSupport(larkStreamLanguage);
+};
