@@ -23,14 +23,14 @@
 
   import { isLargeScreen } from '$lib/stores/Breakpoints';
 
-  import { loadGrammar } from '$lib/utils/Grammar';
+  import { loadGrammar, downloadGrammar } from '$lib/utils/Grammar';
   import { PROJECT_HELLO_WORLD, PROJECT_TEMPLATE, type Project } from '$lib/utils/Project';
 
   interface Props {
     onSelectProject?: (projectId: string) => void;
     onCreateProject?: (project: Project) => void;
     onDownloadProject?: (project: Project) => void;
-    onConfigureProject?: (project: Project) => void;
+    onEditProject?: (project: Project) => void;
     onDeleteProject?: (projectId: string) => void;
   }
 
@@ -38,7 +38,7 @@
     onSelectProject,
     onCreateProject,
     onDownloadProject,
-    onConfigureProject,
+    onEditProject,
     onDeleteProject
   }: Props = $props();
 
@@ -104,7 +104,15 @@
     }
   };
 
-  const downloadProjectHandler = (project: Project) => {
+  const downloadProjectHandler = async (project: Project) => {
+    let currentProject = $ideContext.project;
+    const fileName = (currentProject.name || 'project')
+      .replace(/\W+/g, ' ')
+      .toLowerCase()
+      .split(' ')
+      .join('_');
+    await downloadGrammar(fileName, currentProject.grammar);
+
     if (onDownloadProject) {
       onDownloadProject(project);
     } else {
@@ -112,11 +120,11 @@
     }
   };
 
-  const configureProjectHandler = (project: Project) => {
-    if (onConfigureProject) {
-      onConfigureProject(project);
+  const editProjectHandler = (project: Project) => {
+    if (onEditProject) {
+      onEditProject(project);
     } else {
-      console.warn('No `onConfigureProject` function provided');
+      console.warn('No `onEditProject` function provided');
     }
   };
 
@@ -181,11 +189,11 @@
     </button>
     <button
       use:melt={$dropDownItem}
-      onclick={() => configureProjectHandler(currentProject)}
+      onclick={() => editProjectHandler(currentProject)}
       class="project-manager__dropdown__option project-manager__dropdown__option--edit"
     >
       <Settings size={16} class="shrink-0" />
-      <span class="grow text-left">Configure parser</span>
+      <span class="grow text-left">Edit project</span>
     </button>
     <button
       use:melt={$dropDownItem}
