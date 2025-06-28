@@ -1,18 +1,11 @@
 <script lang="ts">
-  import {
-    createDialog,
-    melt,
-    createScrollArea,
-    createDropdownMenu,
-    createSelect
-  } from '@melt-ui/svelte';
+  import { createDialog, melt, createDropdownMenu, createSelect } from '@melt-ui/svelte';
   import { fade, fly } from 'svelte/transition';
 
   import Add from 'phosphor-svelte/lib/Plus';
   import Check from 'phosphor-svelte/lib/Check';
-  import Change from 'phosphor-svelte/lib/Swap';
   import Close from 'phosphor-svelte/lib/X';
-  import Code from 'phosphor-svelte/lib/Code';
+  import Save from 'phosphor-svelte/lib/FloppyDisk';
   import Download from 'phosphor-svelte/lib/DownloadSimple';
   import Menu from 'phosphor-svelte/lib/DotsThreeVertical';
   import Settings from 'phosphor-svelte/lib/Gear';
@@ -63,17 +56,39 @@
   });
 
   const {
-    elements: {
-      trigger: dropDownTrigger,
-      menu: dropDownMenu,
-      item: dropDownItem,
-      separator: dropDownSeparator,
-      arrow: dropDownArrow
-    },
+    elements: { trigger: dropDownTrigger, menu: dropDownMenu, item: dropDownItem },
     states: { open: dropDownOpen }
   } = createDropdownMenu({
     forceVisible: true,
     loop: true
+  });
+
+  const {
+    elements: {
+      trigger: formTrigger,
+      title: formTitle,
+      overlay: formOverlay,
+      content: formContent,
+      close: formClose,
+      portalled: formPortalled
+    },
+    states: { open: formOpen }
+  } = createDialog({
+    forceVisible: true
+  });
+
+  const {
+    elements: {
+      trigger: deleteTrigger,
+      title: deleteTitle,
+      overlay: deleteOverlay,
+      content: deleteContent,
+      close: deleteClose,
+      portalled: deletePortalled
+    },
+    states: { open: deleteOpen }
+  } = createDialog({
+    forceVisible: true
   });
 
   const selectProject = async (projectId: string) => {
@@ -120,7 +135,7 @@
     }
   };
 
-  const editProjectHandler = (project: Project) => {
+  const editProjectHandler = async (project: Project) => {
     if (onEditProject) {
       onEditProject(project);
     } else {
@@ -128,7 +143,13 @@
     }
   };
 
-  const deleteProjectHandler = (projectId: string) => {
+  const deleteProjectHandler = async (projectId: string) => {
+    const filteredProjects = availableProjects.filter((p) => p.id !== projectId);
+
+    ideContext.setAvailableProjects(filteredProjects);
+
+    selectProject(currentProject.id);
+
     if (onDeleteProject) {
       onDeleteProject(projectId);
     } else {
@@ -189,7 +210,7 @@
     </button>
     <button
       use:melt={$dropDownItem}
-      onclick={() => editProjectHandler(currentProject)}
+      use:melt={$formTrigger}
       class="project-manager__dropdown__option project-manager__dropdown__option--edit"
     >
       <Settings size={16} class="shrink-0" />
@@ -197,7 +218,7 @@
     </button>
     <button
       use:melt={$dropDownItem}
-      onclick={() => createProjectHandler({ ...PROJECT_TEMPLATE })}
+      use:melt={$formTrigger}
       class="project-manager__dropdown__option project-manager__dropdown__option--add"
     >
       <Add size={16} class="shrink-0" />
@@ -205,12 +226,54 @@
     </button>
     <button
       use:melt={$dropDownItem}
-      onclick={() => deleteProjectHandler(currentProject.id)}
+      use:melt={$deleteTrigger}
       class="project-manager__dropdown__option project-manager__dropdown__option--delete"
     >
       <Trash size={16} class="shrink-0" />
       <span class="grow text-left">Delete Project</span>
     </button>
+  </div>
+{/if}
+
+{#if $deleteOpen}
+  <div class="dialog" use:melt={$deletePortalled}>
+    <div
+      use:melt={$deleteOverlay}
+      class="dialog__overlay"
+      transition:fade={{ duration: 150 }}
+    ></div>
+    <div
+      use:melt={$deleteContent}
+      transition:fly={{
+        y: '100vh',
+        duration: 300,
+        opacity: 1
+      }}
+      class="dialog__content"
+    >
+      <div class="dialog__content--title">
+        <h4 use:melt={$deleteTitle}>Eliminar proyecto</h4>
+      </div>
+      <div class="dialog__content--body">
+        <p>
+          ¿Estás seguro de que deseas eliminar el proyecto
+          <strong>{currentProject.name}</strong>?
+        </p>
+      </div>
+      <div class="dialog__content--footer">
+        <button
+          use:melt={$deleteClose}
+          class="dialog__content--action dialog__content--action--delete"
+          onclick={() => deleteProjectHandler(currentProject.id)}
+        >
+          <Trash size={16} />
+          <span>Eliminar</span>
+        </button>
+        <button use:melt={$deleteClose} class="dialog__content--action">
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
   </div>
 {/if}
 
@@ -287,7 +350,7 @@
     @apply hover:bg-gray-800 hover:text-gray-200;
     @apply focus:bg-gray-800 focus:text-gray-200;
 
-    @apply bg-gray-900 text-gray-100;
+    @apply dark:bg-gray-900 dark:text-gray-100;
     @apply dark:hover:bg-gray-200 dark:hover:text-gray-900;
     @apply dark:focus:bg-gray-200 dark:focus:text-gray-900;
   }
@@ -306,5 +369,46 @@
     @apply text-red-500;
     @apply hover:bg-red-500 hover:text-gray-100;
     @apply focus:bg-red-500 focus:text-gray-100;
+  }
+
+  .dialog__overlay {
+    @apply fixed inset-0 z-100 bg-black/50;
+  }
+
+  .dialog__content {
+    @apply fixed top-1/2 left-1/2 z-100 flex max-h-[85vh] w-[90vw] max-w-[32rem] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-hidden rounded-lg p-4 shadow-lg;
+    @apply bg-gray-100 text-gray-900;
+  }
+
+  .dialog__content--title {
+    @apply flex items-center justify-between text-lg font-semibold;
+  }
+
+  .dialog__content--body {
+    @apply flex flex-col items-center;
+  }
+
+  .dialog__content--footer {
+    @apply flex flex-row items-center justify-end gap-4;
+  }
+
+  .dialog__content--action {
+    @apply flex cursor-pointer flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 transition duration-250 outline-none;
+
+    @apply bg-gray-200 text-gray-800;
+    @apply hover:bg-gray-900 hover:text-gray-100;
+    @apply focus:bg-gray-900 focus:text-gray-100;
+  }
+
+  .dialog__content--action--delete {
+    @apply bg-red-500 text-red-100;
+    @apply hover:bg-red-700 hover:text-gray-100;
+    @apply focus:bg-red-700 focus:text-gray-100;
+  }
+
+  .dialog__content--action--save {
+    @apply bg-green-500 text-green-100;
+    @apply hover:bg-green-700 hover:text-gray-100;
+    @apply focus:bg-green-700 focus:text-gray-100;
   }
 </style>
