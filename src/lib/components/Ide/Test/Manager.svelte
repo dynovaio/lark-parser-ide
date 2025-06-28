@@ -98,7 +98,7 @@
         onclick={() => runAllTestCases()}
       >
         <Play size={24} />
-        <span>Run All Tests </span>
+        <span>Run all tests </span>
       </button>
     </div>
   {/if}
