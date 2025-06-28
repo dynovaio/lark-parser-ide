@@ -4,11 +4,12 @@
   import { EditorState, Compartment } from '@codemirror/state';
   import { keymap } from '@codemirror/view';
   import { indentWithTab } from '@codemirror/commands';
-  import { tomorrow, boysAndGirls } from 'thememirror';
 
   import { getIdeContext } from '$lib/components/Ide/Context';
   import { isDarkMode } from '$lib/stores/Theme';
-  import { larkLanguageSupport } from '$lib/utils/CodeMirror/LarkLanguage';
+  import { larkLanguage } from '$lib/utils/CodeMirror/LarkLanguage';
+  import { larkIdeLightTheme } from '$lib/utils/CodeMirror/LarkIdeLightTheme';
+  import { larkIdeDarkTheme } from '$lib/utils/CodeMirror/LarkIdeDarkTheme';
 
   const ideContext = getIdeContext();
 
@@ -18,13 +19,13 @@
   const editorThemeCompartment = new Compartment();
 
   const editorTheme = $derived.by(() => {
-    return $isDarkMode ? boysAndGirls : tomorrow;
+    return $isDarkMode ? larkIdeDarkTheme : larkIdeLightTheme;
   });
 
   isDarkMode.subscribe((darkMode) => {
     if (editorView) {
       editorView.dispatch({
-        effects: editorThemeCompartment.reconfigure(darkMode ? boysAndGirls : tomorrow)
+        effects: editorThemeCompartment.reconfigure(darkMode ? larkIdeDarkTheme : larkIdeLightTheme)
       });
     }
   });
@@ -39,7 +40,7 @@
       extensions: [
         editorThemeCompartment.of(editorTheme),
         basicSetup,
-        larkLanguageSupport(),
+        larkLanguage(),
         keymap.of([indentWithTab]),
         EditorView.updateListener.of((update) => {
           if (update.docChanged && !isUpdatingFromExternal) {
@@ -117,7 +118,9 @@
   @reference "../../../app.css";
 
   .editor__content {
-    @apply relative h-full w-full;
+    @apply relative h-full w-full overflow-hidden rounded-lg border;
+    @apply border-gray-300;
+    @apply dark:border-gray-700;
   }
 
   .editor__content :global(.cm-editor) {

@@ -4,11 +4,11 @@
   import { EditorState, Compartment } from '@codemirror/state';
   import { keymap } from '@codemirror/view';
   import { indentWithTab } from '@codemirror/commands';
-  import { tomorrow, boysAndGirls } from 'thememirror';
 
   import { getIdeContext } from '$lib/components/Ide/Context';
-
   import { isDarkMode } from '$lib/stores/Theme';
+  import { larkIdeLightTheme } from '$lib/utils/CodeMirror/LarkIdeLightTheme';
+  import { larkIdeDarkTheme } from '$lib/utils/CodeMirror/LarkIdeDarkTheme';
 
   import type { TestCase } from '$lib/utils/TestCase';
 
@@ -26,13 +26,13 @@
   const editorThemeCompartment = new Compartment();
 
   const editorTheme = $derived.by(() => {
-    return $isDarkMode ? boysAndGirls : tomorrow;
+    return $isDarkMode ? larkIdeDarkTheme : larkIdeLightTheme;
   });
 
   isDarkMode.subscribe((darkMode) => {
     if (editorView) {
       editorView.dispatch({
-        effects: editorThemeCompartment.reconfigure(darkMode ? boysAndGirls : tomorrow)
+        effects: editorThemeCompartment.reconfigure(darkMode ? larkIdeDarkTheme : larkIdeLightTheme)
       });
     }
   });
@@ -57,7 +57,6 @@
             } as TestCase);
           }
         })
-        // EditorView.lineWrapping
       ]
     });
 
@@ -111,7 +110,9 @@
   @reference "../../../../app.css";
 
   .lark-ide__test-editor {
-    @apply relative flex h-full w-full flex-col overflow-hidden;
+    @apply relative h-full w-full overflow-hidden rounded-lg border;
+    @apply border-gray-300;
+    @apply dark:border-gray-700;
   }
 
   .lark-ide__test-editor :global(.cm-editor) {
