@@ -4,7 +4,7 @@ import { StreamLanguage } from '@codemirror/language';
 // Define the Lark grammar highlighting
 const larkLanguage = StreamLanguage.define({
   name: 'lark',
-  token(stream, state) {
+  token(stream) {
     // Handle whitespace
     if (stream.eatSpace()) return null;
 
