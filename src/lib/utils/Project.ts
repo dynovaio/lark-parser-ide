@@ -134,7 +134,7 @@ export const PROJECT_CONFIGURATION: Project = {
     {
       id: 1,
       description: 'Basic Configuration Test',
-      content: 'key=value\nanother_key=another_value'
+      content: '[main]\nhello=world\n'
     }
   ],
   parserOptions: {
