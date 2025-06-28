@@ -32,10 +32,11 @@
 
 <div class="tree">
   {#each treeItems as item, index (index)}
-    {@const value = typeof item === 'string' ? item : item.data}
+    {@const value = item === null ? '(empty)' : typeof item === 'string' ? item : item.data}
     {@const itemId = `${value}-${index}`}
-    {@const hasChildren = typeof item === 'string' ? false : !!item.children?.length}
-    {@const children = typeof item === 'string' ? [] : item.children || []}
+    {@const hasChildren =
+      item === null || typeof item === 'string' ? false : !!item.children?.length}
+    {@const children = item === null || typeof item === 'string' ? [] : item.children || []}
 
     <div
       class:tree__node--indented={level > 0}

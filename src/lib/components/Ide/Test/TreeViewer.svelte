@@ -22,7 +22,7 @@
     const nodeIds: string[] = [];
 
     items.forEach((item, i) => {
-      if (typeof item !== 'string' && item.children && item.children.length > 0) {
+      if (item !== null && typeof item !== 'string' && item.children && item.children.length > 0) {
         const nodeId = `${item.data}-${i}`;
         nodeIds.push(nodeId);
         nodeIds.push(...collectExpandableNodeIds(item.children, level + 1));
@@ -50,6 +50,7 @@
 </script>
 
 <div class="tree-viewer" {...$treeView}>
+  <pre>{JSON.stringify(tree, null, 2)}</pre>
   <Tree items={[tree]} />
 </div>
 
