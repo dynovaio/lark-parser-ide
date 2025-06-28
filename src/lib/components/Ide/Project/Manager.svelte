@@ -194,6 +194,11 @@
       parserOptions.ambiguity = data.parserAmbiguity;
     }
 
+    const testCases = PROJECT_TEMPLATE.testCases.map((testCase, index) => ({
+      ...testCase,
+      id: index + 1
+    }));
+
     const newProject: Project = {
       ...PROJECT_TEMPLATE,
       id: data.id,
@@ -202,6 +207,7 @@
         uri: data.grammarUri || '',
         content: ''
       },
+      testCases,
       parserOptions
     };
 
