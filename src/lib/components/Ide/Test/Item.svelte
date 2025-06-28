@@ -83,7 +83,9 @@
 
     project = {
       ...project,
-      testCases: project.testCases.filter((tc: TestCase) => tc.id !== testCase.id)
+      testCases: project.testCases
+        .filter((tc: TestCase) => tc.id !== testCase.id)
+        .map((item, index) => ({ ...item, id: index + 1 }))
     };
 
     ideContext.setProject(project);
