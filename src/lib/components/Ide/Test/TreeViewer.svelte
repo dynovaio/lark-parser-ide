@@ -50,7 +50,6 @@
 </script>
 
 <div class="tree-viewer" {...$treeView}>
-  <pre>{JSON.stringify(tree, null, 2)}</pre>
   <Tree items={[tree]} />
 </div>
 
