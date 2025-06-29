@@ -50,12 +50,14 @@
         })}
         class="node"
         class:node--terminal={!hasChildren}
+        aria-label={$isExpanded(itemId) ? 'Collapse' : 'Expand'}
+        aria-expanded={$isExpanded(itemId)}
       >
         {#if hasChildren}
           {#if $isExpanded(itemId)}
-            <CaretDown size={16} />
+            <CaretDown size={16} aria-label="Collapse" />
           {:else}
-            <CaretRight size={16} />
+            <CaretRight size={16} aria-label="Expand" />
           {/if}
         {/if}
         <code class="node__value">{value}</code>
