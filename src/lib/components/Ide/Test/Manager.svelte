@@ -76,8 +76,9 @@
       <button
         class="test-manager--empty__control test-manager--empty__control--add"
         onclick={() => addTestCase()}
+        aria-label="Add new test case"
       >
-        <Add size={24} />
+        <Add size={24} aria-label="Add new test case" />
         <span>Add new test </span>
       </button>
     </div>
@@ -89,15 +90,17 @@
       <button
         class="test-manager__control test-manager__control--add"
         onclick={() => addTestCase()}
+        aria-label="Add new test case"
       >
-        <Add size={24} />
+        <Add size={24} aria-label="Add new test case" />
         <span>Add new test </span>
       </button>
       <button
         class="test-manager__control test-manager__control--run"
         onclick={() => runAllTestCases()}
+        aria-label="Run all tests"
       >
-        <Play size={24} />
+        <Play size={24} aria-label="Run all tests" />
         <span>Run all tests </span>
       </button>
     </div>
