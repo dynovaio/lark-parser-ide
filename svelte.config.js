@@ -4,7 +4,12 @@ import { preprocessMeltUI, sequence } from '@melt-ui/pp';
 
 const config = {
   preprocess: sequence([vitePreprocess({ script: true }), preprocessMeltUI()]),
-  kit: { adapter: adapter() }
+  kit: {
+    adapter: adapter(),
+    alias: {
+      '@': 'src'
+    }
+  }
 };
 
 export default config;

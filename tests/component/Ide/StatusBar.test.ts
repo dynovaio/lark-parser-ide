@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { get } from 'svelte/store';
-import { createIdeState, type IdeState } from '../../../src/lib/stores/Ide';
-import { PROJECT_HELLO_WORLD, PROJECT_TEMPLATE } from '../../../src/lib/utils/Project';
-import { TestStatus } from '../../../src/lib/utils/TestCase';
-import type { TestCase, TestResult } from '../../../src/lib/utils/TestCase';
+import { createIdeState, type IdeState } from '@/lib/stores/Ide';
+import { PROJECT_HELLO_WORLD, PROJECT_TEMPLATE } from '@/lib/utils/Project';
+import { TestStatus } from '@/lib/utils/TestCase';
+import type { TestCase, TestResult } from '@/lib/utils/TestCase';
 
 // Mock Svelte's context functions
 vi.mock('svelte', async () => {
@@ -26,7 +26,7 @@ vi.mock('svelte', async () => {
 });
 
 // Import after mocking
-import { setIdeContext, getIdeContext } from '../../../src/lib/components/Ide/Context';
+import { setIdeContext, getIdeContext } from '@/lib/components/Ide/Context';
 
 describe('StatusBar Component Logic', () => {
   beforeEach(async () => {

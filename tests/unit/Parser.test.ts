@@ -6,8 +6,8 @@ import {
   AVAILABLE_PARSING_ALGORITHMS,
   DEFAULT_PARSER_OPTIONS,
   toPythonCompatibleParserOptions
-} from '../../src/lib/utils/Parser';
-import type { ParsingAlgorithm, ParserOptions } from '../../src/lib/utils/Parser';
+} from '@/lib/utils/Parser';
+import type { ParsingAlgorithm, ParserOptions } from '@/lib/utils/Parser';
 
 describe('Parser utils', () => {
   describe('ParserAmbiguity enum', () => {

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import type { MockedFunction } from 'vitest';
-import { clickOutside } from '../../src/lib/utils/ClickOutside';
+import { clickOutside } from '@/lib/utils/ClickOutside';
 
 describe('ClickOutside utils', () => {
   let mockElement: HTMLElement;

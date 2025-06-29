@@ -4,7 +4,7 @@ import type {
   IconBaseProps,
   IconComponentProps,
   IconContextProps
-} from '../../../src/lib/components/Icon/shared';
+} from '@/lib/components/Icon/shared';
 
 describe('Icon Type Definitions', () => {
   describe('IconWeight', () => {

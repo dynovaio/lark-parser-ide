@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { get } from 'svelte/store';
-import { isLoading, loadingMessage, loadingProgress } from '../../src/lib/stores/Loader';
+import { isLoading, loadingMessage, loadingProgress } from '@/lib/stores/Loader';
 
 describe('Loader stores', () => {
   beforeEach(() => {

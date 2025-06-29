@@ -1,16 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { get } from 'svelte/store';
-import { createIdeState } from '../../src/lib/stores/Ide';
-import {
-  PROJECT_TEMPLATE,
-  PROJECT_HELLO_WORLD,
-  SAMPLE_PROJECTS
-} from '../../src/lib/utils/Project';
-import { LALR1_PARSER } from '../../src/lib/utils/Parser';
-import type { Project } from '../../src/lib/utils/Project';
-import type { TestCase, TestResult } from '../../src/lib/utils/TestCase';
-import { TEST_CASE_TEMPLATE, TestStatus } from '../../src/lib/utils/TestCase';
-import type { Grammar } from '../../src/lib/utils/Grammar';
+import { createIdeState } from '@/lib/stores/Ide';
+import { PROJECT_TEMPLATE, PROJECT_HELLO_WORLD, SAMPLE_PROJECTS } from '@/lib/utils/Project';
+import { LALR1_PARSER } from '@/lib/utils/Parser';
+import type { Project } from '@/lib/utils/Project';
+import type { TestCase, TestResult } from '@/lib/utils/TestCase';
+import { TEST_CASE_TEMPLATE, TestStatus } from '@/lib/utils/TestCase';
+import type { Grammar } from '@/lib/utils/Grammar';
 
 describe('IDE store', () => {
   let ideStore: ReturnType<typeof createIdeState>;
