@@ -4,10 +4,10 @@ export type Grammar = {
   error?: string;
 };
 
-export const GRAMMAR_TEMPLATE: Grammar = {
+export const GRAMMAR_TEMPLATE: Readonly<Grammar> = Object.freeze({
   content: '',
   error: ''
-} as const;
+});
 
 export const loadGrammarFromUri = async (uri: string): Promise<Grammar> => {
   try {
@@ -71,10 +71,15 @@ export const downloadGrammar = async (fileName: string, grammar: Grammar): Promi
   a.style.display = 'none';
 
   document.body.appendChild(a);
-  a.click();
 
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  try {
+    a.click();
+  } catch (error) {
+    console.warn('Error during download click:', error);
+  } finally {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
   return grammar;
 };
