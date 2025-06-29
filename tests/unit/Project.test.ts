@@ -9,10 +9,15 @@ import {
   PROJECT_CONFIGURATION,
   PROJECT_LARK,
   SAMPLE_PROJECTS
-} from './Project';
-import { GRAMMAR_TEMPLATE } from './Grammar';
-import { TEST_CASE_TEMPLATE } from './TestCase';
-import { DEFAULT_PARSER_OPTIONS, LALR1_PARSER, EARLEY_PARSER, ParserAmbiguity } from './Parser';
+} from '../../src/lib/utils/Project';
+import { GRAMMAR_TEMPLATE } from '../../src/lib/utils/Grammar';
+import { TEST_CASE_TEMPLATE } from '../../src/lib/utils/TestCase';
+import {
+  DEFAULT_PARSER_OPTIONS,
+  LALR1_PARSER,
+  EARLEY_PARSER,
+  ParserAmbiguity
+} from '../../src/lib/utils/Parser';
 
 describe('Project utils', () => {
   describe('PROJECT_TEMPLATE', () => {

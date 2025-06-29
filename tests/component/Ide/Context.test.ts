@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { setContext, getContext, hasContext } from 'svelte';
-import { setIdeContext, getIdeContext } from './Context';
-import { createIdeState } from '$lib/stores/Ide';
-import { PROJECT_HELLO_WORLD } from '$lib/utils/Project';
+import { setIdeContext, getIdeContext } from '../../../src/lib/components/Ide/Context';
+import { createIdeState } from '../../../src/lib/stores/Ide';
+import { PROJECT_HELLO_WORLD } from '../../../src/lib/utils/Project';
 
 // Mock svelte context functions
 vi.mock('svelte', () => ({

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { larkIdeLightTheme } from './LarkIdeLightTheme';
+import { larkIdeLightTheme } from '../../../src/lib/utils/CodeMirror/LarkIdeLightTheme';
 import type { Extension } from '@codemirror/state';
 
 describe('LarkIdeLightTheme', () => {

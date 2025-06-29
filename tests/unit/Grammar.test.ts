@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { Grammar } from './Grammar';
-import { GRAMMAR_TEMPLATE, loadGrammarFromUri, loadGrammar, downloadGrammar } from './Grammar';
+import type { Grammar } from '../../src/lib/utils/Grammar';
+import {
+  GRAMMAR_TEMPLATE,
+  loadGrammarFromUri,
+  loadGrammar,
+  downloadGrammar
+} from '../../src/lib/utils/Grammar';
 
 // Mock fetch for testing
 const mockFetch = vi.fn();

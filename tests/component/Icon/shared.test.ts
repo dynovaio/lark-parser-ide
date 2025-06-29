@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import type { IconWeight, IconBaseProps, IconComponentProps, IconContextProps } from './shared';
+import type {
+  IconWeight,
+  IconBaseProps,
+  IconComponentProps,
+  IconContextProps
+} from '../../../src/lib/components/Icon/shared';
 
 describe('Icon Type Definitions', () => {
   describe('IconWeight', () => {

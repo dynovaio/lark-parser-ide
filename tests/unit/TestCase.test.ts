@@ -4,11 +4,11 @@ import {
   TEST_CASE_RESULT_TEMPLATE,
   TEST_CASE_TEMPLATE,
   executeTestCase
-} from './TestCase';
-import type { TestCase } from './TestCase';
-import type { ParserOptions } from './Parser';
-import type { Grammar } from './Grammar';
-import { EARLEY_PARSER, ParserAmbiguity } from './Parser';
+} from '../../src/lib/utils/TestCase';
+import type { TestCase } from '../../src/lib/utils/TestCase';
+import type { ParserOptions } from '../../src/lib/utils/Parser';
+import type { Grammar } from '../../src/lib/utils/Grammar';
+import { EARLEY_PARSER, ParserAmbiguity } from '../../src/lib/utils/Parser';
 
 // Mock PyodideModule
 const mockPyodideModule = {

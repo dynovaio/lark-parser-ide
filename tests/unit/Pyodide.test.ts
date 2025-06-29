@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { get } from 'svelte/store';
-import { pyodideInstance } from './Pyodide';
-import type { PyodideModule } from '$lib/utils/Pyodide';
+import { pyodideInstance } from '../../src/lib/stores/Pyodide';
+import type { PyodideModule } from '../../src/lib/utils/Pyodide';
 
 describe('Pyodide store', () => {
   let mockPyodideModule: PyodideModule;

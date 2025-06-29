@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { TokenType, TreeType } from '../Test/Tree.svelte';
+import type { TokenType, TreeType } from '../../../../src/lib/components/Ide/Test/Tree.svelte';
 
 describe('Tree Types', () => {
   describe('TokenType', () => {

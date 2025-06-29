@@ -7,7 +7,7 @@ import {
   isLargeScreen,
   isExtraLargeScreen,
   isXXLargeScreen
-} from './Breakpoints';
+} from '../../src/lib/stores/Breakpoints';
 
 describe('Breakpoints store', () => {
   const mockMatchMedia = vi.fn();

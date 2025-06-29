@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { Theme, isDarkMode, setTheme } from './Theme';
+import { Theme, isDarkMode, setTheme } from '../../src/lib/stores/Theme';
 import { get } from 'svelte/store';
 
 // Mock document.documentElement

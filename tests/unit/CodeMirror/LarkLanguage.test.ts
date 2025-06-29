@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { larkLanguage } from './LarkLanguage';
+import { larkLanguage } from '../../../src/lib/utils/CodeMirror/LarkLanguage';
 import { LanguageSupport } from '@codemirror/language';
 
 describe('LarkLanguage', () => {
