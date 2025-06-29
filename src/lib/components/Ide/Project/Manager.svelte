@@ -278,10 +278,10 @@
       <button
         use:melt={$selectTrigger}
         class="project-manager__item project-manager__selector"
-        aria-label="Food"
+        aria-label="Select project"
       >
         {currentProject.name}
-        <CaretDown class="size-5" />
+        <CaretDown class="size-5" aria-label="Select project" />
       </button>
       {#if $isSelectOpen}
         <div class="project-manager__selector__options" use:melt={$selectMenu}>
@@ -290,9 +290,10 @@
               use:melt={$selectOption({ value: project.id, label: project.name })}
               onclick={() => selectProject(project.id)}
               class="project-manager__selector__option"
+              aria-label={project.name}
             >
               {#if project.id === currentProject.id}
-                <Check size={24} />
+                <Check size={24} aria-label="Selected project" />
               {/if}
               <span class="grow">{project.name}</span>
             </button>
@@ -318,8 +319,9 @@
       use:melt={$dropDownItem}
       onclick={() => downloadProjectHandler(currentProject)}
       class="project-manager__dropdown__option"
+      aria-label="Download project grammar"
     >
-      <Download size={16} class="shrink-0" />
+      <Download size={16} class="shrink-0" aria-label="Download project grammar" />
       <span class="grow text-left">Download grammar</span>
     </button>
     <button
@@ -327,8 +329,9 @@
       use:melt={$formTrigger}
       onclick={() => prepareForm(FormAction.CREATE)}
       class="project-manager__dropdown__option project-manager__dropdown__option--add"
+      aria-label="Create new project"
     >
-      <Add size={16} class="shrink-0" />
+      <Add size={16} class="shrink-0" aria-label="Create new project" />
       <span class="grow text-left">New Project</span>
     </button>
     <button
@@ -336,16 +339,18 @@
       use:melt={$formTrigger}
       onclick={() => prepareForm(FormAction.EDIT)}
       class="project-manager__dropdown__option project-manager__dropdown__option--edit"
+      aria-label="Edit current project"
     >
-      <Settings size={16} class="shrink-0" />
+      <Settings size={16} class="shrink-0" aria-label="Edit current project" />
       <span class="grow text-left">Edit project</span>
     </button>
     <button
       use:melt={$dropDownItem}
       use:melt={$deleteTrigger}
       class="project-manager__dropdown__option project-manager__dropdown__option--delete"
+      aria-label="Delete current project"
     >
-      <Trash size={16} class="shrink-0" />
+      <Trash size={16} class="shrink-0" aria-label="Delete current project" />
       <span class="grow text-left">Delete Project</span>
     </button>
   </div>
@@ -381,11 +386,12 @@
           use:melt={$deleteClose}
           class="dialog__content--action dialog__content--action--delete"
           onclick={() => deleteProjectHandler(currentProject.id)}
+          aria-label="Delete project"
         >
-          <Trash size={16} />
+          <Trash size={16} aria-label="Delete project" />
           <span>Eliminar</span>
         </button>
-        <button use:melt={$deleteClose} class="dialog__content--action">
+        <button use:melt={$deleteClose} class="dialog__content--action" aria-label="Cancelar">
           <span>Cancelar</span>
         </button>
       </div>
@@ -512,15 +518,16 @@
           type="submit"
           form="project-form"
           class="dialog__content--action dialog__content--action--save"
+          aria-label="Save project"
           onclick={() =>
             formAction === FormAction.CREATE
               ? createProjectHandler(formData)
               : editProjectHandler(formData)}
         >
-          <Save size={16} />
+          <Save size={16} aria-label="Save project" />
           <span>Guardar</span>
         </button>
-        <button use:melt={$formClose} class="dialog__content--action">
+        <button use:melt={$formClose} class="dialog__content--action" aria-label="Cancelar">
           <span>Cancelar</span>
         </button>
       </div>
