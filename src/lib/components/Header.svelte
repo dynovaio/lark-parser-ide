@@ -50,7 +50,7 @@
 <header class="page-header">
   <nav class="navbar">
     <div class="navbar__section">
-      <a href="/" title="Lark IDE">
+      <a class="navbar__item navbar__item-brand" href="/" title="Lark IDE">
         <LarkParserLogo size={40} aria-label="Lark IDE" />
       </a>
     </div>
@@ -61,16 +61,27 @@
           class="navbar__item"
           target="_blank"
           href="https://lark-parser.readthedocs.io/en/latest/"
+          title="Documentation"
         >
           <BookBookmark size={24} aria-label="Documentation" />
           <span>Docs</span>
         </a>
-        <a class="navbar__item" target="_blank" href="https://github.com/lark-parser/lark">
-          <GithubLogo size={24} aria-label="Source" />
+        <a
+          class="navbar__item"
+          target="_blank"
+          href="https://github.com/lark-parser/lark"
+          title="Source code"
+        >
+          <GithubLogo size={24} aria-label="Source code" />
           <span>Source</span>
         </a>
       {/if}
-      <button class="navbar__item" onclick={toggleTheme} name="theme-toggle">
+      <button
+        class="navbar__item"
+        onclick={toggleTheme}
+        name="theme-toggler"
+        aria-label="Toggle Theme"
+      >
         {#if $isDarkMode}
           <Dark size={24} aria-label="Dark Mode" />
         {:else}
@@ -78,7 +89,12 @@
         {/if}
       </button>
 
-      <button class="navbar__item" onclick={toggleFullscreen} name="fullscreen-toggle">
+      <button
+        class="navbar__item"
+        onclick={toggleFullscreen}
+        name="fullscreen-toggler"
+        aria-label="Toggle Fullscreen"
+      >
         {#if fullscreen}
           <ArrowsIn size={24} aria-label="Exit Fullscreen" />
         {:else}
@@ -87,7 +103,12 @@
       </button>
 
       {#if !$isLargeScreen}
-        <button use:melt={$open ? $close : $trigger} class="navbar__item" name="menu-trigger">
+        <button
+          use:melt={$open ? $close : $trigger}
+          class="navbar__item"
+          name="menu-trigger"
+          aria-label="Menu"
+        >
           {#if $open}
             <Close size={24} aria-label="Close menu" />
           {:else}
@@ -111,7 +132,7 @@
       }}
       class="menu"
     >
-      <div class="menu__container">
+      <div class="menu__contents">
         <a class="menu__item" target="_blank" href="https://lark-parser.readthedocs.io/en/latest/">
           <BookBookmark size={24} aria-label="Documentation" />
           <span>Docs</span>
@@ -157,8 +178,14 @@
     @apply block shrink-0;
   }
 
-  .menu__overlay {
-    @apply fixed inset-0 top-[4.5rem] z-64 bg-gray-900/50 shadow-lg;
+  .navbar__item-brand {
+    @apply p-0;
+    @apply bg-inherit text-inherit;
+    @apply hover:bg-inherit hover:text-inherit;
+    @apply focus:bg-inherit focus:text-inherit;
+    @apply dark:bg-inherit dark:text-inherit;
+    @apply dark:hover:bg-inherit dark:hover:text-inherit;
+    @apply dark:focus:bg-inherit dark:focus:text-inherit;
   }
 
   .menu {
@@ -166,7 +193,11 @@
     @apply bg-gray-900;
   }
 
-  .menu__container {
+  .menu__overlay {
+    @apply fixed inset-0 top-[4.5rem] z-64 bg-gray-900/50 shadow-lg;
+  }
+
+  .menu__contents {
     @apply flex flex-col space-y-4 p-4;
     @apply bg-gray-100;
     @apply dark:bg-gray-900;
