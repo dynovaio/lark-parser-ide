@@ -65,6 +65,10 @@
             use:melt={$tabTrigger(tab.id)}
             class="lark-ide__tab"
             class:lark-ide__tab--active={$tabValue === tab.id}
+            role="tab"
+            aria-label={tab.title}
+            aria-controls={tab.id}
+            aria-selected={$tabValue === tab.id}
           >
             {tab.title}
           </button>
