@@ -11,6 +11,18 @@ export default defineConfig({
       '@': resolve(__dirname, './src')
     }
   },
+  server: {
+    watch: {
+      ignored: [
+        'e2e/**/*.tests.ts',
+        'tests/**/*.tests.ts',
+        'dist',
+        'build',
+        'node_modules',
+        'playwright-report'
+      ]
+    }
+  },
   test: {
     projects: [
       {
