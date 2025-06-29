@@ -1,5 +1,5 @@
 <script module>
-  import '../app.css';
+  import '../src/app.css';
 
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import LarkParserIcon from '$lib/components/Icon/LarkParserIcon.svelte';

@@ -1,15 +1,15 @@
 <script module>
-  import '../app.css';
+  import '../src/app.css';
 
   import { defineMeta } from '@storybook/addon-svelte-csf';
-  import Editor from '$lib/components/Ide/Editor.svelte';
+  import StatusBar from '$lib/components/Ide/StatusBar.svelte';
   import { setIdeContext } from '$lib/components/Ide/Context';
   import { createIdeState } from '$lib/stores/Ide';
   import { PROJECT_HELLO_WORLD } from '$lib/utils/Project';
 
   const { Story } = defineMeta({
-    title: 'Lark IDE/Editor',
-    component: Editor,
+    title: 'Lark IDE/StatusBar',
+    component: StatusBar,
     tags: ['autodocs']
   });
 </script>
@@ -20,7 +20,13 @@
 </script>
 
 <Story name="Default">
-  <div style="height: 400px; width: 100%; padding: 20px;">
-    <Editor />
+  <div style="width: 100%; padding: 20px;">
+    <StatusBar />
+  </div>
+</Story>
+
+<Story name="With Project">
+  <div style="width: 100%; padding: 20px;">
+    <StatusBar />
   </div>
 </Story>

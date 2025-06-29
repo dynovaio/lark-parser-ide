@@ -1,5 +1,5 @@
 <script module>
-  import '../app.css';
+  import '../src/app.css';
 
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import Tree from '$lib/components/Ide/Test/Tree.svelte';
